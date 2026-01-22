@@ -1,0 +1,60 @@
+// Copyright 2021-2025 FRC 6328
+// http://github.com/Mechanical-Advantage
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// version 3 as published by the Free Software Foundation or
+// available in the root directory of this project.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+
+package frc.robot.subsystems.vision;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.util.Units;
+import frc.robot.FieldConstants;
+
+public class VisionConstants {
+  // AprilTag layout
+  public static AprilTagFieldLayout aprilTagLayout = FieldConstants.defaultAprilTagType.getLayout();
+
+  // Camera names, must match names configured on coprocessor
+  public static String camera0Name = "cam1";
+  public static Transform3d camera1Transform = new Transform3d();
+//   public static String camera1Name = "Arducam_OV2311_USB_Camera-B";
+
+  // Robot to camera transforms
+  // (Not used by Limelight, configure in web UI instead)
+  public static Transform3d robotToCamera0 =
+      new Transform3d(Units.inchesToMeters(12.0), 0, Units.inchesToMeters(13.0), new Rotation3d());
+//   public static Transform3d robotToCamera1 =
+//       new Transform3d(-Units.inchesToMeters(2), Units.inchesToMeters(11), Units.inchesToMeters(13), new Rotation3d(-Math.toRadians(14), 0,  Math.PI - Math.toRadians(20.0)));
+//   // Basic filtering thresholds
+  public static double maxAmbiguity = 0.3;
+  public static double maxZError = 0.75;
+
+  // Standard deviation baselines, for 1 meter distance and 1 tag
+  // (Adjusted automatically based on distance and # of tags)
+  public static double linearStdDevBaseline = 0.03; // Meters
+  public static double angularStdDevBaseline = 0.06; // Radians
+
+  // Standard deviation multipliers for each camera
+  // (Adjust to trust some cameras more than others)
+  public static double[] cameraStdDevFactors =
+      new double[] {
+        1.0, // Camera 0
+        3.0 // Camera 1 
+      };
+
+  // Multipliers to apply for MegaTag 2 observations
+  public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
+  public static double angularStdDevMegatag2Factor =
+      Double.POSITIVE_INFINITY; // No rotation data available
+
+    public static final int visionStatsNumBuffer = 100;
+}
