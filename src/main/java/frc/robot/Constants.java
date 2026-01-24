@@ -164,11 +164,12 @@ public final class Constants {
   }
 
   public static final class IndexerConstants{
-    public static final double Indexer_RPM = 2000.0;
-    public static final double REVERSE_RPM = -1000.0;
-    public static final double P = 0.0015;
+    //TODO change all constant values later
+    public static final double Indexer_RPM = 0.0;
+    public static final double Reverse_RPM = -1.0;
+    public static final double P = 0.0001;
     public static final double D = 0.0001;
-    public static final double gearRatio = 10.0;
+    public static final double gearRatio = 1.0;
     public static final double inchesPerRadian = 1.0;
   }
 

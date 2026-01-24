@@ -20,15 +20,9 @@ public class Indexer extends SubsystemBase {
   public double voltageCommand;
   private IndexerMode mode;
 
-
-  public static final LoggedTunableNumber shootVelocity =
-      new LoggedTunableNumber("Indexer/AmpVelocityRPMs");
-  public static final LoggedTunableNumber deliverVelocity =
-      new LoggedTunableNumber("Indexer/SpeakerVelocityRPMs");
-  public static final LoggedTunableNumber reverseVeloctiy =
-      new LoggedTunableNumber("Indexer/TrapVelocityRPMs");
   public static final LoggedTunableNumber spinDurationSec =
       new LoggedTunableNumber("Indexer/SpinDurationSec");
+      //TODO change these numbers later
   private static final LoggedTunableNumber kP = new LoggedTunableNumber("Indexer/kP");
   private static final LoggedTunableNumber kD = new LoggedTunableNumber("Indexer/kD");
 
@@ -43,7 +37,7 @@ public class Indexer extends SubsystemBase {
 
     // Sets the default using IndexerConstants // MAKE Indexer CONSTANTS!!! Simply fill-in
     indexVelocity.initDefault(Constants.IndexerConstants.Indexer_RPM);
-    reverseVeloctiy.initDefault(Constants.IndexerConstants.REVERSE_RPM);
+    reverseVeloctiy.initDefault(Constants.IndexerConstants.Reverse_RPM);
     spinDurationSec.initDefault(1.5);
     kP.initDefault(Constants.IndexerConstants.P);
     kD.initDefault(Constants.IndexerConstants.D);
@@ -93,7 +87,7 @@ public class Indexer extends SubsystemBase {
           setpoint = 0.0;
       }
 
-
+      //TODO change Voltage command calculation later. AKA change these values
       voltageCommand = controller.calculate(inputs.velocityRPMs, setpoint);
       io.setVoltage(MathUtil.clamp(voltageCommand, -12.0, 12.0));
     }
