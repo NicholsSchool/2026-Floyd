@@ -1,0 +1,38 @@
+package frc.robot.subsystems.redirector;
+
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import frc.robot.Constants;
+
+public class RedirectorIOSim implements RedirectorIO{
+      private static final DCMotor simModel = DCMotor.getKrakenX60(1);
+
+      private final DCMotorSim sim =
+      new DCMotorSim(
+          LinearSystemId.createDCMotorSystem(simModel, 0.025, RedirectorConstants.kRedirectorGearRatio),
+          simModel);
+    
+    double redirectorAppliedVolts = 0.0;
+
+    @Override
+    public void updateInputs(RedirectorIOInputs inputs){
+        sim.update(Constants.LOOP_PERIOD_SECS);
+        
+        inputs.appliedVolts = sim.getInputVoltage();
+        inputs.velocityRadPerSec = sim.getAngularVelocityRadPerSec();
+        inputs.currentAngle = this.getCurrentAngle();
+        inputs.currentAmps = sim.getCurrentDrawAmps();
+        inputs.limitSwitch = true;
+    }
+
+    private double getCurrentAngle(){
+        return sim.getAngularPositionRad();
+    }
+
+    @Override
+    public void setVoltage(double voltage) {
+      sim.setInputVoltage(voltage);
+    }
+
+}

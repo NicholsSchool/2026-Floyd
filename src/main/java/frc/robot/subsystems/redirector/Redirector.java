@@ -26,7 +26,6 @@ public class Redirector extends SubsystemBase
     private double voltageCmdPid = 0.0;
     private boolean reachedTargetPosition = true;
     private double voltageCmdManual = 0.0;
-    private boolean hasHitLimitSwitch = false;
     private boolean isAuto = false;
 
     private enum RedirectorMode{
@@ -80,7 +79,7 @@ public class Redirector extends SubsystemBase
 
         switch(redirectorMode){
           case GO_TO_POSITION:
-          voltageCmdPid = (hasHitLimitSwitch || isAuto) ? redirectorPidController.calculate( this.getAngle()) : 0.0;
+          voltageCmdPid = (isAuto) ? redirectorPidController.calculate( this.getAngle()) : 0.0;
           voltageCmdManual = 0.0;
           break;
           case MANUAL:
@@ -91,10 +90,6 @@ public class Redirector extends SubsystemBase
          if (!reachedTargetPosition) {
             reachedTargetPosition = redirectorPidController.atGoal();
             if (reachedTargetPosition) System.out.println("redirector Move to Pos Reached Goal!");
-          }
-
-          if(inputs.limitSwitch){
-            hasHitLimitSwitch = true;
           }
         
           io.setVoltage(voltageCmdManual + voltageCmdPid);
@@ -126,8 +121,7 @@ public class Redirector extends SubsystemBase
       // Checks if TargetAngle is valid
         public Command runGoToPositionCommand(double targetAngle){
     redirectorMode = RedirectorMode.GO_TO_POSITION;
-    if ((targetAngle > RedirectorConstants.kRedirectorMaxAngle || targetAngle < RedirectorConstants.kRedirectorMinAngle) && hasHitLimitSwitch) {
-      System.out.println("Soft Limited Redirector");
+    if ((targetAngle > RedirectorConstants.kRedirectorMaxAngle || targetAngle < RedirectorConstants.kRedirectorMinAngle)) {
       return new InstantCommand();
     }
     System.out.println("Setting go to pos:" + targetAngle );
@@ -177,7 +171,7 @@ public class Redirector extends SubsystemBase
   }
 
   @AutoLogOutput
-  public double[] getOutputCurrent() {
+  public double getOutputCurrent() {
     return inputs.currentAmps;
   }
 
