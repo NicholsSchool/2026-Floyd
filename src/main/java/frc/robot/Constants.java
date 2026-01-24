@@ -174,6 +174,9 @@ public final class Constants {
     public static final double DROPPER_IN_ANGLE = 0.0;
     public static final double DROPPER_OUT_ANGLE = 1.75;
 
+    public static final double DROPPER_RATIO = 5;
+    public static final double INTAKE_RATIO = 1;
+
   }
 
   public static final class IndexerConstants{
