@@ -18,6 +18,7 @@ public class Indexer extends SubsystemBase {
   private IndexerIO io;
   private final IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
   public double voltageCommand;
+  private IndexerMode mode;
 
 
   public static final LoggedTunableNumber shootVelocity =
@@ -60,7 +61,6 @@ public class Indexer extends SubsystemBase {
         break;
     }
   }
-
 
   @Override
   public void periodic() {
