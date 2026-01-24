@@ -159,7 +159,20 @@ public final class Constants {
   
   }
 
-  public static final class IntakeOuttakeConstants {
+  public static final class IntakeConstants {
+
+    public static final double INTAKE_VOLTAGE = 10.0;
+    public static final double OUTTAKE_VOLTAGE = -12.0;
+
+    public static final double DROPPER_P = 1.0;
+    public static final double DROPPER_I = 0.0;
+    public static final double DROPPER_D = 0.0;
+
+    public static final double DROPPER_MAX_VEL = 3.0;
+    public static final double DROPPER_MAX_ACCEL = 3.0;
+
+    public static final double DROPPER_IN_ANGLE = 0.0;
+    public static final double DROPPER_OUT_ANGLE = 1.75;
 
   }
 
