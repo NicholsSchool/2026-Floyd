@@ -3,14 +3,14 @@ package frc.robot.subsystems.turret;
 
 public class TurretConstants {
     
-    public static final double kTurretMaxAccelRad = 0.0;
-    public static final double kTurretMaxVelRad = 0.0;
-    public static final double kTurretP = 1.0; // TODO: tune all 3 of these PID constants
-    public static final double kTurretI = 0.0;
-    public static final double kTurretD = 0.0;
-    public static final double kTurretMaxAngle = 0.0;
-    public static final double kTurretMinAngle = 0.0;
-    public static final double kTurretGearRatio = 1.0;
+    public static final double TURRET_MAX_ACCEL_RAD = 0.0;
+    public static final double TURRET_MAX_VEL_RAD = 0.0;
+    public static final double TURRET_P = 1.0; // TODO: tune all 3 of these PID constants
+    public static final double TURRET_I = 0.0;
+    public static final double TURRET_D = 0.0;
+    public static final double TURRET_MAX_ANGLE = 0.0;
+    public static final double TURRET_MIN_ANGLE = 0.0;
+    public static final double TURRET_GEAR_RATIO = 1.0;
 
 
 }

@@ -10,7 +10,7 @@ public class RedirectorIOSim implements RedirectorIO{
 
       private final DCMotorSim sim =
       new DCMotorSim(
-          LinearSystemId.createDCMotorSystem(simModel, 0.025, RedirectorConstants.kRedirectorGearRatio),
+          LinearSystemId.createDCMotorSystem(simModel, 0.025, RedirectorConstants.REDIRECTOR_GEAR_RATIO),
           simModel);
     
     double redirectorAppliedVolts = 0.0;

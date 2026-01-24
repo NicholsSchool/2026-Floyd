@@ -10,7 +10,7 @@ public class TurretIOSim implements TurretIO{
 
       private final DCMotorSim sim =
       new DCMotorSim(
-          LinearSystemId.createDCMotorSystem(simModel, 0.025, TurretConstants.kTurretGearRatio),
+          LinearSystemId.createDCMotorSystem(simModel, 0.025, TurretConstants.TURRET_GEAR_RATIO),
           simModel);
     
     double turretAppliedVolts = 0.0;

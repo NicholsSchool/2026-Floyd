@@ -53,13 +53,13 @@ public class Redirector extends SubsystemBase
 
         reachedTargetPosition = true;
 
-        redirectorMaxAccelerationRad.initDefault(RedirectorConstants.kRedirectorMaxAccelRad);
-        redirectorMaxVelocityRad.initDefault(RedirectorConstants.kRedirectorMaxVelRad);
+        redirectorMaxAccelerationRad.initDefault(RedirectorConstants.REDIRECTOR_MAX_ACCEL_RAD);
+        redirectorMaxVelocityRad.initDefault(RedirectorConstants.REDIRECTOR_MAX_VEL_RAD);
 
 
-        redirectorKp.initDefault(RedirectorConstants.kRedirectorP);
-        redirectorKi.initDefault(RedirectorConstants.kRedirectorI);
-        redirectorKd.initDefault(RedirectorConstants.kRedirectorD);
+        redirectorKp.initDefault(RedirectorConstants.REDIRECTOR_P);
+        redirectorKi.initDefault(RedirectorConstants.REDIRECTOR_I);
+        redirectorKd.initDefault(RedirectorConstants.REDIRECTOR_D);
 
         redirectorPidController.setP(redirectorKp.get());
         redirectorPidController.setI(redirectorKi.get());
@@ -121,7 +121,7 @@ public class Redirector extends SubsystemBase
       // Checks if TargetAngle is valid
         public Command runGoToPositionCommand(double targetAngle){
     redirectorMode = RedirectorMode.GO_TO_POSITION;
-    if ((targetAngle > RedirectorConstants.kRedirectorMaxAngle || targetAngle < RedirectorConstants.kRedirectorMinAngle)) {
+    if ((targetAngle > RedirectorConstants.REDIRECTOR_MAX_ANGLE || targetAngle < RedirectorConstants.REDIRECTOR_MIN_ANGLE)) {
       return new InstantCommand();
     }
     System.out.println("Setting go to pos:" + targetAngle );

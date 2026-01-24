@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.util.LoggedTunableNumber;
 
 
@@ -54,13 +53,13 @@ public class Turret extends SubsystemBase
 
         reachedTargetPosition = true;
 
-        turretMaxAccelerationRad.initDefault(TurretConstants.kTurretMaxAccelRad);
-        turretMaxVelocityRad.initDefault(TurretConstants.kTurretMaxVelRad);
+        turretMaxAccelerationRad.initDefault(TurretConstants.TURRET_MAX_ACCEL_RAD);
+        turretMaxVelocityRad.initDefault(TurretConstants.TURRET_MAX_VEL_RAD);
 
 
-        turretKp.initDefault(TurretConstants.kTurretP);
-        turretKi.initDefault(TurretConstants.kTurretI);
-        turretKd.initDefault(TurretConstants.kTurretD);
+        turretKp.initDefault(TurretConstants.TURRET_P);
+        turretKi.initDefault(TurretConstants.TURRET_I);
+        turretKd.initDefault(TurretConstants.TURRET_D);
 
         turretPidController.setP(turretKp.get());
         turretPidController.setI(turretKi.get());
@@ -90,7 +89,7 @@ public class Turret extends SubsystemBase
 
          if (!reachedTargetPosition) {
             reachedTargetPosition = turretPidController.atGoal();
-            if (reachedTargetPosition) System.out.println("elevator Move to Pos Reached Goal!");
+            if (reachedTargetPosition) System.out.println("turret Move to Pos Reached Goal!");
           }
 
           if(inputs.limitSwitch){
@@ -126,7 +125,7 @@ public class Turret extends SubsystemBase
       // Checks if TargetAngle is valid
         public Command runGoToPositionCommand(double targetAngle){
     turretMode = TurretMode.GO_TO_POSITION;
-    if ((targetAngle > TurretConstants.kTurretMaxAngle || targetAngle < TurretConstants.kTurretMinAngle) && hasHitLimitSwitch) {
+    if ((targetAngle > TurretConstants.TURRET_MAX_ANGLE || targetAngle < TurretConstants.TURRET_MIN_ANGLE) && hasHitLimitSwitch) {
       System.out.println("Soft Limited Turret");
       return new InstantCommand();
     }
@@ -137,7 +136,7 @@ public class Turret extends SubsystemBase
 
     /**
      * When the Joystick passes the Joystick Deadband threshold
-     * the elevator is set to manual else it is go to position
+     * the Turret is set to manual else it is go to position
     */
       public void runManualPosition(double stickPosition){
         if(Math.abs(stickPosition) > Constants.JOYSTICK_DEADBAND){
