@@ -19,15 +19,13 @@ public class IndexerIOSim implements IndexerIO {
     public void updateInputs(IndexerIOInputs inputs) {
         simMotor.update(Constants.LOOP_PERIOD_SECS);
         
-        inputs.indexerMotorVoltage = simMotor.getInputVoltage();
+        inputs.indexerVoltage = simMotor.getInputVoltage();
         inputs.indexerSupplyVoltage = simMotor.getInputVoltage();
-        inputs.indexerVelocityINPerSec = simMotor.getAngularVelocityRadPerSec() * IndexerConstants.inchesPerRadian;
         inputs.indexerCurrentAmps = simMotor.getCurrentDrawAmps();
-        inputs.indexerPositionIN = simMotor.getAngularPositionRad() * IndexerConstants.inchesPerRadian;
     }
     
     @Override
-    public void setMotorVoltage(double voltage) {
+    public void setVoltage(double voltage) {
         simMotor.setInputVoltage(voltage);
     }
     

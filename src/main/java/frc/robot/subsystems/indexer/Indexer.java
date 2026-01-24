@@ -14,7 +14,7 @@ import frc.robot.Constants.IndexerConstants;
 
 
 public class Indexer extends SubsystemBase {
-  private double setpoint;
+  private double setpoint = 0.0;
   private IndexerIO io;
   private final IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
   public double voltageCommand;
@@ -25,10 +25,11 @@ public class Indexer extends SubsystemBase {
       //TODO change these numbers later
   private static final LoggedTunableNumber kP = new LoggedTunableNumber("Indexer/kP");
   private static final LoggedTunableNumber kD = new LoggedTunableNumber("Indexer/kD");
+  private static final LoggedTunableNumber indexVelocity = new LoggedTunableNumber("Indexer/indexVelocity");
+  private static final LoggedTunableNumber reverseVelocity = new LoggedTunableNumber("Indexer/reverseVelocity");
 
 
   private PIDController controller = new PIDController(0.0, 0.0, 0.0);
-  private final SimpleMotorFeedforward ffModel;
 
   public Indexer(IndexerIO io) {
     System.out.println("[Init] Creating Indexer");
@@ -37,28 +38,14 @@ public class Indexer extends SubsystemBase {
 
     // Sets the default using IndexerConstants // MAKE Indexer CONSTANTS!!! Simply fill-in
     indexVelocity.initDefault(Constants.IndexerConstants.Indexer_RPM);
-    reverseVeloctiy.initDefault(Constants.IndexerConstants.Reverse_RPM);
+    reverseVelocity.initDefault(Constants.IndexerConstants.Reverse_RPM);
     spinDurationSec.initDefault(1.5);
     kP.initDefault(Constants.IndexerConstants.P);
     kD.initDefault(Constants.IndexerConstants.D);
-
-
-    // Switch constants based on mode (the physics simulator is treated as a
-    // separate robot with different tuning)
-    switch (Constants.getRobot()) {
-      case ROBOT_REAL:
-        ffModel = new SimpleMotorFeedforward(0.001, 0.0060);
-        break;
-      case ROBOT_SIM:
-      default:
-        ffModel = new SimpleMotorFeedforward(1, 1);
-        break;
-    }
   }
 
   @Override
   public void periodic() {
-    setpoint = 0.0;
     io.updateInputs(inputs);
     Logger.processInputs("Indexer", inputs);
 
@@ -77,10 +64,10 @@ public class Indexer extends SubsystemBase {
     } else {
       switch (mode) {
         case Go:
-          setpoint = shootVelocity.get();
+          setpoint = indexVelocity.get();
           break;
         case Reverse:
-          setpoint = reverseVeloctiy.get();
+          setpoint = reverseVelocity.get();
           break;
         case Stopped:
         default:
@@ -101,16 +88,19 @@ public class Indexer extends SubsystemBase {
 
   public void setIndex() {
     mode = IndexerMode.Go;
+    controller.reset();
   }
 
 
   public void setReverse() {
     mode = IndexerMode.Reverse;
+    controller.reset();
   }
 
 
   public void stop() {
     mode = IndexerMode.Stopped;
+    controller.reset();
   }
 
 
@@ -119,23 +109,17 @@ public class Indexer extends SubsystemBase {
   }
 
 
-  @AutoLogOutput
-  public double getVoltageCommand() {
-    return voltageCommand;
-  }
-
   public void setVelocityRPMs(double velocityRPMs) {
     this.setpoint = velocityRPMs;
   }
 
   @AutoLogOutput
-  public double getSetpointRPMs() {
-    return setpoint;
+  public double getVoltageCommand() {
+    return voltageCommand;
   }
 
-
   @AutoLogOutput
-  public double getActualVelocityRPMs() {
-    return inputs.velocityRPMs;
+  public double getSetpointRPMs() {
+    return setpoint;
   }
 }
