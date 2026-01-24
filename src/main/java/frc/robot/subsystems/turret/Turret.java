@@ -134,6 +134,9 @@ public class Turret extends SubsystemBase
     return new InstantCommand(() -> setTargetPosition(targetAngle), this);
   }
 
+
+
+
     /**
      * When the Joystick passes the Joystick Deadband threshold
      * the Turret is set to manual else it is go to position
@@ -146,6 +149,10 @@ public class Turret extends SubsystemBase
           turretMode = TurretMode.GO_TO_POSITION;
           }
         }
+
+      public void setVoltage(){
+        io.setVoltage(1);
+      }
         
        /** 
         * Autonomous Log Outputs 
