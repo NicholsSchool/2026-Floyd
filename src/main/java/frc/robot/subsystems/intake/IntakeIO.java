@@ -6,7 +6,13 @@ public interface IntakeIO {
     
     @AutoLog
     public static class IntakeIOInputs {
-        public double dropperAngleRadians = 0.0;
+        public double pivotAngleRadians = 0.0;
+
+        public double wheelMotorVoltage = 0.0;
+        public double pivotMotorVoltage = 0.0;
+
+        public double wheelMotorCurrent = 0.0;
+        public double pivotMotorCurrent = 0.0;
     }
     
     
@@ -20,10 +26,10 @@ public interface IntakeIO {
     public void setWheelMotorVoltage(double volts);
 
     /**
-     * Set the voltage for the motor(s) that drop down the intake (and shifts the hopper)
+     * Set the voltage for the motor(s) that drop down the intake (and shift the hopper)
      * @param volts The voltage to set the motor to.
      */
-    public void setDropperMotorVoltage(double volts);
+    public void setPivotMotorVoltage(double volts);
     
     /**
      * Sets brakemode for the motor(s) that drives the intake wheels
@@ -32,8 +38,8 @@ public interface IntakeIO {
     public void setWheelBrakeMode(boolean brake);
 
     /**
-     * Sets brakemode for the motor(s) that drops down the intake (and shifts the hopper)
+     * Sets brakemode for the motor(s) that drop down the intake (and shift the hopper)
      * @param brake Whether or not to brake the motor.
      */
-    public void setDropperBrakeMode(boolean brake);
+    public void setPivotBrakeMode(boolean brake);
 }
