@@ -23,8 +23,8 @@ public class Indexer extends SubsystemBase {
   public static final LoggedTunableNumber spinDurationSec =
       new LoggedTunableNumber("Indexer/SpinDurationSec");
       //TODO change these numbers later
-  private static final LoggedTunableNumber kP = new LoggedTunableNumber("Indexer/kP");
-  private static final LoggedTunableNumber kD = new LoggedTunableNumber("Indexer/kD");
+  private static final LoggedTunableNumber INDEX_P = new LoggedTunableNumber("Indexer/kP");
+  private static final LoggedTunableNumber INDEX_D = new LoggedTunableNumber("Indexer/kD");
   private static final LoggedTunableNumber indexVelocity = new LoggedTunableNumber("Indexer/indexVelocity");
   private static final LoggedTunableNumber reverseVelocity = new LoggedTunableNumber("Indexer/reverseVelocity");
 
@@ -40,8 +40,8 @@ public class Indexer extends SubsystemBase {
     indexVelocity.initDefault(Constants.IndexerConstants.Indexer_RPM);
     reverseVelocity.initDefault(Constants.IndexerConstants.Reverse_RPM);
     spinDurationSec.initDefault(1.5);
-    kP.initDefault(Constants.IndexerConstants.P);
-    kD.initDefault(Constants.IndexerConstants.D);
+    INDEX_P.initDefault(Constants.IndexerConstants.P);
+    INDEX_D.initDefault(Constants.IndexerConstants.D);
   }
 
   @Override
@@ -51,9 +51,9 @@ public class Indexer extends SubsystemBase {
 
 
     // Update tunable numbers
-    if (kP.hasChanged(hashCode()) || kD.hasChanged(hashCode())) {
-      controller.setP(kP.get()); //kD, and kP may also be K and D inside Indexer constants
-      controller.setD(kD.get());
+    if (INDEX_P.hasChanged(hashCode()) || INDEX_D.hasChanged(hashCode())) {
+      controller.setP(INDEX_P.get()); //kD, and kP may also be K and D inside Indexer constants
+      controller.setD(INDEX_D.get());
     }
 
 
