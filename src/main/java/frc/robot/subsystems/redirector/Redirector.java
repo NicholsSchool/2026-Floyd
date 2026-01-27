@@ -80,7 +80,7 @@ public class Redirector extends SubsystemBase
 
         switch(redirectorMode){
           case GO_TO_POSITION:
-          voltageCmdPid = (isAuto) ? redirectorPidController.calculate( this.getAngle()) : 0.0;
+          voltageCmdPid = redirectorPidController.calculate( this.getAngle());
           voltageCmdManual = 0.0;
           break;
           case MANUAL:
@@ -137,16 +137,12 @@ public class Redirector extends SubsystemBase
        public void runManualPosition(double stickPosition){
         if(Math.abs(stickPosition) > Constants.JOYSTICK_DEADBAND){
           redirectorMode = RedirectorMode.MANUAL;
+          voltageCmdManual = stickPosition * RedirectorConstants.REDIRECTOR_MANUAL_SCALAR;
         }
         else{
           redirectorMode = RedirectorMode.GO_TO_POSITION;
           }
         
-        if(stickPosition > 0.0){
-          voltageCmdManual = 0.0;
-        }else{
-          voltageCmdManual = stickPosition * RedirectorConstants.REDIRECTOR_MANUAL_SCALAR;
-        }
       } 
         
        /** 

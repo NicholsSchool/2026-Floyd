@@ -145,16 +145,11 @@ public class Turret extends SubsystemBase
       public void runManualPosition(double stickPosition){
         if(Math.abs(stickPosition) > Constants.JOYSTICK_DEADBAND){
           turretMode = TurretMode.MANUAL;
+          voltageCmdManual = -stickPosition * TurretConstants.TURRET_MANUAL_SCALAR;
         }
         else{
           turretMode = TurretMode.GO_TO_POSITION;
           }
-        
-        if(stickPosition > 0.0){
-          voltageCmdManual = 0.0;
-        }else{
-          voltageCmdManual = stickPosition * TurretConstants.TURRET_MANUAL_SCALAR;
-        }
       } 
 
       public void setVoltage(){
