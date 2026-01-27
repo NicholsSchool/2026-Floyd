@@ -11,6 +11,7 @@ public class TurretConstants {
     public static final double TURRET_MAX_ANGLE = 0.0;
     public static final double TURRET_MIN_ANGLE = 0.0;
     public static final double TURRET_GEAR_RATIO = 1.0;
+    public static final double TURRET_MANUAL_SCALAR = 1.0;
 
 
 }

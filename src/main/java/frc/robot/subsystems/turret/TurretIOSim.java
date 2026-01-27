@@ -21,13 +21,9 @@ public class TurretIOSim implements TurretIO{
         
         inputs.appliedVolts = sim.getInputVoltage();
         inputs.velocityRadPerSec = sim.getAngularVelocityRadPerSec();
-        inputs.currentAngle = this.getCurrentAngle();
+        inputs.currentAngle = sim.getAngularPositionRad();
         inputs.currentAmps = sim.getCurrentDrawAmps();
         inputs.limitSwitch = true;
-    }
-
-    private double getCurrentAngle(){
-        return sim.getAngularPositionRad();
     }
 
     @Override

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.redirector.RedirectorConstants;
+import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.LoggedTunableNumber;
 
 
@@ -133,14 +134,20 @@ public class Redirector extends SubsystemBase
      * When the Joystick passes the Joystick Deadband threshold
      * the redirector is set to manual else it is go to position
     */
-      public void runManualPosition(double stickPosition){
+       public void runManualPosition(double stickPosition){
         if(Math.abs(stickPosition) > Constants.JOYSTICK_DEADBAND){
           redirectorMode = RedirectorMode.MANUAL;
         }
         else{
           redirectorMode = RedirectorMode.GO_TO_POSITION;
           }
+        
+        if(stickPosition > 0.0){
+          voltageCmdManual = 0.0;
+        }else{
+          voltageCmdManual = stickPosition * RedirectorConstants.REDIRECTOR_MANUAL_SCALAR;
         }
+      } 
         
        /** 
         * Autonomous Log Outputs 
@@ -163,6 +170,11 @@ public class Redirector extends SubsystemBase
   @AutoLogOutput
   public double getAcceleration() {
     return accelRad;
+  }
+
+  @AutoLogOutput
+  public double getAppliedVoltage(){
+    return inputs.appliedVolts;
   }
 
   @AutoLogOutput

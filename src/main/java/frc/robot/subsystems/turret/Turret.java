@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.util.LoggedTunableNumber;
 
 
@@ -148,9 +149,16 @@ public class Turret extends SubsystemBase
         else{
           turretMode = TurretMode.GO_TO_POSITION;
           }
+        
+        if(stickPosition > 0.0){
+          voltageCmdManual = 0.0;
+        }else{
+          voltageCmdManual = stickPosition * TurretConstants.TURRET_MANUAL_SCALAR;
         }
+      } 
 
       public void setVoltage(){
+        turretMode = TurretMode.MANUAL;
         io.setVoltage(1);
       }
         
@@ -180,6 +188,11 @@ public class Turret extends SubsystemBase
   @AutoLogOutput
   public double getVoltageCommandPid() {
     return voltageCmdPid;
+  }
+
+  @AutoLogOutput
+  public double getAppliedVoltage(){
+    return inputs.appliedVolts;
   }
 
   @AutoLogOutput

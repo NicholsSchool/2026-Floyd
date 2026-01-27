@@ -123,8 +123,16 @@ public class RobotContainer {
    */
   private void configureBindings() {
     
-    // turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getLeftY()), turret));
-    turret.setDefaultCommand(new InstantCommand( () -> turret.setVoltage(), turret));
+    turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getRightY()), turret));
+    operatorController.x().onTrue(turret.runGoToPositionCommand(40));
+    operatorController.y().onTrue(turret.runGoToPositionCommand(0));
+
+    redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(operatorController.getLeftY()), redirector));
+    operatorController.a().onTrue(redirector.runGoToPositionCommand(50));
+    operatorController.b().onTrue(redirector.runGoToPositionCommand(0));
+
+  
+    // turret.setDefaultCommand(new InstantCommand( () -> turret.setVoltage(), turret));
 
   }
 
