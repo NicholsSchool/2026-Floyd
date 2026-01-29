@@ -112,6 +112,8 @@ public class RobotContainer {
   private void configureBindings() {
       controller.a().onTrue(new InstantCommand(() -> shooter.setRPM(0.0), shooter));
       controller.b().onTrue(new InstantCommand(() -> shooter.setRPM(4000.0), shooter));
+      controller.x().onTrue(new InstantCommand(() -> shooter.setRPM(4200.0), shooter));
+      controller.y().onTrue(new InstantCommand(() -> shooter.setRPM(4500.0), shooter));
   }
 
   public void updateShuffleboard(){

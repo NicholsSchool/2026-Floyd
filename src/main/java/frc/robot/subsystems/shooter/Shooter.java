@@ -51,7 +51,10 @@ public class Shooter extends SubsystemBase {
 
     @AutoLogOutput
     public double getBangBang(){
-        return 12 * ((( Math.abs(inputs.velocityRPM - setpointRPM)) > ShooterConstants.bangBangToleranceRPM) ? bangBangController.calculate(inputs.velocityRPM) : 0.0);
+        if(( Math.abs(inputs.velocityRPM - setpointRPM)) < ShooterConstants.bangBangToleranceRPM || (setpointRPM == 0.0)){
+            return 0.0;
+        } 
+        return ShooterConstants.bangBangMult * bangBangController.calculate(inputs.velocityRPM);
     }
 
     @AutoLogOutput

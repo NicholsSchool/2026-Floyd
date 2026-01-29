@@ -85,6 +85,7 @@ public final class Constants {
   }
 
   public static final class ShooterConstants{
+    public static final double bangBangMult = 5.0;
     public static double kP = 0.1;
     public static double kI = 0.00;
     public static double kD = 0.0;
