@@ -2,9 +2,7 @@ package frc.robot;
 
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Transform3d;
+
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 
@@ -87,9 +85,12 @@ public final class Constants {
   }
 
   public static final class ShooterConstants{
-    public static double kP = 0.0001;
+    public static double kP = 0.1;
     public static double kI = 0.00;
     public static double kD = 0.0;
+    public static double kS = 0.1;
+    public static double kV = 0.0;
+    public static double bangBangToleranceRPM = 50.0;
     public static double SHOOTER_MOTOR_CURRENT_LIMIT = 30.0;
     public static double voltageClip = 3.0;
   }
