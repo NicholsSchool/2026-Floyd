@@ -23,7 +23,6 @@ public class RedirectorIOSim implements RedirectorIO{
         inputs.velocityRadPerSec = sim.getAngularVelocityRadPerSec();
         inputs.currentAngle = sim.getAngularPositionRad();
         inputs.currentAmps = sim.getCurrentDrawAmps();
-        inputs.limitSwitch = true;
     }
 
     @Override

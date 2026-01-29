@@ -9,7 +9,8 @@ public interface TurretIO {
         public double appliedVolts = 0.0;
         public double velocityRadPerSec = 0.0;
         public double currentAngle = 0.0;
-        public boolean limitSwitch = false;
+        public boolean rightLimitSwitch = false;
+        public boolean leftLimitSwitch = false;
     }
       /** Updates the set of loggable inputs. */
   public default void updateInputs(TurretIOInputs inputs) {};

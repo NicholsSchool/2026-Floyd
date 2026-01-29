@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.util.LoggedTunableNumber;
 
 
@@ -26,7 +25,8 @@ public class Turret extends SubsystemBase
     private double voltageCmdPid = 0.0;
     private boolean reachedTargetPosition = true;
     private double voltageCmdManual = 0.0;
-    private boolean hasHitLimitSwitch = false;
+    private boolean hasHitRightLimitSwitch = false;
+    private boolean hasHitLeftLimitSwitch = false;
     private boolean isAuto = false;
 
     private enum TurretMode{
@@ -80,7 +80,7 @@ public class Turret extends SubsystemBase
 
         switch(turretMode){
           case GO_TO_POSITION:
-          voltageCmdPid = (hasHitLimitSwitch || isAuto) ? turretPidController.calculate( this.getAngle()) : 0.0;
+          voltageCmdPid = ((hasHitLeftLimitSwitch || hasHitRightLimitSwitch ) || isAuto) ? turretPidController.calculate( this.getAngle()) : 0.0;
           voltageCmdManual = 0.0;
           break;
           case MANUAL:
@@ -93,8 +93,11 @@ public class Turret extends SubsystemBase
             if (reachedTargetPosition) System.out.println("turret Move to Pos Reached Goal!");
           }
 
-          if(inputs.limitSwitch){
-            hasHitLimitSwitch = true;
+          if(inputs.rightLimitSwitch){
+            hasHitRightLimitSwitch = true;
+          }
+          if(inputs.leftLimitSwitch){
+            hasHitLeftLimitSwitch = true;
           }
         
           io.setVoltage(voltageCmdManual + voltageCmdPid);
@@ -126,7 +129,7 @@ public class Turret extends SubsystemBase
       // Checks if TargetAngle is valid
         public Command runGoToPositionCommand(double targetAngle){
     turretMode = TurretMode.GO_TO_POSITION;
-    if ((targetAngle > TurretConstants.TURRET_MAX_ANGLE || targetAngle < TurretConstants.TURRET_MIN_ANGLE) && hasHitLimitSwitch) {
+    if ((targetAngle > TurretConstants.TURRET_MAX_ANGLE || targetAngle < TurretConstants.TURRET_MIN_ANGLE) && (hasHitRightLimitSwitch || hasHitLeftLimitSwitch)) {
       System.out.println("Soft Limited Turret");
       return new InstantCommand();
     }
