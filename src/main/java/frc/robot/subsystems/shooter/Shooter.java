@@ -2,15 +2,9 @@ package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.util.BradyMathLib;
 
-import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -24,7 +18,6 @@ public class Shooter extends SubsystemBase {
     private double voltageCmd = 0.0;
     PIDController pidController = new PIDController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD);
     BangBangController bangBangController = new BangBangController();
-    SimpleMotorFeedforward ffController = new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV);
 
     public Shooter (ShooterIO io){
         this.io = io;
@@ -58,7 +51,7 @@ public class Shooter extends SubsystemBase {
 
     @AutoLogOutput
     public double getBangBang(){
-        return 12 * ((( inputs.velocityRPM - setpointRPM) > ShooterConstants.bangBangToleranceRPM) ? bangBangController.calculate(inputs.velocityRPM) : 0.0);
+        return 12 * ((( Math.abs(inputs.velocityRPM - setpointRPM)) > ShooterConstants.bangBangToleranceRPM) ? bangBangController.calculate(inputs.velocityRPM) : 0.0);
     }
 
     @AutoLogOutput

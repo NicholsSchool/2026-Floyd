@@ -90,7 +90,7 @@ public final class Constants {
     public static double kD = 0.0;
     public static double kS = 0.1;
     public static double kV = 0.0;
-    public static double bangBangToleranceRPM = 50.0;
+    public static double bangBangToleranceRPM = 100.0;
     public static double SHOOTER_MOTOR_CURRENT_LIMIT = 30.0;
     public static double voltageClip = 3.0;
   }
