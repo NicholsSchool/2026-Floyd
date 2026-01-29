@@ -33,9 +33,15 @@ public class RobotContainer {
     Drive drive;
     Vision vision;
     Indexer indexer;
+
+
+  public static CommandXboxController driveController = new CommandXboxController(0);
     
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+
+
     switch (Constants.getRobot()) {
       case ROBOT_REAL:
         // Real robot, instantiate hardware IO implementations
@@ -53,6 +59,7 @@ public class RobotContainer {
              new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+        indexer = new Indexer( new IndexerIOSim());
         break;
         
       case ROBOT_REAL_FRANKENLEW:
@@ -85,9 +92,7 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVisionSim(VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
-        indexer =
-            new Indexer(
-                new IndexerIOSim());
+        indexer = new Indexer( new IndexerIOSim());
         break;
     }
 
@@ -105,7 +110,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+      driveController.x().whileTrue( new InstantCommand( () -> indexer.setVoltage(10)));
+      driveController.y().whileTrue( new InstantCommand( () -> indexer.setVelocityRPMs(10)));
+      driveController.a().whileTrue( new InstantCommand( () -> indexer.setIndex()));
+      driveController.b().whileTrue( new InstantCommand( () -> indexer.setReverse()));
   }
 
   public void updateShuffleboard(){

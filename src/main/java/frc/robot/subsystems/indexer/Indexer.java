@@ -111,6 +111,8 @@ public class Indexer extends SubsystemBase {
 
   public void setVelocityRPMs(double velocityRPMs) {
     this.setpoint = velocityRPMs;
+    inputs.velocityRPMs = velocityRPMs;
+    io.setVelocityRPMs(velocityRPMs);
   }
 
   @AutoLogOutput
