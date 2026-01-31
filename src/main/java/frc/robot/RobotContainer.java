@@ -46,16 +46,13 @@ public class RobotContainer {
     Redirector redirector;
     Intake intake;
     Shooter shooter;
-
+    Indexer indexer;
+    
 
   // Controllers
     public static CommandXboxController driveController = new CommandXboxController(0);
     public static CommandXboxController operatorController = new CommandXboxController(1);
-    Indexer indexer;
 
-
-    CommandXboxController controller = new CommandXboxController(0);
-    
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
@@ -142,15 +139,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
-      driveController.x().whileTrue( new InstantCommand( () -> indexer.setVoltage(10)));
-      driveController.y().whileTrue( new InstantCommand( () -> indexer.setVelocityRPMs(10)));
-      driveController.a().whileTrue( new InstantCommand( () -> indexer.setIndex()));
-      driveController.b().whileTrue( new InstantCommand( () -> indexer.setReverse()));
-      controller.a().onTrue(new InstantCommand(() -> shooter.setRPM(0.0), shooter));
-      controller.b().onTrue(new InstantCommand(() -> shooter.setRPM(4000.0), shooter));
-      controller.x().onTrue(new InstantCommand(() -> shooter.setRPM(4200.0), shooter));
-      controller.y().onTrue(new InstantCommand(() -> shooter.setRPM(4500.0), shooter));
+
   }
 
   public void updateShuffleboard(){
