@@ -44,6 +44,8 @@ public class RobotContainer {
     Vision vision;
     Turret turret;
     Redirector redirector;
+    Intake intake;
+    Shooter shooter;
 
 
   // Controllers
@@ -51,10 +53,6 @@ public class RobotContainer {
     public static CommandXboxController operatorController = new CommandXboxController(1);
     Indexer indexer;
 
-
-  public static CommandXboxController driveController = new CommandXboxController(0);
-    Intake intake;
-    Shooter shooter;
 
     CommandXboxController controller = new CommandXboxController(0);
     
