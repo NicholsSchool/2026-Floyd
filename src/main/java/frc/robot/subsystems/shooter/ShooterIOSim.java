@@ -7,25 +7,25 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class ShooterIOSim implements ShooterIO {
 
-    private static final DCMotor outtakeMotorModel = DCMotor.getKrakenX60(1);
+    private static final DCMotor shooterMotorModel = DCMotor.getKrakenX60(1);
 
-     private final DCMotorSim outtakeMotor =
+     private final DCMotorSim shooterMotor =
       new DCMotorSim(
-          LinearSystemId.createDCMotorSystem(outtakeMotorModel, 0.0035, 1.0),
-          outtakeMotorModel);
+          LinearSystemId.createDCMotorSystem(shooterMotorModel, 0.0035, 1.0),
+          shooterMotorModel);
 
     public void updateInputs(ShooterIOInputs inputs){
-        outtakeMotor.update(0.02);
-        inputs.supplyVoltage = outtakeMotor.getInputVoltage();
-        inputs.currentAmps = outtakeMotor.getCurrentDrawAmps();
-        inputs.velocityRPM = outtakeMotor.getAngularVelocityRPM();
+        shooterMotor.update(0.02);
+        inputs.supplyVoltage = shooterMotor.getInputVoltage();
+        inputs.currentAmps = shooterMotor.getCurrentDrawAmps();
+        inputs.velocityRPM = shooterMotor.getAngularVelocityRPM();
     }
 
     public void setVoltage(double voltage) {
-        outtakeMotor.setInputVoltage(voltage);
+        shooterMotor.setInputVoltage(voltage);
     }
 
     public void stop(){
-        outtakeMotor.setInputVoltage(0.0);
+        shooterMotor.setInputVoltage(0.0);
     }
 }

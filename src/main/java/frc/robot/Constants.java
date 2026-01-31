@@ -84,29 +84,6 @@ public final class Constants {
    
   }
 
-  public static final class ShooterConstants{
-    public static final double bangBangMult = 5.0;
-    public static double kP = 0.1;
-    public static double kI = 0.00;
-    public static double kD = 0.0;
-    public static double kS = 0.1;
-    public static double kV = 0.0;
-    public static double bangBangToleranceRPM = 100.0;
-    public static double SHOOTER_MOTOR_CURRENT_LIMIT = 30.0;
-    public static double voltageClip = 3.0;
-  }
-
-  public static final class RedirectorConstants{
-
-    public static final double RedirectorMaxAccelerationRad = 200;
-    public static final double RedirectorMaxVelocityRad = 2000;
-    public static final double kRedirectorP = 1.8;
-    public static final double kRedirectorI = 0;
-    public static final double kRedirectorD = 0.0;
-    public static final double REDIRECTOR_MOTOR_CURRENT_LIMIT = 30.0;
-
-  }
-
   public static final class DriveConstants {
 
     public static final double MAX_LINEAR_SPEED = 3.2;
