@@ -15,6 +15,8 @@ import frc.robot.subsystems.drive.GyroIORedux;
 import frc.robot.subsystems.drive.ModuleIOMaxSwerve;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.shooter.Shooter;
@@ -34,6 +36,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
     Drive drive;
     Vision vision;
+    Indexer indexer;
+
+
+  public static CommandXboxController driveController = new CommandXboxController(0);
     Intake intake;
     Shooter shooter;
 
@@ -41,6 +47,9 @@ public class RobotContainer {
     
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+
+
     switch (Constants.getRobot()) {
       case ROBOT_REAL:
         // Real robot, instantiate hardware IO implementations
@@ -58,6 +67,7 @@ public class RobotContainer {
              new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+        indexer = new Indexer( new IndexerIOSim());
         break;
         
       case ROBOT_REAL_FRANKENLEW:
@@ -90,6 +100,7 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVisionSim(VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
+        indexer = new Indexer( new IndexerIOSim());
         intake = new Intake(new IntakeIOSim());
 
         shooter = new Shooter(new ShooterIOSim());
@@ -110,6 +121,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+      driveController.x().whileTrue( new InstantCommand( () -> indexer.setVoltage(10)));
+      driveController.y().whileTrue( new InstantCommand( () -> indexer.setVelocityRPMs(10)));
+      driveController.a().whileTrue( new InstantCommand( () -> indexer.setIndex()));
+      driveController.b().whileTrue( new InstantCommand( () -> indexer.setReverse()));
       controller.a().onTrue(new InstantCommand(() -> shooter.setRPM(0.0), shooter));
       controller.b().onTrue(new InstantCommand(() -> shooter.setRPM(4000.0), shooter));
       controller.x().onTrue(new InstantCommand(() -> shooter.setRPM(4200.0), shooter));
