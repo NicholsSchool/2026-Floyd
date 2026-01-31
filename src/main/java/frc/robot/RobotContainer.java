@@ -17,6 +17,10 @@ import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.IndexerIOSim;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIOSim;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
@@ -36,6 +40,10 @@ public class RobotContainer {
 
 
   public static CommandXboxController driveController = new CommandXboxController(0);
+    Intake intake;
+    Shooter shooter;
+
+    CommandXboxController controller = new CommandXboxController(0);
     
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -93,6 +101,9 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVisionSim(VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
         indexer = new Indexer( new IndexerIOSim());
+        intake = new Intake(new IntakeIOSim());
+
+        shooter = new Shooter(new ShooterIOSim());
         break;
     }
 
@@ -114,6 +125,10 @@ public class RobotContainer {
       driveController.y().whileTrue( new InstantCommand( () -> indexer.setVelocityRPMs(10)));
       driveController.a().whileTrue( new InstantCommand( () -> indexer.setIndex()));
       driveController.b().whileTrue( new InstantCommand( () -> indexer.setReverse()));
+      controller.a().onTrue(new InstantCommand(() -> shooter.setRPM(0.0), shooter));
+      controller.b().onTrue(new InstantCommand(() -> shooter.setRPM(4000.0), shooter));
+      controller.x().onTrue(new InstantCommand(() -> shooter.setRPM(4200.0), shooter));
+      controller.y().onTrue(new InstantCommand(() -> shooter.setRPM(4500.0), shooter));
   }
 
   public void updateShuffleboard(){
