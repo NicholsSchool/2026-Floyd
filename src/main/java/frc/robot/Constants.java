@@ -80,6 +80,9 @@ public final class Constants {
 
     public static final int INDEXER = 42;
 
+    public static final int INTAKE_WHEEL = 0; //TODO: set correct CAN ID
+    public static final int INTAKE_PIVOT = 0; //TODO: set correct CAN ID
+
   }
 
   public static final class RobotConstants {
@@ -176,6 +179,9 @@ public final class Constants {
 
     public static final double PIVOT_RATIO = 5;
     public static final double INTAKE_RATIO = 1;
+
+    public static final double WHEEL_CURRENT_LIMIT = 20.0;
+    public static final double PIVOT_CURRENT_LIMIT = 50.0;
 
   }
 

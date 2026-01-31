@@ -30,16 +30,4 @@ public interface IntakeIO {
      * @param volts The voltage to set the motor to.
      */
     public void setPivotMotorVoltage(double volts);
-    
-    /**
-     * Sets brakemode for the motor(s) that drives the intake wheels
-     * @param brake Whether or not to brake the motor.
-     */
-    public void setWheelBrakeMode(boolean brake);
-
-    /**
-     * Sets brakemode for the motor(s) that drop down the intake (and shift the hopper)
-     * @param brake Whether or not to brake the motor.
-     */
-    public void setPivotBrakeMode(boolean brake);
 }

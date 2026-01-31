@@ -45,15 +45,5 @@ public class IntakeIOSim implements IntakeIO {
     public void setPivotMotorVoltage(double volts) {
         pivotMotor.setInputVoltage(volts);
     }
-
-    @Override
-    public void setWheelBrakeMode(boolean brake) {
-        
-    }
-
-    @Override
-    public void setPivotBrakeMode(boolean brake) {
-        
-    }
     
 }
