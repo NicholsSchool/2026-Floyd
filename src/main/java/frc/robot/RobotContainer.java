@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -15,6 +17,10 @@ import frc.robot.subsystems.drive.GyroIORedux;
 import frc.robot.subsystems.drive.ModuleIOMaxSwerve;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.redirector.Redirector;
+import frc.robot.subsystems.redirector.RedirectorIOSim;
+import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.intake.Intake;
@@ -36,6 +42,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
     Drive drive;
     Vision vision;
+    Turret turret;
+    Redirector redirector;
+
+
+  // Controllers
+    public static CommandXboxController driveController = new CommandXboxController(0);
+    public static CommandXboxController operatorController = new CommandXboxController(1);
     Indexer indexer;
 
 
@@ -67,8 +80,12 @@ public class RobotContainer {
              new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+
+        redirector = new Redirector(new RedirectorIOSim());
+        turret = new Turret(new TurretIOSim());
         indexer = new Indexer( new IndexerIOSim());
         break;
+
         
       case ROBOT_REAL_FRANKENLEW:
         // Real robot, instantiate hardware IO implementations
@@ -85,6 +102,9 @@ public class RobotContainer {
               new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+
+        redirector = new Redirector(new RedirectorIOSim());
+        turret = new Turret(new TurretIOSim());
         break;
 
       case ROBOT_SIM:
@@ -100,6 +120,9 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVisionSim(VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
+
+        redirector = new Redirector(new RedirectorIOSim());
+        turret = new Turret(new TurretIOSim());                
         indexer = new Indexer( new IndexerIOSim());
         intake = new Intake(new IntakeIOSim());
 
@@ -121,6 +144,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    
       driveController.x().whileTrue( new InstantCommand( () -> indexer.setVoltage(10)));
       driveController.y().whileTrue( new InstantCommand( () -> indexer.setVelocityRPMs(10)));
       driveController.a().whileTrue( new InstantCommand( () -> indexer.setIndex()));
