@@ -123,17 +123,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
     
-    // turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getLeftY()), turret));
-    // operatorController.a().onTrue(turret.runGoToPositionCommand(40));
-    // operatorController.b().onTrue(turret.runGoToPositionCommand(0));
-
-    redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(operatorController.getLeftY()), redirector));
-    operatorController.a().onTrue(redirector.runGoToPositionCommand(40));
-    operatorController.b().onTrue(redirector.runGoToPositionCommand(0));
-
-  
-    // turret.setDefaultCommand(new InstantCommand( () -> turret.setVoltage(), turret));
-
   }
 
   public void updateShuffleboard(){

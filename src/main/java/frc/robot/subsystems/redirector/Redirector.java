@@ -5,7 +5,6 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,7 +24,6 @@ public class Redirector extends SubsystemBase
     private double voltageCmdPid = 0.0;
     private boolean reachedTargetPosition = true;
     private double voltageCmdManual = 0.0;
-    private boolean isAuto = false;
 
     private enum RedirectorMode{
       MANUAL,
@@ -34,10 +32,7 @@ public class Redirector extends SubsystemBase
 
     private RedirectorMode redirectorMode;
 
-    private final ProfiledPIDController redirectorPidController =
-    new ProfiledPIDController(
-        0,0 ,0, new TrapezoidProfile.Constraints(0,0));
-
+    private final ProfiledPIDController redirectorPidController;
         
   private static final LoggedTunableNumber redirectorMaxVelocityRad =
     new LoggedTunableNumber("redirector/MaxVelocityRad");
@@ -55,10 +50,12 @@ public class Redirector extends SubsystemBase
         redirectorMaxAccelerationRad.initDefault(RedirectorConstants.REDIRECTOR_MAX_ACCEL_RAD);
         redirectorMaxVelocityRad.initDefault(RedirectorConstants.REDIRECTOR_MAX_VEL_RAD);
 
-
         redirectorKp.initDefault(RedirectorConstants.REDIRECTOR_P);
         redirectorKi.initDefault(RedirectorConstants.REDIRECTOR_I);
         redirectorKd.initDefault(RedirectorConstants.REDIRECTOR_D);
+
+        redirectorPidController = new ProfiledPIDController(0,0 ,0, 
+        new TrapezoidProfile.Constraints(redirectorMaxVelocityRad.getAsDouble(),redirectorMaxAccelerationRad.getAsDouble()));
 
         redirectorPidController.setP(redirectorKp.get());
         redirectorPidController.setI(redirectorKi.get());
@@ -124,7 +121,6 @@ public class Redirector extends SubsystemBase
       return new InstantCommand();
     }
     System.out.println("Setting go to pos:" + targetAngle );
-    isAuto = DriverStation.isAutonomous();
     return new InstantCommand(() -> setTargetPosition(targetAngle), this);
   }
 

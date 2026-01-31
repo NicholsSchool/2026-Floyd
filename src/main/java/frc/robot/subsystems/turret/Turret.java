@@ -27,6 +27,7 @@ public class Turret extends SubsystemBase
     private double voltageCmdManual = 0.0;
     private boolean hasHitRightLimitSwitch = false;
     private boolean hasHitLeftLimitSwitch = false;
+
     private boolean isAuto = false;
 
     private enum TurretMode{
@@ -36,9 +37,7 @@ public class Turret extends SubsystemBase
 
     private TurretMode turretMode;
 
-    private final ProfiledPIDController turretPidController =
-    new ProfiledPIDController(
-        0,0 ,0, new TrapezoidProfile.Constraints(0,0));
+    private final ProfiledPIDController turretPidController;
 
         
   private static final LoggedTunableNumber turretMaxVelocityRad =
@@ -57,10 +56,12 @@ public class Turret extends SubsystemBase
         turretMaxAccelerationRad.initDefault(TurretConstants.TURRET_MAX_ACCEL_RAD);
         turretMaxVelocityRad.initDefault(TurretConstants.TURRET_MAX_VEL_RAD);
 
-
         turretKp.initDefault(TurretConstants.TURRET_P);
         turretKi.initDefault(TurretConstants.TURRET_I);
         turretKd.initDefault(TurretConstants.TURRET_D);
+
+         turretPidController = new ProfiledPIDController( 0,0 ,0, 
+         new TrapezoidProfile.Constraints(turretMaxVelocityRad.getAsDouble(),turretMaxAccelerationRad.getAsDouble()));
 
         turretPidController.setP(turretKp.get());
         turretPidController.setI(turretKi.get());
@@ -129,7 +130,7 @@ public class Turret extends SubsystemBase
       // Checks if TargetAngle is valid
         public Command runGoToPositionCommand(double targetAngle){
     turretMode = TurretMode.GO_TO_POSITION;
-    if ((targetAngle > TurretConstants.TURRET_MAX_ANGLE || targetAngle < TurretConstants.TURRET_MIN_ANGLE) && (hasHitRightLimitSwitch || hasHitLeftLimitSwitch)) {
+    if ((targetAngle > TurretConstants.TURRET_MAX_ANGLE || targetAngle < TurretConstants.TURRET_MIN_ANGLE)) {
       System.out.println("Soft Limited Turret");
       return new InstantCommand();
     }
@@ -141,12 +142,14 @@ public class Turret extends SubsystemBase
 
 
 
-    /**
+/**
      * When the Joystick passes the Joystick Deadband threshold
      * the Turret is set to manual else it is go to position
     */
       public void runManualPosition(double stickPosition){
-        if(Math.abs(stickPosition) > Constants.JOYSTICK_DEADBAND){
+        if((inputs.leftLimitSwitch && stickPosition > Constants.JOYSTICK_DEADBAND) || (inputs.rightLimitSwitch && stickPosition < Constants.JOYSTICK_DEADBAND)){
+          turretMode = TurretMode.GO_TO_POSITION;
+        }else if(Math.abs(stickPosition) > Constants.JOYSTICK_DEADBAND){
           turretMode = TurretMode.MANUAL;
           voltageCmdManual = -stickPosition * TurretConstants.TURRET_MANUAL_SCALAR;
         }
@@ -154,11 +157,6 @@ public class Turret extends SubsystemBase
           turretMode = TurretMode.GO_TO_POSITION;
           }
       } 
-
-      public void setVoltage(){
-        turretMode = TurretMode.MANUAL;
-        io.setVoltage(1);
-      }
         
        /** 
         * Autonomous Log Outputs 
