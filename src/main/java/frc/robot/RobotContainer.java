@@ -21,6 +21,12 @@ import frc.robot.subsystems.redirector.Redirector;
 import frc.robot.subsystems.redirector.RedirectorIOSim;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIOSim;
+import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.indexer.IndexerIOSim;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIOSim;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
@@ -43,9 +49,20 @@ public class RobotContainer {
   // Controllers
     public static CommandXboxController driveController = new CommandXboxController(0);
     public static CommandXboxController operatorController = new CommandXboxController(1);
+    Indexer indexer;
+
+
+  public static CommandXboxController driveController = new CommandXboxController(0);
+    Intake intake;
+    Shooter shooter;
+
+    CommandXboxController controller = new CommandXboxController(0);
     
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+
+
     switch (Constants.getRobot()) {
       case ROBOT_REAL:
         // Real robot, instantiate hardware IO implementations
@@ -66,6 +83,7 @@ public class RobotContainer {
 
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());
+        indexer = new Indexer( new IndexerIOSim());
         break;
 
         
@@ -105,6 +123,10 @@ public class RobotContainer {
 
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());                
+        indexer = new Indexer( new IndexerIOSim());
+        intake = new Intake(new IntakeIOSim());
+
+        shooter = new Shooter(new ShooterIOSim());
         break;
     }
 
@@ -123,6 +145,14 @@ public class RobotContainer {
    */
   private void configureBindings() {
     
+      driveController.x().whileTrue( new InstantCommand( () -> indexer.setVoltage(10)));
+      driveController.y().whileTrue( new InstantCommand( () -> indexer.setVelocityRPMs(10)));
+      driveController.a().whileTrue( new InstantCommand( () -> indexer.setIndex()));
+      driveController.b().whileTrue( new InstantCommand( () -> indexer.setReverse()));
+      controller.a().onTrue(new InstantCommand(() -> shooter.setRPM(0.0), shooter));
+      controller.b().onTrue(new InstantCommand(() -> shooter.setRPM(4000.0), shooter));
+      controller.x().onTrue(new InstantCommand(() -> shooter.setRPM(4200.0), shooter));
+      controller.y().onTrue(new InstantCommand(() -> shooter.setRPM(4500.0), shooter));
   }
 
   public void updateShuffleboard(){
