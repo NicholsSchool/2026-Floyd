@@ -80,7 +80,7 @@ public final class Constants {
 
     public static final int INDEXER = 42;
 
-    public static final int INTAKE_WHEEL = 0;
+    public static final int INTAKE_WHEEL = 31;
 
   }
 
