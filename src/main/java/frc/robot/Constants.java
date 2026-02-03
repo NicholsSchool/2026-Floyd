@@ -144,7 +144,7 @@ public final class Constants {
 
   public static final class IntakeConstants {
 
-    public static final double INTAKE_VOLTAGE = 2.0;
+    public static final double INTAKE_VOLTAGE = 4.0;
     public static final double OUTTAKE_VOLTAGE = -2.0;
 
     public static final double PIVOT_P = 1.0;
@@ -160,7 +160,7 @@ public final class Constants {
     public static final double PIVOT_RATIO = 5;
     public static final double INTAKE_RATIO = 1;
 
-    public static final double WHEEL_CURRENT_LIMIT = 30.0;
+    public static final double WHEEL_CURRENT_LIMIT = 40.0;
 
   }
 
