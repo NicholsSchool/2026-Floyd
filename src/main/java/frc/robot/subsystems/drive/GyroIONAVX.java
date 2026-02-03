@@ -1,6 +1,7 @@
 package frc.robot.subsystems.drive;
 
 import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 
 import static edu.wpi.first.units.Units.Radian;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
@@ -9,17 +10,18 @@ import java.util.Objects;
 
 import com.studica.frc.Navx;
 
+
 /** Hardware interface for the NAVX 3 axis gyro */
 public class GyroIONAVX implements GyroIO {
   private final Navx navx;
-
+  
   /** Constructor to initialize the NAVX */
   public GyroIONAVX() {
     Constants.RobotType robotType = Objects.requireNonNull(Constants.getRobot());
     switch (robotType) {
       case ROBOT_REAL_FRANKENLEW:
       case ROBOT_REAL:
-        navx = new Navx(Constants.DriveConstants.navXPort);
+        navx = new Navx(DriveConstants.navXPort);
         break;
       default:  
         throw new RuntimeException("Invalid robot for NAVX");
@@ -35,7 +37,7 @@ public class GyroIONAVX implements GyroIO {
     inputs.connected = !navx.getYaw().equals(null);
     // navx uses positive yaw turn to right, so flip sign
     inputs.yawPositionRad = -navx.getYaw().abs(Radian);
-    inputs.yawVelocityRadPerSec = -navx.getAngularVel()[3].abs(RadiansPerSecond);
+    inputs.yawVelocityRadPerSec = -navx.getAngularVel()[2].abs(RadiansPerSecond);
 
   }
 
