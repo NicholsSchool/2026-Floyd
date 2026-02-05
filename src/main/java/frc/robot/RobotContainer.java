@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONAVX;
@@ -24,6 +25,7 @@ import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIOFrankenlew;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIOSim;
@@ -100,6 +102,10 @@ public class RobotContainer {
 
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());
+        indexer = new Indexer(new IndexerIOSim());
+        intake = new Intake(new IntakeIOFrankenlew());
+        shooter = new Shooter(new ShooterIOSim());
+
         break;
 
       case ROBOT_SIM:
@@ -139,7 +145,16 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    drive.setDefaultCommand(
+      DriveCommands.joystickDrive(
+          drive,
+          () -> -driveController.getLeftY() * Constants.DriveConstants.LOW_GEAR_SCALER,
+          () -> -driveController.getLeftX() * Constants.DriveConstants.LOW_GEAR_SCALER,
+          () -> -driveController.getRightX() * Constants.DriveConstants.TURNING_SCALAR,
+          () -> Constants.DRIVE_ROBOT_RELATIVE));
 
+      driveController.a().onFalse(new InstantCommand(() -> intake.stopWheels()));
+      driveController.a().whileTrue(new InstantCommand(() -> intake.intake()).repeatedly());
   }
 
   public void updateShuffleboard(){
