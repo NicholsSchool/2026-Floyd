@@ -10,7 +10,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
+import frc.robot.subsystems.Candle.Candle;
+import frc.robot.subsystems.Candle.CandleConstants;
+import frc.robot.subsystems.Candle.CandleIOReal;
+import frc.robot.subsystems.Candle.CandleIOSim;
+import frc.robot.subsystems.Candle.Candle.Subsystem;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONAVX;
@@ -49,6 +55,7 @@ public class RobotContainer {
     Intake intake;
     Shooter shooter;
     Indexer indexer;
+    Candle candle;
     
 
   // Controllers
@@ -81,6 +88,7 @@ public class RobotContainer {
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());
         indexer = new Indexer( new IndexerIOSim());
+        candle = new Candle(new CandleIOReal());
         break;
 
         
@@ -105,6 +113,7 @@ public class RobotContainer {
         indexer = new Indexer(new IndexerIOSim());
         intake = new Intake(new IntakeIOFrankenlew());
         shooter = new Shooter(new ShooterIOSim());
+        candle = new Candle(new CandleIOReal());
 
         break;
 
@@ -128,6 +137,8 @@ public class RobotContainer {
         intake = new Intake(new IntakeIOSim());
 
         shooter = new Shooter(new ShooterIOSim());
+
+        candle = new Candle(new CandleIOSim());
         break;
     }
 
@@ -155,6 +166,8 @@ public class RobotContainer {
 
       driveController.a().onFalse(new InstantCommand(() -> intake.stopWheels()));
       driveController.a().whileTrue(new InstantCommand(() -> intake.intake()).repeatedly());
+
+      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake).repeatedly());
   }
 
   public void updateShuffleboard(){

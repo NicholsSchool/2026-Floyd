@@ -70,8 +70,6 @@ public final class Constants {
       public static int kMaxRearLeftTurningCanId = 21;
       public static int kMaxRearRightTurningCanId = 27;
 
-
-
     public static final int SHOOTER = 43;
 
     public static final int REDIRECTOR = 41;
@@ -80,7 +78,9 @@ public final class Constants {
 
     public static final int INDEXER = 42;
 
-    public static final int INTAKE_WHEEL = 31;
+    public static final int INTAKE_WHEEL = 0;
+
+    public static final int CANDLE = 50;
 
   }
 
