@@ -20,6 +20,7 @@ import frc.robot.util.AllianceFlipUtil;
 public class TurretAutoAim extends InstantCommand {
   private Drive drive;
   private Turret turret;
+  private boolean isInRange = true;
 
   public TurretAutoAim(Drive drive, Turret turret) {
     this.drive = drive;
@@ -40,7 +41,19 @@ public class TurretAutoAim extends InstantCommand {
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
     double turretAngle = Math.atan2(hubOffset.getY(), hubOffset.getX()) - currentPose.getRotation().getRadians();
 
-    turret.setTargetPosition(turretAngle);
 
+    if(turretAngle < TurretConstants.TURRET_MIN_ANGLE + TurretConstants.TURRET_SOFT_LIMIT){
+        turretAngle = TurretConstants.TURRET_MAX_ANGLE - TurretConstants.TURRET_SOFT_LIMIT;
+    }else if(turretAngle > TurretConstants.TURRET_MAX_ANGLE - TurretConstants.TURRET_SOFT_LIMIT){
+        turretAngle = TurretConstants.TURRET_MIN_ANGLE + TurretConstants.TURRET_SOFT_LIMIT;
+    }
+
+
+    if(isInRange){
+    turret.setTargetPosition(turretAngle);
+    }
+
+    isInRange = TurretConstants.TURRET_MIN_ANGLE + TurretConstants.TURRET_SOFT_LIMIT < turretAngle &&
+     TurretConstants.TURRET_MAX_ANGLE - TurretConstants.TURRET_SOFT_LIMIT > turretAngle;
   }
 }
