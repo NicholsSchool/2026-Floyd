@@ -38,5 +38,9 @@ public class CandleConstants {
     public static RGBWColor WRONG_RED = new RGBWColor(255, 0, 0);
 
     public static RGBWColor MAIZE = new RGBWColor(251, 236, 93);
+
+    public static RGBWColor PERFECT_PURPLE = new RGBWColor(182, 104, 237);
+
+
     
 }

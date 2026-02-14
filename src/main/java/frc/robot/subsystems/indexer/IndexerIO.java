@@ -10,11 +10,14 @@ public interface IndexerIO {
         public double velocityRPMs = 0.0;
         public double indexerSupplyVoltage = 0.0;
         public double indexerCurrentAmps = 0.0;
+        public boolean hasBall = false;
 
     }
 
     public default void updateInputs(IndexerIOInputs inputs) {}
     public default void setVoltage(double voltage) {}
     public default void setVelocityRPMs(double velocityRPMs) {}
+
+
 
 }
