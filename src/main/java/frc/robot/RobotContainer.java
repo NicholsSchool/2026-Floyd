@@ -169,7 +169,7 @@ public class RobotContainer {
       redirector.setDefaultCommand(new RedirectorAutoAim(drive, redirector));
       shooter.setDefaultCommand(new ShooterAutoAim(drive, shooter));
 
-      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake).repeatedly());
+      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
   }
 
   public void updateShuffleboard(){

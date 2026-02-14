@@ -22,7 +22,7 @@ public class CandleIOReal implements CandleIO {
                 var cfg = new CANdleConfiguration();
         /* set the LED strip type and brightness */
         cfg.LED.StripType = StripTypeValue.GRBW;
-        cfg.LED.BrightnessScalar = 0.1;
+        cfg.LED.BrightnessScalar = 0.5;
         /* disable status LED when being controlled */
         cfg.CANdleFeatures.StatusLedWhenActive = StatusLedWhenActiveValue.Disabled;
 
