@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAim;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.TurretAutoAim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONAVX;
@@ -154,8 +155,7 @@ public class RobotContainer {
           () -> -driveController.getRightX() * Constants.DriveConstants.TURNING_SCALAR,
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
-      driveController.a().onTrue(new AutoAim(drive, shooter, redirector, turret));
-      // driveController.a().whileFalse(new InstantCommand(() -> shooter.setRPM(0)));
+      turret.setDefaultCommand(new TurretAutoAim(drive, turret));
   }
 
   public void updateShuffleboard(){

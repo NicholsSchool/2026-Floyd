@@ -12,7 +12,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.Constants.CAN;
-import frc.robot.Constants.IntakeConstants;
 
 public class IntakeIOFrankenlew implements IntakeIO {
 
