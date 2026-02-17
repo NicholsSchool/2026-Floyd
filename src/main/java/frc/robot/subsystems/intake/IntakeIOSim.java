@@ -10,13 +10,13 @@ public class IntakeIOSim implements IntakeIO {
     private static final DCMotor wheelModel = DCMotor.getKrakenX60(1);
 
     private final DCMotorSim wheelMotor = new DCMotorSim(
-        LinearSystemId.createDCMotorSystem(wheelModel, 0.025, IntakeConstants.INTAKE_RATIO),
+        LinearSystemId.createDCMotorSystem(wheelModel, 0.0, IntakeConstants.INTAKE_RATIO),
         wheelModel);
 
     private static final DCMotor pivotModel = DCMotor.getKrakenX60(1);
 
     private final DCMotorSim pivotMotor = new DCMotorSim(
-        LinearSystemId.createDCMotorSystem(pivotModel, 0.1, IntakeConstants.PIVOT_RATIO),
+        LinearSystemId.createDCMotorSystem(pivotModel, 0.0504, IntakeConstants.PIVOT_RATIO),
         pivotModel);
 
     @Override
@@ -43,16 +43,6 @@ public class IntakeIOSim implements IntakeIO {
     @Override
     public void setPivotMotorVoltage(double volts) {
         pivotMotor.setInputVoltage(volts);
-    }
-
-    @Override
-    public void setWheelBrakeMode(boolean brake) {
-        
-    }
-
-    @Override
-    public void setPivotBrakeMode(boolean brake) {
-        
     }
     
 }
