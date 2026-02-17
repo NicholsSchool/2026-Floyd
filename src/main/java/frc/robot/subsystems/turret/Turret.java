@@ -30,7 +30,7 @@ public class Turret extends SubsystemBase
 
     private boolean isAuto = false;
 
-    private enum TurretMode{
+    public enum TurretMode{
       MANUAL,
       GO_TO_POSITION
     }

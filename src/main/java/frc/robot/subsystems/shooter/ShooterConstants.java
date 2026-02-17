@@ -7,4 +7,6 @@ public class ShooterConstants{
     public static double VELOCITY_D = 0.0;
     public static double BANG_BANG_TOLERANCE_RPM = 100.0;
     public static double SHOOTER_MOTOR_CURRENT_LIMIT = 30.0;
+    public static double SHOOTER_RADIUS_METERS = 0.063; 
+    public static double VELOCITY_TOLERANCE_RPM = 20.0;
   }

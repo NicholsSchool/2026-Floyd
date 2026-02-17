@@ -81,6 +81,8 @@ public final class Constants {
     public static final int INTAKE_WHEEL = 0; //TODO: set correct CAN ID
     public static final int INTAKE_PIVOT = 0; //TODO: set correct CAN ID
 
+    public static final int CANDLE = 50;
+
   }
 
   public static final class RobotConstants {

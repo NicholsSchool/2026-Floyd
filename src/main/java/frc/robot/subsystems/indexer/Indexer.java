@@ -108,6 +108,10 @@ public class Indexer extends SubsystemBase {
     io.setVoltage(voltage);
   }
 
+  public boolean hasBall(){
+    return inputs.hasBall;
+  }
+
 
   public void setVelocityRPMs(double velocityRPMs) {
     this.setpoint = velocityRPMs;

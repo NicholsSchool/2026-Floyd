@@ -4,12 +4,20 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.CandleUpdate;
+import frc.robot.commands.DriveCommands;
+import frc.robot.subsystems.Candle.Candle;
+import frc.robot.subsystems.Candle.CandleConstants;
+import frc.robot.subsystems.Candle.CandleIOReal;
+import frc.robot.subsystems.Candle.CandleIOSim;
+import frc.robot.subsystems.Candle.Candle.Subsystem;
+import frc.robot.commands.RedirectorAutoAim;
+import frc.robot.commands.ShooterAutoAim;
+import frc.robot.commands.TurretAutoAim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONAVX;
@@ -24,6 +32,7 @@ import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIOFrankenlew;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIOSim;
@@ -47,6 +56,7 @@ public class RobotContainer {
     Intake intake;
     Shooter shooter;
     Indexer indexer;
+    Candle candle;
     
 
   // Controllers
@@ -79,6 +89,7 @@ public class RobotContainer {
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());
         indexer = new Indexer( new IndexerIOSim());
+        candle = new Candle(new CandleIOReal());
         break;
 
         
@@ -100,6 +111,11 @@ public class RobotContainer {
 
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());
+        indexer = new Indexer(new IndexerIOSim());
+        intake = new Intake(new IntakeIOFrankenlew());
+        shooter = new Shooter(new ShooterIOSim());
+        candle = new Candle(new CandleIOReal());
+
         break;
 
       case ROBOT_SIM:
@@ -122,6 +138,8 @@ public class RobotContainer {
         intake = new Intake(new IntakeIOSim());
 
         shooter = new Shooter(new ShooterIOSim());
+
+        candle = new Candle(new CandleIOSim());
         break;
     }
 
@@ -139,7 +157,19 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    drive.setDefaultCommand(
+      DriveCommands.joystickDrive(
+          drive,
+          () -> -driveController.getLeftY() * Constants.DriveConstants.LOW_GEAR_SCALER,
+          () -> -driveController.getLeftX() * Constants.DriveConstants.LOW_GEAR_SCALER,
+          () -> -driveController.getRightX() * Constants.DriveConstants.TURNING_SCALAR,
+          () -> Constants.DRIVE_ROBOT_RELATIVE));
 
+      turret.setDefaultCommand(new TurretAutoAim(drive, turret));
+      redirector.setDefaultCommand(new RedirectorAutoAim(drive, redirector));
+      shooter.setDefaultCommand(new ShooterAutoAim(drive, shooter));
+
+      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
   }
 
   public void updateShuffleboard(){
