@@ -42,17 +42,9 @@ public class IntakeIOFrankenlew implements IntakeIO {
         wheelMotor.setVoltage(volts);
     }
 
-    //No pivot on frankenlew
     @Override
     public void setPivotMotorVoltage(double volts) {
-    }
-
-    @Override
-    public void setWheelBrakeMode(boolean brake) {
-    }
-
-    @Override
-    public void setPivotBrakeMode(boolean brake) {
+        
     }
     
 }
