@@ -82,11 +82,6 @@ public class Redirector extends SubsystemBase
           voltageCmdPid = 0.0;
           setTargetPosition(getAngle());
           }
-
-         if (!reachedTargetPosition) {
-            reachedTargetPosition = redirectorPidController.atGoal();
-            if (reachedTargetPosition) System.out.println("redirector Move to Pos Reached Goal!");
-          }
         
           io.setVoltage(voltageCmdManual + voltageCmdPid);
     }
