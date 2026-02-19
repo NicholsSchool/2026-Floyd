@@ -17,19 +17,22 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.AutoConstants;
 import frc.robot.Constants;
+import frc.robot.AutoConstants;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.util.BradyMathLib;
+import frc.robot.util.Circle;
 import frc.robot.util.GeomUtil;
 import frc.robot.util.LoggedTunableNumber;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
-public class DriveToPose extends Command {
+public class SplineV5ToPose extends Command {
   private final Drive drive;
   private final boolean slowMode;
   private final Supplier<Pose2d> poseSupplier;
-  private Pose2d targetPose;
+  private Supplier<Circle> avoidanceCircleSupplier;
+  private Circle avoidanceCircle;
 
   private boolean running = false;
   private final ProfiledPIDController driveController =
@@ -42,34 +45,34 @@ public class DriveToPose extends Command {
   private double thetaErrorAbs;
   private Translation2d lastSetpointTranslation;
 
-  private static final LoggedTunableNumber driveKp = new LoggedTunableNumber("DriveToPose/DriveKp");
-  private static final LoggedTunableNumber driveKd = new LoggedTunableNumber("DriveToPose/DriveKd");
-  private static final LoggedTunableNumber thetaKp = new LoggedTunableNumber("DriveToPose/ThetaKp");
-  private static final LoggedTunableNumber thetaKd = new LoggedTunableNumber("DriveToPose/ThetaKd");
+  private static final LoggedTunableNumber driveKp = new LoggedTunableNumber("SplineV5ToPose/DriveKp");
+  private static final LoggedTunableNumber driveKd = new LoggedTunableNumber("SplineV5ToPose/DriveKd");
+  private static final LoggedTunableNumber thetaKp = new LoggedTunableNumber("SplineV5ToPose/ThetaKp");
+  private static final LoggedTunableNumber thetaKd = new LoggedTunableNumber("SplineV5ToPose/ThetaKd");
   private static final LoggedTunableNumber driveMaxVelocity =
-      new LoggedTunableNumber("DriveToPose/DriveMaxVelocity");
+      new LoggedTunableNumber("SplineV5ToPose/DriveMaxVelocity");
   private static final LoggedTunableNumber driveMaxVelocitySlow =
-      new LoggedTunableNumber("DriveToPose/DriveMaxVelocitySlow");
+      new LoggedTunableNumber("SplineV5ToPose/DriveMaxVelocitySlow");
   private static final LoggedTunableNumber driveMaxAcceleration =
-      new LoggedTunableNumber("DriveToPose/DriveMaxAcceleration");
+      new LoggedTunableNumber("SplineV5ToPose/DriveMaxAcceleration");
   private static final LoggedTunableNumber thetaMaxVelocity =
-      new LoggedTunableNumber("DriveToPose/ThetaMaxVelocity");
+      new LoggedTunableNumber("SplineV5ToPose/ThetaMaxVelocity");
   private static final LoggedTunableNumber thetaMaxVelocitySlow =
-      new LoggedTunableNumber("DriveToPose/ThetaMaxVelocitySlow");
+      new LoggedTunableNumber("SplineV5ToPose/ThetaMaxVelocitySlow");
   private static final LoggedTunableNumber thetaMaxAcceleration =
-      new LoggedTunableNumber("DriveToPose/ThetaMaxAcceleration");
+      new LoggedTunableNumber("SplineV5ToPose/ThetaMaxAcceleration");
   private static final LoggedTunableNumber driveTolerance =
-      new LoggedTunableNumber("DriveToPose/DriveTolerance");
+      new LoggedTunableNumber("SplineV5ToPose/DriveTolerance");
   private static final LoggedTunableNumber driveToleranceSlow =
-      new LoggedTunableNumber("DriveToPose/DriveToleranceSlow");
+      new LoggedTunableNumber("SplineV5ToPose/DriveToleranceSlow");
   private static final LoggedTunableNumber thetaTolerance =
-      new LoggedTunableNumber("DriveToPose/ThetaTolerance");
+      new LoggedTunableNumber("SplineV5ToPose/ThetaTolerance");
   private static final LoggedTunableNumber thetaToleranceSlow =
-      new LoggedTunableNumber("DriveToPose/ThetaToleranceSlow");
+      new LoggedTunableNumber("SplineV5ToPose/ThetaToleranceSlow");
   private static final LoggedTunableNumber ffMinRadius =
-      new LoggedTunableNumber("DriveToPose/FFMinRadius");
+      new LoggedTunableNumber("SplineV5ToPose/FFMinRadius");
   private static final LoggedTunableNumber ffMaxRadius =
-      new LoggedTunableNumber("DriveToPose/FFMinRadius");
+      new LoggedTunableNumber("SplineV5ToPose/FFMinRadius");
 
   static {
     switch (Constants.getRobot()) {
@@ -77,9 +80,9 @@ public class DriveToPose extends Command {
       case ROBOT_REAL:
       case ROBOT_REPLAY:
       case ROBOT_SIM:
-        driveKp.initDefault(5.0);
+        driveKp.initDefault(2.0);
         driveKd.initDefault(0.0);
-        thetaKp.initDefault(1.5);
+        thetaKp.initDefault(5.0);
         thetaKd.initDefault(0.0);
         driveMaxVelocity.initDefault(Units.inchesToMeters(150.0));
         driveMaxVelocitySlow.initDefault(Units.inchesToMeters(50.0));
@@ -89,7 +92,7 @@ public class DriveToPose extends Command {
         thetaMaxAcceleration.initDefault(Units.degreesToRadians(720.0));
         driveTolerance.initDefault(0.01);
         driveToleranceSlow.initDefault(0.06);
-        thetaTolerance.initDefault(Units.degreesToRadians(0.05));
+        thetaTolerance.initDefault(Units.degreesToRadians(1.0));
         thetaToleranceSlow.initDefault(Units.degreesToRadians(3.0));
         ffMinRadius.initDefault(0.2);
         ffMaxRadius.initDefault(0.8);
@@ -99,34 +102,34 @@ public class DriveToPose extends Command {
   }
 
   /** Drives to the specified pose under full software control. */
-  public DriveToPose(Drive drive, Pose2d pose) {
-    this(drive, false, pose);
+  public SplineV5ToPose(Drive drive, Pose2d pose, Circle circle) {
+    this(drive, false, pose, circle);
   }
 
   /** Drives to the specified pose under full software control. */
-  public DriveToPose(Drive drive, boolean slowMode, Pose2d pose) {
-    this(drive, slowMode, () -> pose);
+  public SplineV5ToPose(Drive drive, boolean slowMode, Pose2d pose, Circle circle) {
+    this(drive, slowMode, () -> pose, () -> circle);
   }
 
   /** Drives to the specified pose under full software control. */
-  public DriveToPose(Drive drive, Supplier<Pose2d> poseSupplier) {
-    this(drive, false, poseSupplier);
+  public SplineV5ToPose(Drive drive, Supplier<Pose2d> poseSupplier, Supplier<Circle> circleSupplier) {
+    this(drive, false, poseSupplier, circleSupplier);
   }
 
   /** Drives to the specified pose under full software control. */
-  public DriveToPose(Drive drive, boolean slowMode, Supplier<Pose2d> poseSupplier) {
+  public SplineV5ToPose(Drive drive, boolean slowMode, Supplier<Pose2d> poseSupplier, Supplier<Circle> circleSupplier) {
     this.drive = drive;
     this.slowMode = slowMode;
     this.poseSupplier = poseSupplier;
     addRequirements(drive);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    this.avoidanceCircleSupplier = circleSupplier;
   }
 
   @Override
   public void initialize() {
     // Reset all controllers
     var currentPose = drive.getPose();
-    targetPose = poseSupplier.get();
     driveController.reset(
         currentPose.getTranslation().getDistance(poseSupplier.get().getTranslation()),
         Math.min(
@@ -181,11 +184,12 @@ public class DriveToPose extends Command {
 
     // Get current and target pose
     var currentPose = drive.getPose();
-    // var targetPose = poseSupplier.get();
+    var targetPose = poseSupplier.get();
+    avoidanceCircle = avoidanceCircleSupplier.get();
 
     // Calculate drive speed
     double currentDistance =
-        currentPose.getTranslation().getDistance(targetPose.getTranslation());
+        currentPose.getTranslation().getDistance(poseSupplier.get().getTranslation());
     double ffScaler =
         MathUtil.clamp(
             (currentDistance - ffMinRadius.get()) / (ffMaxRadius.get() - ffMinRadius.get()),
@@ -215,36 +219,60 @@ public class DriveToPose extends Command {
     thetaErrorAbs =
         Math.abs(currentPose.getRotation().minus(targetPose.getRotation()).getRadians());
     if (thetaErrorAbs < thetaController.getPositionTolerance()) thetaVelocity = 0.0;
-
     // Command speeds
-    var driveVelocity =
+    var driveLinearVelocity =
         new Pose2d(
                 new Translation2d(),
                 currentPose.getTranslation().minus(targetPose.getTranslation()).getAngle())
             .transformBy(GeomUtil.translationToTransform(driveVelocityScalar, 0.0))
             .getTranslation();
-    drive.runVelocity(
-        ChassisSpeeds.fromFieldRelativeSpeeds(
-            driveVelocity.getX(), driveVelocity.getY(), thetaVelocity, currentPose.getRotation()));
+    
 
+    double angleBetween = Math.atan2(poseSupplier.get().getY() - avoidanceCircle.y, poseSupplier.get().getX() - avoidanceCircle.x)
+    - Math.atan2(currentPose.getY() - avoidanceCircle.y, currentPose.getX() - avoidanceCircle.x);
+    
+    double distFromCircle = Math.hypot(currentPose.getX() - avoidanceCircle.x, currentPose.getY() - avoidanceCircle.y);
+
+    var driveCircularVelocity = new Pose2d(new Translation2d(-(currentPose.getY() - avoidanceCircle.y),(currentPose.getX() - avoidanceCircle.x)),
+     new Rotation2d()).times(Math.cos(angleBetween) < 0 ? Math.signum(Math.sin(angleBetween)) : BradyMathLib.clip(2 * Math.sin(angleBetween), -1.0, 1.0)); 
+
+    var driveOutwardVelocity = new Pose2d(new Translation2d((currentPose.getX() - avoidanceCircle.x),(currentPose.getY() - avoidanceCircle.y)), new Rotation2d()).times(BradyMathLib.clip(Math.pow(5.0, avoidanceCircle.radius - distFromCircle) - 1.0, 0.0, 4.0));
+    
+    if((currentPose.getX() - avoidanceCircle.x) * driveLinearVelocity.getX() + (currentPose.getY() - avoidanceCircle.y) * driveLinearVelocity.getY() > AutoConstants.dotProductThreshold){
+      drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds( 
+        driveLinearVelocity.getX() * 
+        AutoConstants.SplineV5LinearMultiplier + driveOutwardVelocity.getX(),
+       driveLinearVelocity.getY() * 
+        AutoConstants.SplineV5LinearMultiplier + driveOutwardVelocity.getY()
+         , thetaVelocity, currentPose.getRotation()));
+    }else{
+    drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds((
+        AutoConstants.SplineV5CircularMultiplier * driveCircularVelocity.getX() * BradyMathLib.clip(1 - distFromCircle + avoidanceCircle.radius, 0.0, 1.0)+  
+        driveLinearVelocity.getX() * 
+        AutoConstants.SplineV5LinearMultiplier * (BradyMathLib.clip(distFromCircle - avoidanceCircle.radius, -0.3, 1.0)) + driveOutwardVelocity.getX()),
+        (AutoConstants.SplineV5CircularMultiplier * driveCircularVelocity.getY() * BradyMathLib.clip(1 - distFromCircle + avoidanceCircle.radius, 0.0, 1.0)
+        + driveLinearVelocity.getY() * 
+        AutoConstants.SplineV5LinearMultiplier * (BradyMathLib.clip(distFromCircle - avoidanceCircle.radius, -0.3, 1.0)) + driveOutwardVelocity.getY())
+         , thetaVelocity, currentPose.getRotation()));
+    }
     // Log data
-    Logger.recordOutput("DriveToPose/DistanceMeasured", currentDistance);
-    Logger.recordOutput("DriveToPose/DistanceSetpoint", driveController.getSetpoint().position);
-    Logger.recordOutput("DriveToPose/ThetaMeasured", currentPose.getRotation().getRadians());
-    Logger.recordOutput("DriveToPose/ThetaSetpoint", thetaController.getSetpoint().position);
+    Logger.recordOutput("SplineV5ToPose/DistanceMeasured", currentDistance);
+    Logger.recordOutput("SplineV5ToPose/DistanceSetpoint", driveController.getSetpoint().position);
+    Logger.recordOutput("SplineV5ToPose/ThetaMeasured", currentPose.getRotation().getRadians());
+    Logger.recordOutput("SplineV5ToPose/ThetaSetpoint", thetaController.getSetpoint().position);
     Logger.recordOutput(
-        "Odometry/DriveToPoseSetpoint",
+        "Odometry/SplineV5ToPoseSetpoint",
         new Pose2d(
             lastSetpointTranslation, new Rotation2d(thetaController.getSetpoint().position)));
-    Logger.recordOutput("Odometry/DriveToPoseGoal", targetPose);
+    Logger.recordOutput("Odometry/SplineV5ToPoseGoal", targetPose);
   }
 
   @Override
   public void end(boolean interrupted) {
     running = false;
     drive.stop();
-    Logger.recordOutput("Odometry/DriveToPoseSetpoint", new Pose2d());
-    Logger.recordOutput("Odometry/DriveToPoseGoal", new Pose2d());
+    Logger.recordOutput("Odometry/SplineV5ToPoseSetpoint", new Pose2d());
+    Logger.recordOutput("Odometry/SplineV5ToPoseGoal", new Pose2d());
   }
 
   /** Checks if the robot is stopped at the final pose. */
@@ -255,7 +283,6 @@ public class DriveToPose extends Command {
   /**
    * Checks if the robot pose is within the allowed drive and theta tolerances.
    *
-   *
    * @param driveTolerance the finish distance for drive in meters
    * @param thetaTolerance the angle threashold
    */
@@ -263,6 +290,10 @@ public class DriveToPose extends Command {
     return running
         && Math.abs(driveErrorAbs) < driveTolerance
         && Math.abs(thetaErrorAbs) < thetaTolerance.getRadians();
+  }
+
+  public void updateCircle(Circle circle){
+    this.avoidanceCircle = circle;
   }
 
   /** Returns whether the command is actively running. */
@@ -273,8 +304,10 @@ public class DriveToPose extends Command {
   public boolean isFinished() {
     running =
         this.withinTolerance(
-            AutoConstants.DRIVE_FINISH_THRESHOLD,
-            new Rotation2d(AutoConstants.ANGLE_FINISH_THRESHOLD));
+            AutoConstants.splineFinishThreshold,
+            new Rotation2d(AutoConstants.splineAngleFinishThreshold));
     return running;
   }
+
+  //TODO: do this as a drive to pos interface like drive to reef
 }
