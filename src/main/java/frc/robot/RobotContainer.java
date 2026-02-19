@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Candle.Candle;
@@ -57,6 +59,9 @@ public class RobotContainer {
     Shooter shooter;
     Indexer indexer;
     Candle candle;
+
+    // shuffleboard
+    ShuffleboardTab shuffleboardTab;
     
 
   // Controllers
@@ -145,7 +150,18 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
+
+    initShuffleboard();
   }
+
+  private void initShuffleboard() {
+    shuffleboardTab = Shuffleboard.getTab("Floyd");
+  }
+
+  public void updateShuffleboard(){
+
+  }
+
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -170,10 +186,6 @@ public class RobotContainer {
       shooter.setDefaultCommand(new ShooterAutoAim(drive, shooter));
 
       candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
-  }
-
-  public void updateShuffleboard(){
-
   }
 
   /**
