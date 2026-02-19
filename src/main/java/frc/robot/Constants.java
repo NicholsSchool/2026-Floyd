@@ -83,6 +83,9 @@ public final class Constants {
 
     public static final int CANDLE = 50;
 
+    public static final int TURRET = 0; //TODO: set correct CAN ID
+    public static final int TURRET_ENCODER = 0; //TODO: set correct CAN ID
+
   }
 
   public static final class RobotConstants {

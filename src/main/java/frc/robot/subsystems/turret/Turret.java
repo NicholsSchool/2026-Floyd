@@ -94,12 +94,6 @@ public class Turret extends SubsystemBase
             if (reachedTargetPosition) System.out.println("turret Move to Pos Reached Goal!");
           }
 
-          if(inputs.rightLimitSwitch){
-            hasHitRightLimitSwitch = true;
-          }
-          if(inputs.leftLimitSwitch){
-            hasHitLeftLimitSwitch = true;
-          }
         
           io.setVoltage(voltageCmdManual + voltageCmdPid);
     }
@@ -147,7 +141,7 @@ public class Turret extends SubsystemBase
      * the Turret is set to manual else it is go to position
     */
       public void runManualPosition(double stickPosition){
-        if((inputs.leftLimitSwitch && stickPosition > Constants.JOYSTICK_DEADBAND) || (inputs.rightLimitSwitch && stickPosition < Constants.JOYSTICK_DEADBAND)){
+        if((stickPosition > Constants.JOYSTICK_DEADBAND) || (stickPosition < Constants.JOYSTICK_DEADBAND)){
           turretMode = TurretMode.GO_TO_POSITION;
         }else if(Math.abs(stickPosition) > Constants.JOYSTICK_DEADBAND){
           turretMode = TurretMode.MANUAL;
