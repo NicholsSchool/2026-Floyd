@@ -15,5 +15,5 @@ public class AutoConstants {
     public static final double dotProductThreshold = 0.05;
     public static final double splineV5Multipler = 0.7;
 
-    public static final Circle trenchCircle = new Circle(new Translation2d(4.6,4), 3.3)
+    public static final Circle trenchCircle = new Circle(new Translation2d(4.6,4), 3.3);
 }
