@@ -26,6 +26,9 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+    // Enable runtime tuning if configured in Constants. This controls whether
+    // LoggedTunableNumber will publish values to NetworkTables for AdvantageScope.
+    Constants.tuningMode = Constants.TUNING_MODE;
     CameraServer.startAutomaticCapture();
 
     // Set up data receivers & replay source

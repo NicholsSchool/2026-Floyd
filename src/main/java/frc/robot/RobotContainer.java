@@ -4,19 +4,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.subsystems.turret.TurretConstants;
+import frc.robot.subsystems.redirector.RedirectorConstants;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Candle.Candle;
-import frc.robot.subsystems.Candle.CandleConstants;
 import frc.robot.subsystems.Candle.CandleIOReal;
 import frc.robot.subsystems.Candle.CandleIOSim;
-import frc.robot.subsystems.Candle.Candle.Subsystem;
 import frc.robot.commands.RedirectorAutoAim;
 import frc.robot.commands.ShooterAutoAim;
 import frc.robot.commands.TurretAutoAim;
@@ -62,6 +63,7 @@ public class RobotContainer {
 
     // shuffleboard
     ShuffleboardTab shuffleboardTab;
+    ShuffleboardTab tuningTab;
     
 
   // Controllers
@@ -156,6 +158,50 @@ public class RobotContainer {
 
   private void initShuffleboard() {
     shuffleboardTab = Shuffleboard.getTab("Floyd");
+
+  
+    tuningTab = Shuffleboard.getTab("Tuning");
+
+    SmartDashboard.putNumber("Tuning/TurrentToPose/Kp",          TurretConstants.TURRET_P);
+    SmartDashboard.putNumber("Tuning/TurrentToPose/Ki",          TurretConstants.TURRET_I);
+    SmartDashboard.putNumber("Tuning/TurrentToPose/Kd",          TurretConstants.TURRET_D);
+    SmartDashboard.putNumber("Tuning/TurrentToPose/MaxVelRad",   TurretConstants.TURRET_MAX_VEL_RAD);
+    SmartDashboard.putNumber("Tuning/TurrentToPose/MaxAccelRad", TurretConstants.TURRET_MAX_ACCEL_RAD);
+    SmartDashboard.putNumber("Tuning/TurrentToPose/MinAngle",    TurretConstants.TURRET_MIN_ANGLE);
+    SmartDashboard.putNumber("Tuning/TurrentToPose/MaxAngle",    TurretConstants.TURRET_MAX_ANGLE);
+    SmartDashboard.putNumber("Tuning/TurrentToPose/OnGoalTolerance", 0.02);
+    SmartDashboard.putNumber("Tuning/TurrentToPose/AngleOffset", 0.0);
+    SmartDashboard.putNumber("Tuning/TurrentToPose/AimDeadband", Math.toRadians(1.5));
+
+    // Hood
+    SmartDashboard.putNumber("Tuning/HoodToPose/Kp",             RedirectorConstants.REDIRECTOR_P);
+    SmartDashboard.putNumber("Tuning/HoodToPose/Ki",             RedirectorConstants.REDIRECTOR_I);
+    SmartDashboard.putNumber("Tuning/HoodToPose/Kd",             RedirectorConstants.REDIRECTOR_D);
+    SmartDashboard.putNumber("Tuning/HoodToPose/MaxVelRad",      RedirectorConstants.REDIRECTOR_MAX_VEL_RAD);
+    SmartDashboard.putNumber("Tuning/HoodToPose/MaxAccelRad",    RedirectorConstants.REDIRECTOR_MAX_ACCEL_RAD);
+    SmartDashboard.putNumber("Tuning/HoodToPose/MinAngle",       RedirectorConstants.REDIRECTOR_MIN_ANGLE);
+    SmartDashboard.putNumber("Tuning/HoodToPose/MaxAngle",       RedirectorConstants.REDIRECTOR_MAX_ANGLE);
+    SmartDashboard.putNumber("Tuning/HoodToPose/OnGoalTolerance", 0.02);
+
+    tuningTab.add("Turret Kp",          TurretConstants.TURRET_P)         .withPosition(0, 0).withSize(2, 1);
+    tuningTab.add("Turret Ki",          TurretConstants.TURRET_I)         .withPosition(0, 1).withSize(2, 1);
+    tuningTab.add("Turret Kd",          TurretConstants.TURRET_D)         .withPosition(0, 2).withSize(2, 1);
+    tuningTab.add("Turret MaxVel",      TurretConstants.TURRET_MAX_VEL_RAD)  .withPosition(0, 3).withSize(2, 1);
+    tuningTab.add("Turret MaxAccel",    TurretConstants.TURRET_MAX_ACCEL_RAD).withPosition(0, 4).withSize(2, 1);
+    tuningTab.add("Turret MinAngle",    TurretConstants.TURRET_MIN_ANGLE)  .withPosition(0, 5).withSize(2, 1);
+    tuningTab.add("Turret MaxAngle",    TurretConstants.TURRET_MAX_ANGLE)  .withPosition(0, 6).withSize(2, 1);
+    tuningTab.add("Turret Tolerance",   0.02)                              .withPosition(0, 7).withSize(2, 1);
+    tuningTab.add("Turret AngleOffset", 0.0)                               .withPosition(0, 8).withSize(2, 1);
+    tuningTab.add("Turret AimDeadband", Math.toRadians(1.5))               .withPosition(0, 9).withSize(2, 1);
+
+    tuningTab.add("Hood Kp",            RedirectorConstants.REDIRECTOR_P)          .withPosition(3, 0).withSize(2, 1);
+    tuningTab.add("Hood Ki",            RedirectorConstants.REDIRECTOR_I)          .withPosition(3, 1).withSize(2, 1);
+    tuningTab.add("Hood Kd",            RedirectorConstants.REDIRECTOR_D)          .withPosition(3, 2).withSize(2, 1);
+    tuningTab.add("Hood MaxVel",        RedirectorConstants.REDIRECTOR_MAX_VEL_RAD).withPosition(3, 3).withSize(2, 1);
+    tuningTab.add("Hood MaxAccel",      RedirectorConstants.REDIRECTOR_MAX_ACCEL_RAD).withPosition(3, 4).withSize(2, 1);
+    tuningTab.add("Hood MinAngle",      RedirectorConstants.REDIRECTOR_MIN_ANGLE)  .withPosition(3, 5).withSize(2, 1);
+    tuningTab.add("Hood MaxAngle",      RedirectorConstants.REDIRECTOR_MAX_ANGLE)  .withPosition(3, 6).withSize(2, 1);
+    tuningTab.add("Hood Tolerance",     0.02)                                      .withPosition(3, 7).withSize(2, 1);
   }
 
   public void updateShuffleboard(){
@@ -186,6 +232,30 @@ public class RobotContainer {
       shooter.setDefaultCommand(new ShooterAutoAim(drive, shooter));
 
       candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
+
+      operatorController.leftBumper()
+          .whileTrue(
+              new frc.robot.commands.TurrentToPose(
+                  turret,
+                  () -> {
+                    double axis = operatorController.getRightX();
+                    double min = frc.robot.subsystems.turret.TurretConstants.TURRET_MIN_ANGLE;
+                    double max = frc.robot.subsystems.turret.TurretConstants.TURRET_MAX_ANGLE;
+                    return min + (axis + 1.0) * 0.5 * (max - min);
+                  }))
+          ;
+
+      operatorController.rightBumper()
+          .whileTrue(
+              new frc.robot.commands.HoodToPose(
+                  redirector,
+                  () -> {
+                    double axis = operatorController.getLeftY();
+                    double min = frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MIN_ANGLE;
+                    double max = frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MAX_ANGLE;
+                    return min + (axis + 1.0) * 0.5 * (max - min);
+                  }))
+          ;
   }
 
   /**
