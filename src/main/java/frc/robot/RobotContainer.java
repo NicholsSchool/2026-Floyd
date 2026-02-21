@@ -8,23 +8,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Candle.Candle;
-import frc.robot.subsystems.Candle.CandleConstants;
 import frc.robot.subsystems.Candle.CandleIOReal;
 import frc.robot.subsystems.Candle.CandleIOSim;
-import frc.robot.subsystems.Candle.Candle.Subsystem;
 import frc.robot.commands.RedirectorAutoAim;
 import frc.robot.commands.ShooterAutoAim;
-import frc.robot.commands.SplineV5ToPose;
 import frc.robot.commands.TurretAutoAim;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONAVX;
 import frc.robot.subsystems.drive.GyroIORedux;
@@ -46,7 +41,6 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
-import frc.robot.util.Circle;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -94,7 +88,7 @@ public class RobotContainer {
         vision =
              new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+                new VisionIOPhotonVision(VisionConstants.CAMERA_0_NAME, VisionConstants.robotToCamera0));
 
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());
@@ -117,7 +111,7 @@ public class RobotContainer {
         vision =
               new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+                new VisionIOPhotonVision(VisionConstants.CAMERA_0_NAME, VisionConstants.robotToCamera0));
 
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());
@@ -140,7 +134,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVisionSim(VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
+                new VisionIOPhotonVisionSim(VisionConstants.CAMERA_0_NAME, VisionConstants.robotToCamera0, drive::getPose));
 
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());                
@@ -181,9 +175,9 @@ public class RobotContainer {
     drive.setDefaultCommand(
       DriveCommands.joystickDrive(
           drive,
-          () -> -driveController.getLeftY() * Constants.DriveConstants.LOW_GEAR_SCALER,
-          () -> -driveController.getLeftX() * Constants.DriveConstants.LOW_GEAR_SCALER,
-          () -> -driveController.getRightX() * Constants.DriveConstants.TURNING_SCALAR,
+          () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
+          () -> -driveController.getLeftX() * DriveConstants.LOW_GEAR_SCALER,
+          () -> -driveController.getRightX() * DriveConstants.TURNING_SCALAR,
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
       turret.setDefaultCommand(new TurretAutoAim(drive, turret));

@@ -46,18 +46,18 @@ public class Module {
       case ROBOT_REPLAY:
         driveFeedforward =
             new SimpleMotorFeedforward(
-                Constants.ModuleConstants.DRIVING_STATIC_FF,
-                Constants.ModuleConstants.DRIVING_VELOCITY_FF);
+                ModuleConstants.DRIVING_STATIC_FF,
+                ModuleConstants.DRIVING_VELOCITY_FF);
         driveFeedback =
             new PIDController(
-                Constants.ModuleConstants.DRIVING_P,
-                Constants.ModuleConstants.DRIVING_I,
-                Constants.ModuleConstants.DRIVING_D);
+                ModuleConstants.DRIVING_P,
+                ModuleConstants.DRIVING_I,
+                ModuleConstants.DRIVING_D);
         turnFeedback =
             new PIDController(
-                Constants.ModuleConstants.TURNING_P,
-                Constants.ModuleConstants.TURNING_I,
-                Constants.ModuleConstants.TURNING_D);
+                ModuleConstants.TURNING_P,
+                ModuleConstants.TURNING_I,
+                ModuleConstants.TURNING_D);
         break;
       case ROBOT_SIM:
         driveFeedforward = new SimpleMotorFeedforward(0.0, 0.13);
@@ -102,7 +102,7 @@ public class Module {
 
         // Run drive controller
         double velocityRadPerSec =
-            adjustSpeedSetpoint / Constants.ModuleConstants.WHEEL_RADIUS_METERS;
+            adjustSpeedSetpoint / ModuleConstants.WHEEL_RADIUS_METERS;
         io.setDriveVoltage(
             driveFeedforward.calculate(velocityRadPerSec)
                 + driveFeedback.calculate(inputs.driveVelocityRadPerSec, velocityRadPerSec));
@@ -185,12 +185,12 @@ public class Module {
 
   /** Returns the current drive position of the module in meters. */
   public double getPositionMeters() {
-    return inputs.drivePositionRad * Constants.ModuleConstants.WHEEL_RADIUS_METERS;
+    return inputs.drivePositionRad * ModuleConstants.WHEEL_RADIUS_METERS;
   }
 
   /** Returns the current drive velocity of the module in meters per second. */
   public double getVelocityMetersPerSec() {
-    return inputs.driveVelocityRadPerSec * Constants.ModuleConstants.WHEEL_RADIUS_METERS;
+    return inputs.driveVelocityRadPerSec * ModuleConstants.WHEEL_RADIUS_METERS;
   }
 
   /** Returns the module position (turn angle and drive position). */
