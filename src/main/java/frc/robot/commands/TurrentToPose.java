@@ -9,94 +9,105 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretConstants;
-import frc.robot.util.GeomUtil;
 import frc.robot.util.LoggedTunableNumber;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
-/**
- * Command to point the turret at a target pose. Makes mapping parameters tunable via LoggedTunableNumber.
- */
+
 public class TurrentToPose extends Command {
     private final Turret turret;
-    private final Drive drive;
-    private final Supplier<Pose2d> poseSupplier;
-    private Pose2d targetPose;
+    private final Supplier<Double> angleSupplier;
+    private double targetAngle;
 
     private boolean running = false;
 
     private static final LoggedTunableNumber angleOffset = new LoggedTunableNumber("TurrentToPose/AngleOffset");
     private static final LoggedTunableNumber aimDeadband = new LoggedTunableNumber("TurrentToPose/AimDeadband");
-    private static final LoggedTunableNumber ffMinRadius = new LoggedTunableNumber("TurrentToPose/FFMinRadius");
-    private static final LoggedTunableNumber ffMaxRadius = new LoggedTunableNumber("TurrentToPose/FFMaxRadius");
+
+    private static final LoggedTunableNumber turretKp = new LoggedTunableNumber("TurrentToPose/Kp");
+    private static final LoggedTunableNumber turretKi = new LoggedTunableNumber("TurrentToPose/Ki");
+    private static final LoggedTunableNumber turretKd = new LoggedTunableNumber("TurrentToPose/Kd");
+    private static final LoggedTunableNumber turretMaxVel = new LoggedTunableNumber("TurrentToPose/MaxVelRad");
+    private static final LoggedTunableNumber turretMaxAccel = new LoggedTunableNumber("TurrentToPose/MaxAccelRad");
+    private static final LoggedTunableNumber turretMinAngle = new LoggedTunableNumber("TurrentToPose/MinAngle");
+    private static final LoggedTunableNumber turretMaxAngle = new LoggedTunableNumber("TurrentToPose/MaxAngle");
+    private static final LoggedTunableNumber onGoalTolerance = new LoggedTunableNumber("TurrentToPose/OnGoalTolerance");
+
+    private ProfiledPIDController turretPidController;
 
     static {
-        // sensible defaults
         angleOffset.initDefault(0.0);
         aimDeadband.initDefault(Math.toRadians(1.5));
-        ffMinRadius.initDefault(0.2);
-        ffMaxRadius.initDefault(0.8);
+        
+        turretKp.initDefault(TurretConstants.TURRET_P);
+        turretKi.initDefault(TurretConstants.TURRET_I);
+        turretKd.initDefault(TurretConstants.TURRET_D);
+        turretMaxVel.initDefault(TurretConstants.TURRET_MAX_VEL_RAD);
+        turretMaxAccel.initDefault(TurretConstants.TURRET_MAX_ACCEL_RAD);
+        turretMinAngle.initDefault(TurretConstants.TURRET_MIN_ANGLE);
+        turretMaxAngle.initDefault(TurretConstants.TURRET_MAX_ANGLE);
+        onGoalTolerance.initDefault(0.02);
+    }
+    private double currentGoalAngle = Double.NaN;
+
+    public TurrentToPose(Turret turret, double angle) {
+        this(turret, () -> angle);
     }
 
-    public TurrentToPose(Turret turret, Drive drive, Pose2d pose) {
-        this(turret, drive, () -> pose);
-    }
-
-    public TurrentToPose(Turret turret, Drive drive, Supplier<Pose2d> poseSupplier) {
+    public TurrentToPose(Turret turret, Supplier<Double> angleSupplier) {
         this.turret = turret;
-        this.drive = drive;
-        this.poseSupplier = poseSupplier;
+        this.angleSupplier = angleSupplier;
         addRequirements(turret);
     }
 
     @Override
     public void initialize() {
         running = true;
-        targetPose = poseSupplier.get();
+        targetAngle = angleSupplier.get();
         double desired = computeDesiredTurretAngle();
-        desired = clampToTurretLimits(desired);
-        turret.setTargetPosition(desired);
+        if (turretPidController == null) {
+            turretPidController = new ProfiledPIDController(
+                turretKp.get(), turretKi.get(), turretKd.get(),
+                new TrapezoidProfile.Constraints(turretMaxVel.get(), turretMaxAccel.get()));
+        }
+    turretPidController.reset(turret.getAngle());
+        turretPidController.setGoal(desired);
+    turret.setTargetPosition(desired);
+    currentGoalAngle = desired;
+        
+        double voltage = turretPidController.calculate(turret.getAngle());
+        turret.setVoltage(voltage);
         Logger.recordOutput("TurrentToPose/DesiredAngle", desired);
     }
 
     @Override
     public void execute() {
-        targetPose = poseSupplier.get();
+        targetAngle = angleSupplier.get();
         double desired = computeDesiredTurretAngle();
-        desired = clampToTurretLimits(desired);
-        // only set new target if outside deadband to avoid unnecessary resets
+        
         if (Math.abs(wrapAngle(desired - turret.getAngle())) > aimDeadband.get()) {
-            turret.setTargetPosition(desired);
+            currentGoalAngle = desired;
+        }
+        
+        if (turretPidController != null) {
+            turretPidController.setPID(turretKp.get(), turretKi.get(), turretKd.get());
+            turretPidController.setConstraints(new TrapezoidProfile.Constraints(turretMaxVel.get(), turretMaxAccel.get()));
+            double voltage = turretPidController.calculate(turret.getAngle());
+            turret.setVoltage(voltage);
         }
         Logger.recordOutput("TurrentToPose/DesiredAngle", desired);
     }
 
     private double computeDesiredTurretAngle() {
-        // turret physical position offset from robot center
-        var robotPose = drive.getPose();
-        var turretPose = robotPose.transformBy(GeomUtil.translationToTransform(TurretConstants.TURRET_OFFSET_X, TurretConstants.TURRET_OFFSET_Y));
-        Translation2d toTarget = new Translation2d(targetPose.getTranslation().getX() - turretPose.getTranslation().getX(), targetPose.getTranslation().getY() - turretPose.getTranslation().getY());
-        double absoluteAngle = toTarget.getAngle().getRadians();
-        double robotYaw = robotPose.getRotation().getRadians();
-        double relative = wrapAngle(absoluteAngle - robotYaw);
-        // apply small tunable offset and light ff scaler similar to DriveToPose
-        double distance = turretPose.getTranslation().getDistance(targetPose.getTranslation());
-        double ffScaler = MathUtil.clamp((distance - ffMinRadius.get()) / (ffMaxRadius.get() - ffMinRadius.get()), 0.0, 1.0);
         double offset = angleOffset.get();
-        return relative + offset * (0.5 + 0.5 * ffScaler);
+        return angleSupplier.get() + offset;
     }
 
-    private double clampToTurretLimits(double angle) {
-        double min = TurretConstants.TURRET_MIN_ANGLE;
-        double max = TurretConstants.TURRET_MAX_ANGLE;
-        return MathUtil.clamp(angle, min, max);
-    }
 
     private double wrapAngle(double a) {
         while (a <= -Math.PI) a += 2 * Math.PI;
@@ -111,7 +122,9 @@ public class TurrentToPose extends Command {
 
     @Override
     public boolean isFinished() {
-        boolean atGoal = turret.isAtGoal();
+        
+        if (Double.isNaN(currentGoalAngle)) return false;
+        boolean atGoal = Math.abs(turret.getAngle() - currentGoalAngle) < onGoalTolerance.get();
         if (atGoal) running = false;
         return atGoal;
     }

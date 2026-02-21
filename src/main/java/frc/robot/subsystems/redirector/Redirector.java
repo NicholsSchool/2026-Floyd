@@ -3,8 +3,6 @@ package frc.robot.subsystems.redirector;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,8 +18,8 @@ public class Redirector extends SubsystemBase
 
     private double accelRad = 0.0;
 
-    private double targetAngle = 0.0;
-    private double voltageCmdPid = 0.0;
+  private double targetAngle = 0.0;
+  private double voltageCmd = 0.0;
     private boolean reachedTargetPosition = true;
     private double voltageCmdManual = 0.0;
 
@@ -32,35 +30,9 @@ public class Redirector extends SubsystemBase
 
     private RedirectorMode redirectorMode;
 
-    private final ProfiledPIDController redirectorPidController;
-        
-  private static final LoggedTunableNumber redirectorMaxVelocityRad =
-    new LoggedTunableNumber("redirector/MaxVelocityRad");
-  private static final LoggedTunableNumber redirectorMaxAccelerationRad =
-    new LoggedTunableNumber("redirector/MaxAccelerationRad");
-  private static final LoggedTunableNumber redirectorKp = new LoggedTunableNumber("redirector/Kp");
-  private static final LoggedTunableNumber redirectorKi = new LoggedTunableNumber("redirector/Ki");
-  private static final LoggedTunableNumber redirectorKd = new LoggedTunableNumber("redirector/Kd");
-
     public Redirector(RedirectorIO io){
         this.io = io;
-
         reachedTargetPosition = true;
-
-        redirectorMaxAccelerationRad.initDefault(RedirectorConstants.REDIRECTOR_MAX_ACCEL_RAD);
-        redirectorMaxVelocityRad.initDefault(RedirectorConstants.REDIRECTOR_MAX_VEL_RAD);
-
-        redirectorKp.initDefault(RedirectorConstants.REDIRECTOR_P);
-        redirectorKi.initDefault(RedirectorConstants.REDIRECTOR_I);
-        redirectorKd.initDefault(RedirectorConstants.REDIRECTOR_D);
-
-        redirectorPidController = new ProfiledPIDController(0,0 ,0, 
-        new TrapezoidProfile.Constraints(redirectorMaxVelocityRad.getAsDouble(),redirectorMaxAccelerationRad.getAsDouble()));
-
-        redirectorPidController.setP(redirectorKp.get());
-        redirectorPidController.setI(redirectorKi.get());
-        redirectorPidController.setD(redirectorKd.get());
-
         this.redirectorMode = RedirectorMode.GO_TO_POSITION;
         setTargetPosition(getAngle());
     }
@@ -68,54 +40,29 @@ public class Redirector extends SubsystemBase
     @Override
     public void periodic(){
         io.updateInputs(inputs);
-
-        updateTunables();
-
         Logger.processInputs("Redirector", inputs);
 
-        switch(redirectorMode){
+        switch (redirectorMode) {
           case GO_TO_POSITION:
-          voltageCmdPid = redirectorPidController.calculate( this.getAngle());
-          voltageCmdManual = 0.0;
-          break;
+            voltageCmd = 0.0;
+            voltageCmdManual = 0.0;
+            break;
           case MANUAL:
-          voltageCmdPid = 0.0;
-          setTargetPosition(getAngle());
-          }
+            voltageCmd = 0.0;
+            setTargetPosition(getAngle());
+            break;
+        }
 
-         if (!reachedTargetPosition) {
-            reachedTargetPosition = redirectorPidController.atGoal();
-            if (reachedTargetPosition) System.out.println("redirector Move to Pos Reached Goal!");
-          }
-        
-          io.setVoltage(voltageCmdManual + voltageCmdPid);
+        io.setVoltage(voltageCmdManual + voltageCmd);
     }
 
 
-    private void updateTunables() {
-        // Update from tunable numbers
-        if (redirectorMaxVelocityRad.hasChanged(hashCode())
-            || redirectorMaxAccelerationRad.hasChanged(hashCode())
-            || redirectorKp.hasChanged(hashCode())
-            || redirectorKi.hasChanged(hashCode())
-            || redirectorKd.hasChanged(hashCode())) {
-          redirectorPidController.setP(redirectorKp.get());
-          redirectorPidController.setI(redirectorKi.get());
-          redirectorPidController.setD(redirectorKd.get());
-          redirectorPidController.setConstraints(
-              new TrapezoidProfile.Constraints(redirectorMaxVelocityRad.get(), redirectorMaxAccelerationRad.get()));
-        }
-      }
-
-      public void setTargetPosition(double targetAngle) {
+    public void setTargetPosition(double targetAngle) {
         this.targetAngle = targetAngle;
-        redirectorPidController.setGoal((targetAngle));
-        redirectorPidController.reset(inputs.currentAngle);
         reachedTargetPosition = false;
       }
 
-      // Checks if TargetAngle is valid
-        public Command runGoToPositionCommand(double targetAngle){
+    public Command runGoToPositionCommand(double targetAngle){
     redirectorMode = RedirectorMode.GO_TO_POSITION;
     if ((targetAngle > RedirectorConstants.REDIRECTOR_MAX_ANGLE || targetAngle < RedirectorConstants.REDIRECTOR_MIN_ANGLE)) {
       return new InstantCommand();
@@ -124,10 +71,6 @@ public class Redirector extends SubsystemBase
     return new InstantCommand(() -> setTargetPosition(targetAngle), this);
   }
 
-    /**
-     * When the Joystick passes the Joystick Deadband threshold
-     * the redirector is set to manual else it is go to position
-    */
        public void runManualPosition(double stickPosition){
         if(Math.abs(stickPosition) > Constants.JOYSTICK_DEADBAND){
           redirectorMode = RedirectorMode.MANUAL;
@@ -139,9 +82,6 @@ public class Redirector extends SubsystemBase
         
       } 
         
-       /** 
-        * Autonomous Log Outputs 
-        */ 
   @AutoLogOutput
   public RedirectorMode getRedirectorMode(){
     return redirectorMode;
@@ -169,7 +109,11 @@ public class Redirector extends SubsystemBase
 
   @AutoLogOutput
   public double getVoltageCommandPid() {
-    return voltageCmdPid;
+    return voltageCmd;
+  }
+
+  public void setVoltage(double volts) {
+    this.voltageCmd = volts;
   }
 
   @AutoLogOutput
@@ -179,7 +123,8 @@ public class Redirector extends SubsystemBase
 
   @AutoLogOutput
   public boolean isAtGoal() {
-    return redirectorPidController.atGoal();
+  
+    return Math.abs(getAngle() - targetAngle) < 0.02;
   }
   
 }
