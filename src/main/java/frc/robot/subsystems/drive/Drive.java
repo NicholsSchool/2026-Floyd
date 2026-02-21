@@ -86,7 +86,7 @@ public class Drive extends SubsystemBase {
     modules[3] = new Module(brModuleIO, 3);
     
 
-    visionStatsBuffer = new ArrayDeque<Pose2d>(VisionConstants.VISION_STATS_NUM_BUFFER);
+    visionStatsBuffer = new ArrayDeque<Pose2d>(VisionConstants.visionStatsNumBuffer);
   }
 
   public void periodic() {
@@ -364,7 +364,7 @@ public class Drive extends SubsystemBase {
   @SuppressWarnings("unused")
   private void runVisionStats( Pose2d newVisionPose ) {
       //update visionStatsBuffer, keeping the maximun num in at all times, default 100 for testing
-      if( visionStatsBuffer.size() >= VisionConstants.VISION_STATS_NUM_BUFFER )
+      if( visionStatsBuffer.size() >= VisionConstants.visionStatsNumBuffer)
         visionStatsBuffer.removeFirst();
       visionStatsBuffer.addLast(newVisionPose);
 

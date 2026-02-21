@@ -88,7 +88,7 @@ public class RobotContainer {
         vision =
              new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVision(VisionConstants.CAMERA_0_NAME, VisionConstants.robotToCamera0));
+                new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());
@@ -111,7 +111,7 @@ public class RobotContainer {
         vision =
               new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVision(VisionConstants.CAMERA_0_NAME, VisionConstants.robotToCamera0));
+                new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());
@@ -134,7 +134,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVisionSim(VisionConstants.CAMERA_0_NAME, VisionConstants.robotToCamera0, drive::getPose));
+                new VisionIOPhotonVisionSim(VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
 
         redirector = new Redirector(new RedirectorIOSim());
         turret = new Turret(new TurretIOSim());                
