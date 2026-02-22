@@ -70,13 +70,13 @@ public final class Constants {
       public static int kMaxRearLeftTurningCanId = 21;
       public static int kMaxRearRightTurningCanId = 27;
 
-    public static final int SHOOTER = 43;
+    public static final int SHOOTER = 42;
 
-    public static final int REDIRECTOR = 41;
+    public static final int REDIRECTOR = 45;
 
     public static final int REDIRECTOR_ENCODER = 40;
 
-    public static final int INDEXER = 42;
+    public static final int INDEXER = 46;
 
     public static final int INTAKE_WHEEL = 0; //TODO: set correct CAN ID
     public static final int INTAKE_PIVOT = 0; //TODO: set correct CAN ID

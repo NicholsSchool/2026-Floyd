@@ -11,5 +11,6 @@ public class RedirectorConstants {
     public static final double REDIRECTOR_MIN_ANGLE = 0.0;
     public static final double REDIRECTOR_GEAR_RATIO = 1.0;
     public static final double REDIRECTOR_MANUAL_SCALAR = 1.0;
+    public static final double REDIRECTOR_CURRENT_LIMIT = 40.0;
     
 }

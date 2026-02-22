@@ -1,6 +1,7 @@
 package frc.robot.subsystems.shooter;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -26,11 +27,12 @@ public class ShooterIOReal implements ShooterIO {
     public void updateInputs(ShooterIOInputs inputs){
         inputs.currentAmps = shooterMotor.getStatorCurrent().getValueAsDouble();
         inputs.supplyVoltage = shooterMotor.getSupplyVoltage().getValueAsDouble();
-        inputs.velocityRPM = shooterMotor.getVelocity().getValueAsDouble() * 60.0;
+        inputs.velocityRPM = -shooterMotor.getVelocity().getValueAsDouble() * 60.0;
     }
 
     @Override
     public void setVoltage(double voltage){
-        shooterMotor.setVoltage(voltage);
+        // motor is on backward
+        shooterMotor.setVoltage(-voltage);
     }
 }

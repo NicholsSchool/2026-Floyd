@@ -7,12 +7,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.redirector.RedirectorConstants;
+import frc.robot.subsystems.redirector.RedirectorIOReal;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Candle.Candle;
@@ -38,6 +40,7 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOFrankenlew;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
@@ -106,22 +109,22 @@ public class RobotContainer {
         //colorInfo = new ColorInfo();
         drive =
             new Drive(
-                new GyroIONAVX(),
-                new ModuleIOMaxSwerve(0),
-                new ModuleIOMaxSwerve(1),
-                new ModuleIOMaxSwerve(2),
-                new ModuleIOMaxSwerve(3));
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
         vision =
-              new Vision(
+            new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+                new VisionIOPhotonVisionSim(VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
 
-        redirector = new Redirector(new RedirectorIOSim());
+        redirector = new Redirector(new RedirectorIOReal());
         turret = new Turret(new TurretIOSim());
         indexer = new Indexer(new IndexerIOSim());
-        intake = new Intake(new IntakeIOFrankenlew());
-        shooter = new Shooter(new ShooterIOSim());
-        candle = new Candle(new CandleIOReal());
+        intake = new Intake(new IntakeIOSim());
+        shooter = new Shooter(new ShooterIOReal());
+        candle = new Candle(new CandleIOSim());
 
         break;
 
@@ -219,43 +222,26 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    drive.setDefaultCommand(
-      DriveCommands.joystickDrive(
-          drive,
-          () -> -driveController.getLeftY() * Constants.DriveConstants.LOW_GEAR_SCALER,
-          () -> -driveController.getLeftX() * Constants.DriveConstants.LOW_GEAR_SCALER,
-          () -> -driveController.getRightX() * Constants.DriveConstants.TURNING_SCALAR,
-          () -> Constants.DRIVE_ROBOT_RELATIVE));
+    // drive.setDefaultCommand(
+    //   DriveCommands.joystickDrive(
+    //       drive,
+    //       () -> -driveController.getLeftY() * Constants.DriveConstants.LOW_GEAR_SCALER,
+    //       () -> -driveController.getLeftX() * Constants.DriveConstants.LOW_GEAR_SCALER,
+    //       () -> -driveController.getRightX() * Constants.DriveConstants.TURNING_SCALAR,
+    //       () -> Constants.DRIVE_ROBOT_RELATIVE));
 
-      turret.setDefaultCommand(new TurretAutoAim(drive, turret));
-      redirector.setDefaultCommand(new RedirectorAutoAim(drive, redirector));
-      shooter.setDefaultCommand(new ShooterAutoAim(drive, shooter));
+      // turret.setDefaultCommand(new TurretAutoAim(drive, turret));
+      // redirector.setDefaultCommand(new RedirectorAutoAim(drive, redirector));
+      // shooter.setDefaultCommand(new ShooterAutoAim(drive, shooter));
 
-      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
+      // candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
+      //shooter.setDefaultCommand(new RepeatCommand(new InstantCommand(() -> shooter.setVoltage(5.0 * driveController.getLeftY()), shooter)));
 
-      operatorController.leftBumper()
-          .whileTrue(
-              new frc.robot.commands.TurrentToPose(
-                  turret,
-                  () -> {
-                    double axis = operatorController.getRightX();
-                    double min = frc.robot.subsystems.turret.TurretConstants.TURRET_MIN_ANGLE;
-                    double max = frc.robot.subsystems.turret.TurretConstants.TURRET_MAX_ANGLE;
-                    return min + (axis + 1.0) * 0.5 * (max - min);
-                  }))
-          ;
+        driveController.a().whileTrue(new InstantCommand(() -> shooter.setRPM(2800)));
+        driveController.b().whileTrue(new InstantCommand(() -> shooter.setRPM(3000)));
+        driveController.x().whileTrue(new InstantCommand(() -> shooter.setRPM(2900)));
+        driveController.y().whileTrue(new InstantCommand(() -> shooter.stop()));
 
-      operatorController.rightBumper()
-          .whileTrue(
-              new frc.robot.commands.HoodToPose(
-                  redirector,
-                  () -> {
-                    double axis = operatorController.getLeftY();
-                    double min = frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MIN_ANGLE;
-                    double max = frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MAX_ANGLE;
-                    return min + (axis + 1.0) * 0.5 * (max - min);
-                  }))
-          ;
   }
 
   /**
