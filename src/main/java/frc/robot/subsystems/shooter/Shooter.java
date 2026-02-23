@@ -2,6 +2,7 @@ package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -23,12 +24,19 @@ public class Shooter extends SubsystemBase {
     }
     
     public void periodic(){
+        if(DriverStation.isDisabled()){
+            stop();
+            setRPM(0.0);
+        }
+
         io.updateInputs(inputs);
         Logger.processInputs("shooter", inputs);
 
         pidCmd += 0.1 * pidController.calculate(inputs.velocityRPM, setpointRPM);
 
-        io.setVoltage(pidCmd + getBangBang());
+        io.setVoltage(pidCmd
+        + getBangBang()
+         );
     }
     
     public void setRPM(double setpoint){
