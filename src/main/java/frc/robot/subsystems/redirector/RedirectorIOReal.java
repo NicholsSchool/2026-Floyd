@@ -1,6 +1,7 @@
 package frc.robot.subsystems.redirector;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -9,9 +10,11 @@ import frc.robot.Constants.CAN;
 public class RedirectorIOReal implements RedirectorIO{
 
     private TalonFX redirectorMotor;
+    private CANcoder redirectorEncoder;
 
     public RedirectorIOReal(){
         redirectorMotor = new TalonFX(CAN.REDIRECTOR);
+        redirectorEncoder = new CANcoder(CAN.REDIRECTOR_ENCODER);
 
          TalonFXConfiguration redirectorConfig = new TalonFXConfiguration();
         redirectorConfig.CurrentLimits.StatorCurrentLimit = RedirectorConstants.REDIRECTOR_CURRENT_LIMIT;
@@ -24,7 +27,7 @@ public class RedirectorIOReal implements RedirectorIO{
     public void updateInputs(RedirectorIOInputs inputs){
         inputs.appliedVolts = redirectorMotor.getMotorVoltage().getValueAsDouble();
         inputs.velocityRadPerSec = redirectorMotor.getVelocity().getValueAsDouble();
-        inputs.currentAngle = redirectorMotor.getPosition().getValueAsDouble();
+        inputs.currentAngle = redirectorEncoder.getPosition().getValueAsDouble();
         inputs.currentAmps = redirectorMotor.getStatorCurrent().getValueAsDouble();
     }
 
