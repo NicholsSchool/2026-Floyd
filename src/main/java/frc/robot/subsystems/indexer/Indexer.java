@@ -13,7 +13,7 @@ import frc.robot.Constants.IndexerConstants;
 
 
 
-public class Indexer extends SubsystemBase {
+public class  Indexer extends SubsystemBase {
   private double setpoint = 0.0;
   private IndexerIO io;
   private final IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();

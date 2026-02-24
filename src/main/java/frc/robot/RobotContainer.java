@@ -186,6 +186,10 @@ public class RobotContainer {
       shooter.setDefaultCommand(new ShooterAutoAim(drive, shooter));
 
       candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
+
+    
+      driveController.a().whileTrue(new InstantCommand(()-> intake.setWheelVoltage(1)));
+      driveController.b().whileTrue(new InstantCommand(()-> indexer.setVoltage(1)));
   }
 
   /**

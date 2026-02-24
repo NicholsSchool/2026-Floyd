@@ -129,6 +129,7 @@ public class Intake extends SubsystemBase {
         pivotPIDController.reset(inputs.pivotAngleRadians);
     }
 
+
     @AutoLogOutput
     public PivotPreset getPivotPreset() { return pivotPreset; }
 
@@ -139,7 +140,10 @@ public class Intake extends SubsystemBase {
     public double getPivotGoal() { return pivotPIDController.getGoal().position; }
     public double getPivotAngle() { return inputs.pivotAngleRadians; }
 
+    @AutoLogOutput
     public double getPivotVoltage() { return inputs.pivotMotorVoltage; }
+
+    @AutoLogOutput
     public double getWheelVoltage() { return inputs.wheelMotorVoltage; }
 
 
