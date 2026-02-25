@@ -85,8 +85,8 @@ public class ModuleIOMaxSwerve implements ModuleIO {
     driveConfig.idleMode(IdleMode.kBrake);
     turnConfig.idleMode(IdleMode.kBrake);
 
-    driveConfig.smartCurrentLimit(Constants.ModuleConstants.kDrivingMotorCurrentLimit);
-    turnConfig.smartCurrentLimit(Constants.ModuleConstants.kTurningMotorCurrentLimit);
+    driveConfig.smartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
+    turnConfig.smartCurrentLimit(ModuleConstants.kTurningMotorCurrentLimit);
 
 
     // drivingSparkMax.restoreFactoryDefaults();

@@ -30,7 +30,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.Constants;
-import frc.robot.Constants.ModuleConstants;
 
 /**
  * Module IO implementation for Talon FX drive motor controller, Talon FX turn motor controller, and
@@ -106,17 +105,17 @@ public class ModuleIOTalonFX implements ModuleIO {
     }
 
     var driveConfig = new TalonFXConfiguration();
-    driveConfig.CurrentLimits.StatorCurrentLimit = Constants.ModuleConstants.DRIVING_MOTOR_CURRENT_LIMIT;
+    driveConfig.CurrentLimits.StatorCurrentLimit = ModuleConstants.DRIVING_MOTOR_CURRENT_LIMIT;
     driveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    driveConfig.CurrentLimits.SupplyCurrentLimit = Constants.ModuleConstants.MOTOR_SUPPLY_CURRENT_LIMIT;
+    driveConfig.CurrentLimits.SupplyCurrentLimit = ModuleConstants.MOTOR_SUPPLY_CURRENT_LIMIT;
     driveConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     driveTalon.getConfigurator().apply(driveConfig);
     setDriveBrakeMode(true);
 
     var turnConfig = new TalonFXConfiguration();
-    turnConfig.CurrentLimits.StatorCurrentLimit = Constants.ModuleConstants.TURNING_MOTOR_CURRENT_LIMIT;
+    turnConfig.CurrentLimits.StatorCurrentLimit = ModuleConstants.TURNING_MOTOR_CURRENT_LIMIT;
     turnConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    turnConfig.CurrentLimits.SupplyCurrentLimit = Constants.ModuleConstants.MOTOR_SUPPLY_CURRENT_LIMIT;
+    turnConfig.CurrentLimits.SupplyCurrentLimit = ModuleConstants.MOTOR_SUPPLY_CURRENT_LIMIT;
     turnConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     turnTalon.getConfigurator().apply(turnConfig);
     setTurnBrakeMode(true);

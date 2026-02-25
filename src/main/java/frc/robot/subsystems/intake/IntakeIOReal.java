@@ -11,7 +11,6 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.Constants.CAN;
-import frc.robot.Constants.IntakeConstants;
 
 public class IntakeIOReal implements IntakeIO {
 

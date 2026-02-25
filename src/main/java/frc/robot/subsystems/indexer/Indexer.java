@@ -9,7 +9,6 @@ import frc.robot.Constants;
 import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
-import frc.robot.Constants.IndexerConstants;
 
 
 
@@ -37,11 +36,11 @@ public class  Indexer extends SubsystemBase {
 
 
     // Sets the default using IndexerConstants // MAKE Indexer CONSTANTS!!! Simply fill-in
-    indexVelocity.initDefault(Constants.IndexerConstants.Indexer_RPM);
-    reverseVelocity.initDefault(Constants.IndexerConstants.Reverse_RPM);
+    indexVelocity.initDefault(IndexerConstants.INDEXER_RPM);
+    reverseVelocity.initDefault(IndexerConstants.REVERSE_RPM);
     spinDurationSec.initDefault(1.5);
-    INDEX_P.initDefault(Constants.IndexerConstants.P);
-    INDEX_D.initDefault(Constants.IndexerConstants.D);
+    INDEX_P.initDefault(IndexerConstants.INDEXER_P);
+    INDEX_D.initDefault(IndexerConstants.D);
   }
 
   @Override
@@ -110,6 +109,10 @@ public class  Indexer extends SubsystemBase {
 
   public boolean hasBall(){
     return inputs.hasBall;
+  }
+
+  public void indexWithVoltage(){
+    io.setVoltage(IndexerConstants.INDEX_VOLTAGE);
   }
 
 
