@@ -36,8 +36,7 @@ public class ShooterAutoAim extends InstantCommand {
     //https://www.desmos.com/calculator/fwhxwn9toz
     double shooterMetersPerSec = 12.86838 * Math.sin(-1.5504 * Math.pow(distance - 0.184152, 0.2)) + 19.19883;
 
-    double shooterRPM = shooterMetersPerSec * 60 / (2 * Math.PI * ShooterConstants.SHOOTER_RADIUS_METERS);
-    shooter.setRPM(shooterMetersPerSec < 30.0 ? shooterRPM : 30 *  60 / (2 * Math.PI * ShooterConstants.SHOOTER_RADIUS_METERS));
+    shooter.setVelMPS(shooterMetersPerSec);
 
   }
 }
