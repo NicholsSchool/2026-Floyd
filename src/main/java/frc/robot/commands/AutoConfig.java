@@ -17,7 +17,7 @@ public class AutoConfig {
     //Shoots starting 8 then goes to pickup from:
     public PickupLocation pickupLocationOne = PickupLocation.DEPOT;
     //then come back to:
-    public ShootingPosition shootingPositionTwo = ShootingPosition.LEFT;
+    public ShootingPosition shootingPositionOne = ShootingPosition.LEFT;
     // do we climb
     public boolean climb = false;
 

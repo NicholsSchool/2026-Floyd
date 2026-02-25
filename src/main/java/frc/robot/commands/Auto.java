@@ -37,10 +37,4 @@ public class Auto {
           new RedirectorAutoAim(drive, redirector));
     }
 
-    public Command shootFirstPosition(){
-        BooleanSupplier autoAimReady = () -> (shooter.isAtGoal() && turret.isAtGoal() && redirector.isAtGoal());
-        return new SequentialCommandGroup(AutoAim().until(autoAimReady), new InstantCommand(() -> indexer.indexWithVoltage())
-        .withTimeout(AutoConstants.INITIAL_AUTO_SHOOT_TIME));
-    }
-
 }
