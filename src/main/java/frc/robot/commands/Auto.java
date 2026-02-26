@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.AutoConstants;
 import frc.robot.FieldConstants;
 import frc.robot.commands.AutoConfig.PickupLocation;
 import frc.robot.subsystems.drive.Drive;
@@ -50,9 +49,9 @@ public class Auto {
             return new DriveToPose(drive, AllianceFlipUtil.applyRotate(new Pose2d(FieldConstants.Depot.depotCenter.toTranslation2d(), new Rotation2d(Math.PI / 2))));
         }
         if(pickupLocation.equals(PickupLocation.LEFT)){
-            desiredPose = new Pose2d(new Translation2d(7.5, 7.5), new Rotation2d(-Math.PI / 2));
+            desiredPose = new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 7.5), new Rotation2d(-Math.PI / 2));
         }else{
-            desiredPose = new Pose2d(new Translation2d(7.5, 1.0), new Rotation2d(Math.PI / 2));
+            desiredPose = new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 1.0), new Rotation2d(Math.PI / 2));
         }
         return new DriveToPose(drive, AllianceFlipUtil.applyRotate(desiredPose));
     }
@@ -60,25 +59,26 @@ public class Auto {
     public Command intakeCenter(boolean followThrough, PickupLocation pickupLocation){
         if(followThrough){
             if(pickupLocation.equals(PickupLocation.LEFT)){
-                return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(7.5, 1.4), new Rotation2d(-Math.PI / 2))));
+                return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 1.4), new Rotation2d(-Math.PI / 2))));
             }else{
-                return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(7.5, 6.9), new Rotation2d(Math.PI / 2))));
+                return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 6.9), new Rotation2d(Math.PI / 2))));
             }
         }else{
               if(pickupLocation.equals(PickupLocation.LEFT)){
-                return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(7.5, 5.0), new Rotation2d(-Math.PI / 2)))), 
-                new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(7.5, 7.0), new Rotation2d(0.0)))));
+                return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 5.0), new Rotation2d(-Math.PI / 2)))), 
+                new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 7.0), new Rotation2d(0.0)))));
             }else{
-                return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(7.5, 3.0), new Rotation2d(0.0)))), 
-                new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(7.5, 1.5), new Rotation2d(-Math.PI / 2)))));
+                return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 3.0), new Rotation2d(0.0)))), 
+                new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 1.5), new Rotation2d(-Math.PI / 2)))));
             }
         }
     }
 
+
     public Command auto(){
         return new SequentialCommandGroup(goToCenter(AutoConfig.pickupLocationOne), new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)),
          new ParallelCommandGroup(intakeCenter(AutoConfig.followThroughOne, AutoConfig.pickupLocationOne),
-          new InstantCommand(() -> intake.intake()).repeatedly().withTimeout(3.0)));
+          new InstantCommand(() -> intake.intake()).repeatedly()), new InstantCommand(() -> intake.stopWheels()));
     }
 
 
