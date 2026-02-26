@@ -8,7 +8,7 @@ public class AutoConstants {
     public static  double DRIVE_FINISH_THRESHOLD = 0.1;
     
     public static final double SPLINE_FINISH_THRESHOLD = 0.4;
-    public static final double SPLINE_ANGLE_FINISH_THRESHOLD = Math.PI / 12.0;
+    public static final double SPLINE_ANGLE_FINISH_THRESHOLD = 0.1;
     public static final double SPLINE_V5_LINEAR_MULTIPLIER = 1.5;
     public static final double SPLINE_V5_CIRCULAR_MULTIPLIER = 2.0;
     public static final double DOT_PRODUCT_THRESHOLD = 0.05;

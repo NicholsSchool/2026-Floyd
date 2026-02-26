@@ -62,6 +62,15 @@ public class AllianceFlipUtil {
       return pose;
     }
   }
+  //since we're using left right center for auto, this makes left and right consistent for auto
+  public static Pose2d applyRotate(Pose2d pose){
+       if (shouldFlip()) {
+      return pose.rotateAround(new Translation2d(FieldConstants.fieldLength / 2, FieldConstants.fieldWidth / 2), new Rotation2d(Math.PI));
+    } else {
+      return pose;
+    }
+  
+  }
 
   /**
    * Flips a trajectory state to the correct side of the field based on the current alliance color.

@@ -15,10 +15,12 @@ public class AutoConfig {
     // change all constants as needed
 
     //Shoots starting 8 then goes to pickup from:
-    public PickupLocation pickupLocationOne = PickupLocation.DEPOT;
+    public static PickupLocation pickupLocationOne = PickupLocation.LEFT;
+    // through all the balls or halfway
+    public static boolean followThroughOne = true;
     //then come back to:
-    public ShootingPosition shootingPositionOne = ShootingPosition.LEFT;
+    public static ShootingPosition shootingPositionOne = ShootingPosition.RIGHT;
     // do we climb
-    public boolean climb = false;
+    public static boolean climb = false;
 
 }
