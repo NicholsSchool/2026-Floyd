@@ -18,7 +18,7 @@ public class AutoConstants {
 
     public static final double CENTER_INTAKE_FILE = 7.5;
 
-    public static final Circle TRENCH_CIRCLE = new Circle(new Translation2d(4.6,4), 3.15);
+    public static final Circle TRENCH_CIRCLE = new Circle(new Translation2d(4.6,4), 3.25);
 
     public static final double INITIAL_AUTO_SHOOT_TIME = 2.0;
 

@@ -15,7 +15,7 @@ public class AutoConfig {
     // change all constants as needed
 
     //Shoots starting 8 then goes to pickup from:
-    public static PickupRegion pickupLocationOne = PickupRegion.LEFT;
+    public static PickupRegion pickupLocationOne = PickupRegion.RIGHT;
     // through all the balls or halfway
     public static boolean followThroughOne = true;
     //then come back to:
