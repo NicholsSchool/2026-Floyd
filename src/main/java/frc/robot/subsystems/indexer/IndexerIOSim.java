@@ -27,11 +27,5 @@ public class IndexerIOSim implements IndexerIO {
     public void setVoltage(double voltage) {
         simMotor.setInputVoltage(voltage);
     }
-
-    @Override
-    public void setVelocityRPMs( double velocityRPMs) {
-        //TODO fix these values later
-        simMotor.setAngularVelocity( velocityRPMs * (2.0 * Math.PI) / 60.0 );
-    }
     
 }
