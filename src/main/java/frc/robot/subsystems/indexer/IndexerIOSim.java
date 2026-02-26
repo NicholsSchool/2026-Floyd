@@ -4,7 +4,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.Constants;
-import frc.robot.Constants.IndexerConstants;
 
 public class IndexerIOSim implements IndexerIO {
     
@@ -12,7 +11,7 @@ public class IndexerIOSim implements IndexerIO {
 
     private final DCMotorSim simMotor =
     new DCMotorSim(
-    LinearSystemId.createDCMotorSystem(simModel, 0.025, IndexerConstants.gearRatio),
+    LinearSystemId.createDCMotorSystem(simModel, 0.025, IndexerConstants.GEAR_RATIO),
     simModel);
     
     @Override

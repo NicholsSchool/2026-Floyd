@@ -31,7 +31,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.FieldConstants;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.util.AllianceFlipUtil;
@@ -365,7 +364,7 @@ public class Drive extends SubsystemBase {
   @SuppressWarnings("unused")
   private void runVisionStats( Pose2d newVisionPose ) {
       //update visionStatsBuffer, keeping the maximun num in at all times, default 100 for testing
-      if( visionStatsBuffer.size() >= VisionConstants.visionStatsNumBuffer )
+      if( visionStatsBuffer.size() >= VisionConstants.visionStatsNumBuffer)
         visionStatsBuffer.removeFirst();
       visionStatsBuffer.addLast(newVisionPose);
 
