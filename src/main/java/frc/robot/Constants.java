@@ -19,15 +19,15 @@ public final class Constants {
   public static final boolean DRIVE_ROBOT_RELATIVE =
       false; // set to true to override all field relative and instead command in robot-relative.
 
-  // true to place tunable numbers in dashboard for setting, false otherwise
-  public static final boolean TUNING_MODE = true;
   public static final double LOOP_PERIOD_SECS = 0.02;
   public static final double METERS_PER_INCH = 0.0254;
   public static final double KG_PER_LB = 0.453592;
 
   public static final double JOYSTICK_DEADBAND = 0.08;
 
+  // true to place tunable numbers in dashboard for setting, false otherwise
   public static boolean DISABLE_HAL = false;
+  public static boolean TUNING_MODE = true;
 
   public static RobotType getRobot() {
     return RobotBase.isReal() ? robot : RobotType.ROBOT_SIM;

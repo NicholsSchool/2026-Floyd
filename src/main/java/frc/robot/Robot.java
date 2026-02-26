@@ -26,7 +26,9 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
-    CameraServer.startAutomaticCapture();
+    if (Constants.getRobot() != Constants.RobotType.ROBOT_SIM) {
+      CameraServer.startAutomaticCapture();
+    }
 
     // Set up data receivers & replay source
     switch (Constants.getRobot()) {
@@ -52,9 +54,6 @@ public class Robot extends LoggedRobot {
       default:
         break;
     }
-
-    // See http://bit.ly/3YIzFZ6 for more information on timestamps in AdvantageKit.
-    // Logger.disableDeterministicTimestamps()
 
     // Start AdvantageKit logger
     Logger.start();
