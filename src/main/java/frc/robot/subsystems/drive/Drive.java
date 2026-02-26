@@ -59,7 +59,7 @@ public class Drive extends SubsystemBase {
   private boolean isBrakeModeDrive = true;
 
   private ArrayDeque<Pose2d> visionStatsBuffer;
-  private PoseVisionStats poseVisionStats;
+  private PoseVisionStats poseVisionStats = new PoseVisionStats(new Pose2d(), new Pose2d());
 
   private Twist2d fieldVelocity = new Twist2d();
   private ChassisSpeeds setpoint = new ChassisSpeeds();
