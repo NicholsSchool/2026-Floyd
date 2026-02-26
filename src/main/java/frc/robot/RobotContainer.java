@@ -187,8 +187,12 @@ public class RobotContainer {
       candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
 
     
-      driveController.a().whileTrue(new InstantCommand(()-> intake.setWheelVoltage(1)));
-      driveController.b().whileTrue(new InstantCommand(()-> indexer.setVoltage(1)));
+      driveController.a().whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
+      driveController.b().whileTrue(new InstantCommand(()-> indexer.index(), indexer).repeatedly());
+
+
+      intake.setDefaultCommand(new InstantCommand(()-> intake.stopWheels(), intake));
+      indexer.setDefaultCommand(new InstantCommand(()-> indexer.stopIndexer(), indexer));
   }
 
   /**
