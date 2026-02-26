@@ -91,7 +91,6 @@ public class Turret extends SubsystemBase
 
          if (!reachedTargetPosition) {
             reachedTargetPosition = turretPidController.atGoal();
-            if (reachedTargetPosition) System.out.println("turret Move to Pos Reached Goal!");
           }
 
           if(inputs.rightLimitSwitch){
