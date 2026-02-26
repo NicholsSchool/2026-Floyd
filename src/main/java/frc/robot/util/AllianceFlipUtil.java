@@ -72,6 +72,15 @@ public class AllianceFlipUtil {
   
   }
 
+    public static Circle apply(Circle circle) {
+      Translation2d translation = circle.getCenter();
+    if (shouldFlip()) {
+      return new Circle(new Translation2d(FieldConstants.fieldLength - translation.getX(), translation.getY()), circle.radius);
+    } else {
+      return circle;
+    }
+  }
+
   /**
    * Flips a trajectory state to the correct side of the field based on the current alliance color.
    */

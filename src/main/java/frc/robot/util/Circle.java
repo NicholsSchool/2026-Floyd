@@ -22,5 +22,9 @@ public class Circle{
         this.radius = radius;
     }
 
+    public Translation2d getCenter(){
+        return new Translation2d(x,y);
+    }
+
 
 }
