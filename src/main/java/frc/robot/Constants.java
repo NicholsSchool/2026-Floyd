@@ -28,7 +28,7 @@ public final class Constants {
   public static final double JOYSTICK_DEADBAND = 0.08;
 
   public static boolean disableHAL = false;
-  public static boolean tuningMode = false;
+  public static boolean tuningMode = true;
 
   public static RobotType getRobot() {
     return RobotBase.isReal() ? robot : RobotType.ROBOT_SIM;

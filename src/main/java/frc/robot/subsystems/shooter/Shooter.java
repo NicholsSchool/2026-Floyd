@@ -5,9 +5,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+import frc.robot.util.LoggedTunableNumber;
 
 public class Shooter extends SubsystemBase {
     
@@ -19,8 +19,26 @@ public class Shooter extends SubsystemBase {
     PIDController pidController = new PIDController(ShooterConstants.VELOCITY_P, ShooterConstants.VELOCITY_I, ShooterConstants.VELOCITY_D);
     BangBangController bangBangController = new BangBangController();
 
+    private static final LoggedTunableNumber shooterKp =
+        new LoggedTunableNumber("shooter/Kp");
+    private static final LoggedTunableNumber shooterKi =
+        new LoggedTunableNumber("shooter/Ki");
+    private static final LoggedTunableNumber shooterKd =
+        new LoggedTunableNumber("shooter/Kd");
+    private static final LoggedTunableNumber shooterBangBangMult =
+        new LoggedTunableNumber("shooter/BangBangMult");
+
     public Shooter (ShooterIO io){
         this.io = io;
+
+        shooterKp.initDefault(ShooterConstants.VELOCITY_P);
+        shooterKi.initDefault(ShooterConstants.VELOCITY_I);
+        shooterKd.initDefault(ShooterConstants.VELOCITY_D);
+        shooterBangBangMult.initDefault(ShooterConstants.BANG_BANG_MULT);
+
+        pidController.setP(shooterKp.get());
+        pidController.setI(shooterKi.get());
+        pidController.setD(shooterKd.get());
     }
     
     public void periodic(){
@@ -32,11 +50,23 @@ public class Shooter extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("shooter", inputs);
 
+        updateTunables();
+
         pidCmd += 0.1 * pidController.calculate(inputs.velocityRPM, setpointRPM);
 
         io.setVoltage(pidCmd
         + getBangBang()
          );
+    }
+
+    private void updateTunables() {
+        if (shooterKp.hasChanged(hashCode())
+            || shooterKi.hasChanged(hashCode())
+            || shooterKd.hasChanged(hashCode())) {
+            pidController.setP(shooterKp.get());
+            pidController.setI(shooterKi.get());
+            pidController.setD(shooterKd.get());
+        }
     }
     
     public void setRPM(double setpoint){
@@ -64,7 +94,7 @@ public class Shooter extends SubsystemBase {
         if(( Math.abs(inputs.velocityRPM - setpointRPM)) < ShooterConstants.BANG_BANG_TOLERANCE_RPM || (setpointRPM == 0.0)){
             return 0.0;
         } 
-        return ShooterConstants.BANG_BANG_MULT * bangBangController.calculate(inputs.velocityRPM);
+        return shooterBangBangMult.get() * bangBangController.calculate(inputs.velocityRPM);
     }
 
     @AutoLogOutput
