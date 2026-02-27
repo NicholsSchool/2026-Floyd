@@ -100,10 +100,10 @@ public class Auto {
             shootingPos = new Pose2d();
         }
         if((pickupRegion.equals(PickupRegion.LEFT) && followThrough) || (pickupRegion.equals(PickupRegion.RIGHT) && !followThrough)){
-        return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.apply(new Pose2d(new Translation2d(3.2, 0.6), new Rotation2d(0.0)))),
+        return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(3.2, 0.6), new Rotation2d(0.0)))),
              (new DriveToPose(drive, AllianceFlipUtil.apply(shootingPos))));
         }else{
-            return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.apply(new Pose2d(new Translation2d(3.2, 7.5), new Rotation2d(0.0)))),
+            return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(3.2, 7.5), new Rotation2d(0.0)))),
              (new DriveToPose(drive, AllianceFlipUtil.apply(shootingPos))));
         }
     }
