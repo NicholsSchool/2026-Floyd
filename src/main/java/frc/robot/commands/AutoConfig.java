@@ -17,9 +17,9 @@ public class AutoConfig {
     //Shoots starting 8 then goes to pickup from:
     public static PickupRegion pickupLocationOne = PickupRegion.RIGHT;
     // through all the balls or halfway
-    public static boolean followThroughOne = true;
+    public static boolean followThroughOne = false;
     //then come back to:
-    public static ShootingRegion shootingPositionOne = ShootingRegion.LEFT;
+    public static ShootingRegion shootingPositionOne = ShootingRegion.CENTER;
     // do we climb
     public static boolean climb = false;
 
