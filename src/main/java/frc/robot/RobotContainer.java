@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.Auto;
+import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Candle.Candle;
@@ -63,6 +64,27 @@ public class RobotContainer {
 
     // shuffleboard
     ShuffleboardTab shuffleboardTab;
+    ShuffleboardTab tuningTab;
+
+    // Tuning entries — redirector
+    GenericEntry entryRedirectorKp;
+    GenericEntry entryRedirectorKi;
+    GenericEntry entryRedirectorKd;
+    GenericEntry entryRedirectorMaxVel;
+    GenericEntry entryRedirectorMaxAccel;
+
+    // Tuning entries — turret
+    GenericEntry entryTurretKp;
+    GenericEntry entryTurretKi;
+    GenericEntry entryTurretKd;
+    GenericEntry entryTurretMaxVel;
+    GenericEntry entryTurretMaxAccel;
+
+    // Tuning entries — shooter
+    GenericEntry entryShooterKp;
+    GenericEntry entryShooterKi;
+    GenericEntry entryShooterKd;
+    GenericEntry entryShooterBangBangMult;
     
 
   // Controllers
@@ -159,10 +181,91 @@ public class RobotContainer {
 
   private void initShuffleboard() {
     shuffleboardTab = Shuffleboard.getTab("Floyd");
+    tuningTab = Shuffleboard.getTab("Tuning");
+
+    // ── Redirector column (col 0) ────────────────────────────────────────────
+    entryRedirectorKp = tuningTab.add("Redirector Kp",
+        frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_P)
+        .withPosition(0, 0).withSize(2, 1).getEntry();
+    entryRedirectorKi = tuningTab.add("Redirector Ki",
+        frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_I)
+        .withPosition(0, 1).withSize(2, 1).getEntry();
+    entryRedirectorKd = tuningTab.add("Redirector Kd",
+        frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_D)
+        .withPosition(0, 2).withSize(2, 1).getEntry();
+    entryRedirectorMaxVel = tuningTab.add("Redirector MaxVel",
+        frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MAX_VEL_RAD)
+        .withPosition(0, 3).withSize(2, 1).getEntry();
+    entryRedirectorMaxAccel = tuningTab.add("Redirector MaxAccel",
+        frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MAX_ACCEL_RAD)
+        .withPosition(0, 4).withSize(2, 1).getEntry();
+
+    // ── Turret column (col 2) ────────────────────────────────────────────────
+    entryTurretKp = tuningTab.add("Turret Kp",
+        frc.robot.subsystems.turret.TurretConstants.TURRET_P)
+        .withPosition(2, 0).withSize(2, 1).getEntry();
+    entryTurretKi = tuningTab.add("Turret Ki",
+        frc.robot.subsystems.turret.TurretConstants.TURRET_I)
+        .withPosition(2, 1).withSize(2, 1).getEntry();
+    entryTurretKd = tuningTab.add("Turret Kd",
+        frc.robot.subsystems.turret.TurretConstants.TURRET_D)
+        .withPosition(2, 2).withSize(2, 1).getEntry();
+    entryTurretMaxVel = tuningTab.add("Turret MaxVel",
+        frc.robot.subsystems.turret.TurretConstants.TURRET_MAX_VEL_RAD)
+        .withPosition(2, 3).withSize(2, 1).getEntry();
+    entryTurretMaxAccel = tuningTab.add("Turret MaxAccel",
+        frc.robot.subsystems.turret.TurretConstants.TURRET_MAX_ACCEL_RAD)
+        .withPosition(2, 4).withSize(2, 1).getEntry();
+
+    // ── Shooter column (col 4) ───────────────────────────────────────────────
+    entryShooterKp = tuningTab.add("Shooter Kp",
+        frc.robot.subsystems.shooter.ShooterConstants.VELOCITY_P)
+        .withPosition(4, 0).withSize(2, 1).getEntry();
+    entryShooterKi = tuningTab.add("Shooter Ki",
+        frc.robot.subsystems.shooter.ShooterConstants.VELOCITY_I)
+        .withPosition(4, 1).withSize(2, 1).getEntry();
+    entryShooterKd = tuningTab.add("Shooter Kd",
+        frc.robot.subsystems.shooter.ShooterConstants.VELOCITY_D)
+        .withPosition(4, 2).withSize(2, 1).getEntry();
+    entryShooterBangBangMult = tuningTab.add("Shooter BangBangMult",
+        frc.robot.subsystems.shooter.ShooterConstants.BANG_BANG_MULT)
+        .withPosition(4, 3).withSize(2, 1).getEntry();
   }
 
   public void updateShuffleboard(){
+    edu.wpi.first.networktables.NetworkTableInstance nt =
+        edu.wpi.first.networktables.NetworkTableInstance.getDefault();
 
+    nt.getEntry("/Tuning/redirector/Kp").setDouble(entryRedirectorKp.getDouble(
+        frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_P));
+    nt.getEntry("/Tuning/redirector/Ki").setDouble(entryRedirectorKi.getDouble(
+        frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_I));
+    nt.getEntry("/Tuning/redirector/Kd").setDouble(entryRedirectorKd.getDouble(
+        frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_D));
+    nt.getEntry("/Tuning/redirector/MaxVelocityRad").setDouble(entryRedirectorMaxVel.getDouble(
+        frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MAX_VEL_RAD));
+    nt.getEntry("/Tuning/redirector/MaxAccelerationRad").setDouble(entryRedirectorMaxAccel.getDouble(
+        frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MAX_ACCEL_RAD));
+
+    nt.getEntry("/Tuning/turret/Kp").setDouble(entryTurretKp.getDouble(
+        frc.robot.subsystems.turret.TurretConstants.TURRET_P));
+    nt.getEntry("/Tuning/turret/Ki").setDouble(entryTurretKi.getDouble(
+        frc.robot.subsystems.turret.TurretConstants.TURRET_I));
+    nt.getEntry("/Tuning/turret/Kd").setDouble(entryTurretKd.getDouble(
+        frc.robot.subsystems.turret.TurretConstants.TURRET_D));
+    nt.getEntry("/Tuning/turret/MaxVelocityRad").setDouble(entryTurretMaxVel.getDouble(
+        frc.robot.subsystems.turret.TurretConstants.TURRET_MAX_VEL_RAD));
+    nt.getEntry("/Tuning/turret/MaxAccelerationRad").setDouble(entryTurretMaxAccel.getDouble(
+        frc.robot.subsystems.turret.TurretConstants.TURRET_MAX_ACCEL_RAD));
+
+    nt.getEntry("/Tuning/shooter/Kp").setDouble(entryShooterKp.getDouble(
+        frc.robot.subsystems.shooter.ShooterConstants.VELOCITY_P));
+    nt.getEntry("/Tuning/shooter/Ki").setDouble(entryShooterKi.getDouble(
+        frc.robot.subsystems.shooter.ShooterConstants.VELOCITY_I));
+    nt.getEntry("/Tuning/shooter/Kd").setDouble(entryShooterKd.getDouble(
+        frc.robot.subsystems.shooter.ShooterConstants.VELOCITY_D));
+    nt.getEntry("/Tuning/shooter/BangBangMult").setDouble(entryShooterBangBangMult.getDouble(
+        frc.robot.subsystems.shooter.ShooterConstants.BANG_BANG_MULT));
   }
 
 
@@ -186,13 +289,17 @@ public class RobotContainer {
 
       turret.setDefaultCommand(new TurretAutoAim(drive, turret));
       redirector.setDefaultCommand(new RedirectorAutoAim(drive, redirector));
-      shooter.setDefaultCommand(new ShooterAutoAim(drive, shooter));
+      if (shooter != null) shooter.setDefaultCommand(new ShooterAutoAim(drive, shooter));
 
       candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
 
     
-      driveController.a().whileTrue(new InstantCommand(()-> intake.setWheelVoltage(1)));
-      driveController.b().whileTrue(new InstantCommand(()-> indexer.setVoltage(1)));
+      driveController.a().whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
+      driveController.b().whileTrue(new InstantCommand(()-> indexer.index(), indexer).repeatedly());
+
+
+      intake.setDefaultCommand(new InstantCommand(()-> intake.stopWheels(), intake));
+      indexer.setDefaultCommand(new InstantCommand(()-> indexer.stopIndexer(), indexer));
   }
 
   /**

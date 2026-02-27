@@ -60,7 +60,7 @@ public class CandleUpdate extends InstantCommand{
 
         if(indexer.hasBall()){
             candle.setColor(CandleConstants.BEST_GREEN, Subsystem.INDEXER);
-        }else if(indexer.getVoltageCommand() > 1.0){
+        }else if(indexer.getVoltage() > 1.0){
             candle.setColor(CandleConstants.IVORY, Subsystem.INDEXER);
         }else{
             candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.INDEXER);
