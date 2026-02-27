@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.commands.Auto;
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
@@ -59,6 +60,7 @@ public class RobotContainer {
     Shooter shooter;
     Indexer indexer;
     Candle candle;
+    Auto auto;
 
     // shuffleboard
     ShuffleboardTab shuffleboardTab;
@@ -173,6 +175,8 @@ public class RobotContainer {
     configureBindings();
 
     initShuffleboard();
+
+    auto = new Auto(drive, intake, indexer, shooter, turret, redirector);
   }
 
   private void initShuffleboard() {
@@ -304,6 +308,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-      return new InstantCommand();
+    return auto.auto();
   }
 }

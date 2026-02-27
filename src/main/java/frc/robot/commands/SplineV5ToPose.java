@@ -18,7 +18,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.AutoConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.BradyMathLib;
 import frc.robot.util.Circle;

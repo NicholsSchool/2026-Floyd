@@ -74,6 +74,13 @@ public class Shooter extends SubsystemBase {
         pidController.reset();
         bangBangController.setSetpoint(setpoint);
     }
+
+    public void setVelMPS(double velocity){
+        //we need to find this regression
+        double rpm = velocity;
+        setRPM(rpm);
+    }
+
     @AutoLogOutput
     public boolean isAtGoal(){
        return Math.abs(setpointRPM - getRPM()) < ShooterConstants.VELOCITY_TOLERANCE_RPM;

@@ -270,6 +270,12 @@ public class Drive extends SubsystemBase {
     return kalman.getEstimatedPosition();
   }
 
+    /** returns the pose for the other alliance, used to testing autos**/
+  @AutoLogOutput
+  public Pose2d getRotatedPose(){
+    return AllianceFlipUtil.applyRotate(kalman.getEstimatedPosition());
+  }
+
   /** Returns the current estimated rotation. */
   @AutoLogOutput
   public Rotation2d getRotation() {
