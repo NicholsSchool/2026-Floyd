@@ -69,7 +69,8 @@ public final class Constants {
       public static int kMaxRearLeftTurningCanId = 21;
       public static int kMaxRearRightTurningCanId = 27;
 
-    public static final int SHOOTER = 43;
+    public static final int SHOOTER_BOTTOM = 43;
+    public static final int SHOOTER_TOP = 1;
 
     public static final int REDIRECTOR = 41;
 
