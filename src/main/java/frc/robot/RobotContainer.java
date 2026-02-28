@@ -29,10 +29,13 @@ import frc.robot.subsystems.drive.ModuleIOMaxSwerve;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.redirector.Redirector;
+import frc.robot.subsystems.redirector.RedirectorIOReal;
 import frc.robot.subsystems.redirector.RedirectorIOSim;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.TurretIOReal;
 import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.indexer.IndexerIOReal;
 import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOFrankenlew;
@@ -114,10 +117,10 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
-        redirector = new Redirector(new RedirectorIOSim());
-        turret = new Turret(new TurretIOSim());
-        indexer = new Indexer( new IndexerIOSim());
-        candle = new Candle(new CandleIOReal());
+        redirector = new Redirector(new RedirectorIOReal());
+        turret = new Turret(new TurretIOReal());
+        indexer = new Indexer( new IndexerIOReal());
+        candle = new Candle(new CandleIOSim());
         break;
 
         

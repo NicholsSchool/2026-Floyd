@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.RobotBase;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  private static final RobotType robot = RobotType.ROBOT_REAL_FRANKENLEW;
+  private static final RobotType robot = RobotType.ROBOT_REAL;
   public static final boolean DRIVE_ROBOT_RELATIVE =
       false; // set to true to override all field relative and instead command in robot-relative.
 
@@ -42,49 +42,53 @@ public final class Constants {
 
   // CAN IDs (Controller Area Network)
   public static final class CAN {
+    //frankenlew
       public static int REDUX = 20;
 
-      public static final int FRONT_LEFT_DRIVE = 21;
-      public static final int BACK_LEFT_DRIVE = 22;
-      public static final int FRONT_RIGHT_DRIVE = 24;
-      public static final int BACK_RIGHT_DRIVE = 23;
-  
-      public static final int FRONT_LEFT_PIVOT = 25;
-      public static final int BACK_LEFT_PIVOT = 26;
-      public static final int FRONT_RIGHT_PIVOT = 28;
-      public static final int BACK_RIGHT_PIVOT = 27;
-
-      public static final int FRONT_LEFT_ENCODER = 29;
-      public static final int BACK_LEFT_ENCODER = 30;
-      public static final int FRONT_RIGHT_ENCODER = 32;
-      public static final int BACK_RIGHT_ENCODER = 31;
-
-      public static int kMaxFrontLeftDrivingCanId = 24;
-      public static int kMaxFrontRightDrivingCanId = 26;
-      public static int kMaxRearLeftDrivingCanId = 22;
-      public static int kMaxRearRightDrivingCanId = 28;
+      public static int kMaxFrontLeftDrivingCanId = 50;
+      public static int kMaxFrontRightDrivingCanId = 56;
+      public static int kMaxRearLeftDrivingCanId = 54;
+      public static int kMaxRearRightDrivingCanId = 52;
       
-      public static int kMaxFrontLeftTurningCanId = 23;
-      public static int kMaxFrontRightTurningCanId = 25;
-      public static int kMaxRearLeftTurningCanId = 21;
-      public static int kMaxRearRightTurningCanId = 27;
+      public static int kMaxFrontLeftTurningCanId = 51;
+      public static int kMaxFrontRightTurningCanId = 57;
+      public static int kMaxRearLeftTurningCanId = 55;
+      public static int kMaxRearRightTurningCanId = 53;
 
-    public static final int SHOOTER_BOTTOM = 43;
-    public static final int SHOOTER_TOP = 1;
+      //Floyd
 
-    public static final int REDIRECTOR = 41;
+      public static final int FRONT_LEFT_DRIVE = 50;
+      public static final int BACK_LEFT_DRIVE = 54;
+      public static final int FRONT_RIGHT_DRIVE = 56;
+      public static final int BACK_RIGHT_DRIVE = 52;
+  
+      public static final int FRONT_LEFT_PIVOT = 51;
+      public static final int BACK_LEFT_PIVOT = 55;
+      public static final int FRONT_RIGHT_PIVOT = 57;
+      public static final int BACK_RIGHT_PIVOT = 53;
 
-    public static final int REDIRECTOR_ENCODER = 40;
+      public static final int FRONT_LEFT_ENCODER = 61;
+      public static final int BACK_LEFT_ENCODER = 59;
+      public static final int FRONT_RIGHT_ENCODER = 58;
+      public static final int BACK_RIGHT_ENCODER = 60;
 
-    public static final int INDEXER = 42;
+    public static final int SHOOTER_BOTTOM = 30;
+    public static final int SHOOTER_TOP = 31;
 
-    public static final int INTAKE_WHEEL = 0; //TODO: set correct CAN ID
-    public static final int INTAKE_PIVOT = 0; //TODO: set correct CAN ID
+    public static final int REDIRECTOR = 32;
+
+    public static final int REDIRECTOR_ENCODER = 33;
+
+    public static final int INDEXER = 40;
+
+    public static final int INTAKE_WHEEL = 62;
+    public static final int INTAKE_PIVOT = 41; 
+    public static final int INTAKE_PIVOT_ENCODER = 42;
 
     public static final int CANDLE = 50;
 
-    public static final int TURRET = 0; //TODO: set correct CAN ID
-    public static final int TURRET_ENCODER = 0; //TODO: set correct CAN ID
+    public static final int TURRET = 34; 
+    public static final int TURRET_ENCODER = 35;
 
   }
 

@@ -1,6 +1,7 @@
 package frc.robot.subsystems.intake;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.PersistMode;
@@ -16,10 +17,12 @@ public class IntakeIOReal implements IntakeIO {
 
     private SparkFlex wheelMotor;
     private TalonFX pivotMotor;
+    private CANcoder pivotEncoder;
 
     public IntakeIOReal() {
         wheelMotor = new SparkFlex(CAN.INTAKE_WHEEL, MotorType.kBrushless);
         pivotMotor = new TalonFX(CAN.INTAKE_PIVOT);
+        pivotEncoder = new CANcoder(CAN.INTAKE_PIVOT_ENCODER);
 
         TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
         pivotConfig.CurrentLimits.StatorCurrentLimit = IntakeConstants.PIVOT_CURRENT_LIMIT;
@@ -44,7 +47,7 @@ public class IntakeIOReal implements IntakeIO {
         inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
 
         // getPosition is in revolutions, so convert to radians and account for gear ratio.
-        inputs.pivotAngleRadians = pivotMotor.getPosition().getValueAsDouble() * (2.0 * Math.PI) / IntakeConstants.PIVOT_RATIO;
+        inputs.pivotAngleRadians = pivotEncoder.getPosition().getValueAsDouble() * (2.0 * Math.PI) / IntakeConstants.PIVOT_RATIO;
         
     }
 
