@@ -27,7 +27,7 @@ public class RedirectorIOReal implements RedirectorIO{
     public void updateInputs(RedirectorIOInputs inputs){
         inputs.appliedVolts = redirectorMotor.getMotorVoltage().getValueAsDouble();
         inputs.velocityRadPerSec = redirectorMotor.getVelocity().getValueAsDouble();
-        inputs.currentAngle = redirectorEncoder.getAbsolutePosition().getValueAsDouble();
+        inputs.currentAngle = Math.toRadians(80.0) - redirectorEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI;
         inputs.currentAmps = redirectorMotor.getStatorCurrent().getValueAsDouble();
     }
 

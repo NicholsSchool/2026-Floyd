@@ -118,7 +118,7 @@ public class RobotContainer {
                 new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
         redirector = new Redirector(new RedirectorIOReal());
-        turret = new Turret(new TurretIOReal());
+        turret = new Turret(new TurretIOSim());
         indexer = new Indexer( new IndexerIOReal());
         candle = new Candle(new CandleIOSim());
         break;
