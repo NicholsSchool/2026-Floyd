@@ -85,7 +85,7 @@ public final class Constants {
     public static final int INTAKE_PIVOT = 41; 
     public static final int INTAKE_PIVOT_ENCODER = 42;
 
-    public static final int CANDLE = 50;
+    public static final int CANDLE = 20;
 
     public static final int TURRET = 34; 
     public static final int TURRET_ENCODER = 35;
