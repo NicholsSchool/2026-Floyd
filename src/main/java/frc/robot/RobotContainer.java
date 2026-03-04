@@ -308,7 +308,7 @@ public class RobotContainer {
       driveController.rightTrigger().whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
       intake.setDefaultCommand(new InstantCommand(()-> intake.stopWheels(), intake));
 
-    //   redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getLeftY()), redirector));
+      redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getLeftY()), redirector));
     //   operatorController.povUp().onTrue(new InstantCommand(() -> redirector.setTargetPosition(Math.toRadians(75.0))));
     //   operatorController.povDown().onTrue(new InstantCommand(() -> redirector.setTargetPosition(Math.toRadians(55.0))));
 
