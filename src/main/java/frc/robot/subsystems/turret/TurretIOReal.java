@@ -13,8 +13,8 @@ public class TurretIOReal implements TurretIO{
     private CANcoder turretEncoder;
 
     public TurretIOReal(){
-        turretMotor = new TalonFX(CAN.TURRET);
-        turretEncoder = new CANcoder(CAN.TURRET_ENCODER);
+        turretMotor = new TalonFX(CAN.TURRET, "Shooter");
+        turretEncoder = new CANcoder(CAN.TURRET_ENCODER, "Shooter");
 
         TalonFXConfiguration turretConfig = new TalonFXConfiguration();
         turretConfig.CurrentLimits.StatorCurrentLimit = TurretConstants.TURRET_CURRENT_LIMIT;

@@ -13,8 +13,8 @@ public class RedirectorIOReal implements RedirectorIO{
     private CANcoder redirectorEncoder;
 
     public RedirectorIOReal(){
-        redirectorMotor = new TalonFX(CAN.REDIRECTOR);
-        redirectorEncoder = new CANcoder(CAN.REDIRECTOR_ENCODER);
+        redirectorMotor = new TalonFX(CAN.REDIRECTOR, "Shooter");
+        redirectorEncoder = new CANcoder(CAN.REDIRECTOR_ENCODER, "Shooter");
 
          TalonFXConfiguration redirectorConfig = new TalonFXConfiguration();
         redirectorConfig.CurrentLimits.StatorCurrentLimit = RedirectorConstants.REDIRECTOR_CURRENT_LIMIT;

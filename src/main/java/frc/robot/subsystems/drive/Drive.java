@@ -39,7 +39,6 @@ import frc.robot.util.BradyMathLib.PoseVisionStats;
 
 import java.util.ArrayDeque;
 
-// import frc.robot.commands.VisionCommands.PhotonInfo;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 

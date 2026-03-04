@@ -12,13 +12,13 @@ public final class IntakeConstants {
     public static final double PIVOT_MAX_VEL = 3.0;
     public static final double PIVOT_MAX_ACCEL = 3.0;
 
-    public static final double PIVOT_IN_ANGLE = 0.0;
-    public static final double PIVOT_OUT_ANGLE = 1.75;
+    public static final double PIVOT_IN_ANGLE = 0.2;
+    public static final double PIVOT_OUT_ANGLE = 1.4;
 
     public static final double PIVOT_RATIO = 9.0;
     public static final double INTAKE_RATIO = 1;
 
-    public static final double WHEEL_CURRENT_LIMIT = 40.0;
-    public static final double PIVOT_CURRENT_LIMIT = 40.0;
+    public static final double WHEEL_CURRENT_LIMIT = 30.0;
+    public static final double PIVOT_CURRENT_LIMIT = 35.0;
 
   }

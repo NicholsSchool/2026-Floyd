@@ -4,7 +4,7 @@ import com.ctre.phoenix6.signals.RGBWColor;
 
 public class CandleConstants {
     public static int DRIVE_START_INDEX = 0;
-    public static int DRIVE_STOP_INDEX = 30;
+    public static int DRIVE_STOP_INDEX = 8;
 
     public static int INTAKE_START_INDEX = 31;
     public static int INTAKE_STOP_INDEX = 60;
