@@ -24,7 +24,7 @@ public class RedirectorAutoAim extends InstantCommand {
 
   @Override
   public void execute() {
-    var currentPose = drive.getPose();
+    var currentPose = drive.getTurretPose();
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
     double distance = hubOffset.getNorm();
 

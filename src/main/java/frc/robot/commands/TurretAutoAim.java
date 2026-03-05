@@ -34,7 +34,7 @@ public class TurretAutoAim extends InstantCommand {
 
   @Override
   public void execute() {
-    var currentPose = drive.getPose();
+    var currentPose = drive.getTurretPose();
     // var turretPose = new Translation2d(TurretConstants.TURRET_OFFSET_X, TurretConstants.TURRET_OFFSET_Y);
     
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());

@@ -43,7 +43,6 @@ public final class Constants {
   // CAN IDs (Controller Area Network)
   public static final class CAN {
     //frankenlew
-      public static int REDUX = 20;
 
       public static int kMaxFrontLeftDrivingCanId = 50;
       public static int kMaxFrontRightDrivingCanId = 56;
@@ -57,6 +56,7 @@ public final class Constants {
 
       //Floyd
 
+      public static int REDUX = 20;
       public static final int FRONT_LEFT_DRIVE = 50;
       public static final int BACK_LEFT_DRIVE = 54;
       public static final int FRONT_RIGHT_DRIVE = 56;
@@ -86,7 +86,7 @@ public final class Constants {
     public static final int INTAKE_PIVOT = 41; 
     public static final int INTAKE_PIVOT_ENCODER = 42;
 
-    public static final int CANDLE = 20;
+    public static final int CANDLE = 21;
 
     public static final int TURRET = 34; 
     public static final int TURRET_ENCODER = 35;

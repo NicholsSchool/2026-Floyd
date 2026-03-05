@@ -17,6 +17,7 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -32,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 import frc.robot.FieldConstants;
+import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.BradyMathLib;
@@ -273,6 +275,16 @@ public class Drive extends SubsystemBase {
   @AutoLogOutput
   public Pose2d getRotatedPose(){
     return AllianceFlipUtil.applyRotate(kalman.getEstimatedPosition());
+  }
+
+  public Translation2d getTurretOffset(){
+    return new Translation2d(TurretConstants.TURRET_OFFSET_X, TurretConstants.TURRET_OFFSET_Y).rotateBy(getPose().getRotation());
+  }
+
+  @AutoLogOutput
+  public Pose2d getTurretPose(){
+    return new Pose2d(new Translation2d(getPose().getX() + getTurretOffset().getX(), 
+      getPose().getY() + getTurretOffset().getY()), getPose().getRotation());
   }
 
   /** Returns the current estimated rotation. */

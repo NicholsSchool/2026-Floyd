@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.AutoLogOutput;
+import org.photonvision.PhotonUtils;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -29,10 +30,9 @@ public class ShooterAutoAim extends InstantCommand {
 
   @Override
   public void execute() {
-    var currentPose = drive.getPose();
+    var currentPose = drive.getTurretPose();
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
     double distance = hubOffset.getNorm();
-
     //https://www.desmos.com/calculator/fwhxwn9toz
     double shooterMetersPerSec = 12.86838 * Math.sin(-1.5504 * Math.pow(distance - 0.184152, 0.2)) + 19.19883;
 
