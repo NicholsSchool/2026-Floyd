@@ -46,8 +46,8 @@ public class IntakeIOReal implements IntakeIO {
         inputs.pivotMotorVoltage = pivotMotor.getMotorVoltage().getValueAsDouble();
         inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
 
-        // getPosition is in revolutions, so convert to radians and account for gear ratio.
-        inputs.pivotAngleRadians = -pivotEncoder.getPosition().getValueAsDouble() * (2.0 * Math.PI) / IntakeConstants.PIVOT_RATIO;
+        // getPosition is in revolutions, so convert to radians
+        inputs.pivotAngleRadians = -pivotEncoder.getPosition().getValueAsDouble() * 2 * Math.PI;
         
     }
 

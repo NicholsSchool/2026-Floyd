@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.Auto;
+
+import com.reduxrobotics.canand.CanandEventLoop;
+
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
@@ -106,7 +109,7 @@ public class RobotContainer {
         //colorInfo = new ColorInfo();
         drive =
             new Drive(
-                new GyroIONAVX(),
+                new GyroIORedux(),
                 new ModuleIOTalonFX(0),
                 new ModuleIOTalonFX(1),
                 new ModuleIOTalonFX(2),
@@ -123,6 +126,7 @@ public class RobotContainer {
         candle = new Candle(new CandleIOReal());
         shooter = new Shooter(new ShooterIOReal());
         intake = new Intake(new IntakeIOReal());
+       // CanandEventLoop.getInstance();
         break;
 
         
@@ -302,8 +306,8 @@ public class RobotContainer {
 
       candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
 
-    //   driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
-    //   driveController.b().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
+      driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
+      driveController.b().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
     
       driveController.rightTrigger().whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
       intake.setDefaultCommand(new InstantCommand(()-> intake.stopWheels(), intake));

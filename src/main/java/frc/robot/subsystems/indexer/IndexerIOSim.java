@@ -24,7 +24,7 @@ public class IndexerIOSim implements IndexerIO {
     }
     
     @Override
-    public void setVoltage(double voltage) {
+    public void setVoltageIndexer(double voltage) {
         simMotor.setInputVoltage(voltage);
     }
     

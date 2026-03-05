@@ -34,8 +34,12 @@ public class IndexerIOReal implements IndexerIO {
     }
     
     @Override
-    public void setVoltage(double voltage) {
+    public void setVoltageIndexer(double voltage) {
         indexerMotor.setVoltage(-voltage);
+    }
+
+    @Override
+    public void setVoltageFeeder(double voltage){
         feederMotor.setVoltage(-voltage);
     }
 }
