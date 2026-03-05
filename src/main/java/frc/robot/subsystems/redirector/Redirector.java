@@ -62,7 +62,7 @@ public class Redirector extends SubsystemBase
         redirectorPidController.setD(redirectorKd.get());
 
         this.redirectorMode = RedirectorMode.GO_TO_POSITION;
-        setTargetPosition(getAngle());
+        setTargetPosition(0.8);
     }
 
     @Override

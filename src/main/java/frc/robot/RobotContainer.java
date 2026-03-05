@@ -49,6 +49,7 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.util.AllianceFlipUtil;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -118,7 +119,8 @@ public class RobotContainer {
         vision =
              new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+                new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0),
+                new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1));
 
         redirector = new Redirector(new RedirectorIOReal());
         turret = new Turret(new TurretIOSim());
@@ -313,8 +315,9 @@ public class RobotContainer {
       intake.setDefaultCommand(new InstantCommand(()-> intake.stopWheels(), intake));
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getLeftY()), redirector));
-    //   operatorController.povUp().onTrue(new InstantCommand(() -> redirector.setTargetPosition(Math.toRadians(75.0))));
-    //   operatorController.povDown().onTrue(new InstantCommand(() -> redirector.setTargetPosition(Math.toRadians(55.0))));
+      operatorController.povLeft().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.2)));
+      operatorController.povRight().onTrue(new InstantCommand(() -> redirector.setTargetPosition(0.7)));
+
 
       operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(3000.0)));
       operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2000.0)));
@@ -323,6 +326,12 @@ public class RobotContainer {
 
     operatorController.povUp().whileTrue(new InstantCommand(() -> indexer.index()));
     operatorController.povUp().whileFalse(new InstantCommand(() -> indexer.stopIndexer()));
+
+    driveController.x().whileTrue(DriveCommands.joystickDriveFacingPoint(drive,
+          () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
+          () -> -driveController.getLeftX() * DriveConstants.LOW_GEAR_SCALER,
+          () -> FieldConstants.Hub.innerCenterPoint.toTranslation2d(), () -> drive.getPose().getRotation().getRadians(), () -> Math.PI / 2,
+          () -> Constants.DRIVE_ROBOT_RELATIVE));
   }
 
   /**

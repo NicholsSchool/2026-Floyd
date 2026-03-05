@@ -40,7 +40,8 @@ public class  Indexer extends SubsystemBase {
   }
 
   public void stopIndexer(){
-    setIndexVoltage(0);
+    setIndexVoltage(0.0);
+    io.setVoltageFeeder(0.0);
   }
 
   public void index() {
