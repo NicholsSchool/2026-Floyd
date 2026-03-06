@@ -17,6 +17,7 @@ import com.reduxrobotics.canand.CanandEventLoop;
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.ShooterAutoAim;
 import frc.robot.subsystems.Candle.Candle;
 import frc.robot.subsystems.Candle.CandleIOReal;
 import frc.robot.subsystems.Candle.CandleIOSim;
@@ -306,7 +307,7 @@ public class RobotContainer {
           () -> -driveController.getRightX(),
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
-      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
+    //   candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
 
       driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
       driveController.b().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
@@ -315,23 +316,16 @@ public class RobotContainer {
       intake.setDefaultCommand(new InstantCommand(()-> intake.stopWheels(), intake));
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getLeftY()), redirector));
-      operatorController.povLeft().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.2)));
-      operatorController.povRight().onTrue(new InstantCommand(() -> redirector.setTargetPosition(0.7)));
 
-
-      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(3000.0)));
-      operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2000.0)));
-      operatorController.x().onTrue(new InstantCommand(() -> shooter.setRPM(2500.0)));
-      operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(0.0)));
-
-    operatorController.povUp().whileTrue(new InstantCommand(() -> indexer.index()));
-    operatorController.povUp().whileFalse(new InstantCommand(() -> indexer.stopIndexer()));
+    driveController.povUp().whileTrue(new InstantCommand(() -> indexer.index()));
+    driveController.povUp().whileFalse(new InstantCommand(() -> indexer.stopIndexer()));
 
     driveController.x().whileTrue(DriveCommands.joystickDriveFacingPoint(drive,
           () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
           () -> -driveController.getLeftX() * DriveConstants.LOW_GEAR_SCALER,
-          () -> FieldConstants.Hub.innerCenterPoint.toTranslation2d(), () -> drive.getPose().getRotation().getRadians(), () -> Math.PI / 2,
+          () -> FieldConstants.Hub.innerCenterPoint.toTranslation2d(), () -> drive.getPose().getRotation().getRadians(), () -> Math.PI / 2 - 0.2,
           () -> Constants.DRIVE_ROBOT_RELATIVE));
+    driveController.x().onTrue(new ShooterAutoAim(drive, shooter));
   }
 
   /**

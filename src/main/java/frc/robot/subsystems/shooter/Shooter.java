@@ -77,7 +77,7 @@ public class Shooter extends SubsystemBase {
 
     public void setVelMPS(double velocity){
         //we need to find this regression
-        double rpm = velocity;
+        double rpm = 380.5 * velocity - 691;
         setRPM(rpm);
     }
 
