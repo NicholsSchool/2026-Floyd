@@ -311,14 +311,16 @@ public class RobotContainer {
 
       driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
       driveController.b().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
+      driveController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2000.0)));
     
-      driveController.rightTrigger().whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
+      driveController.rightBumper().whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
+      driveController.leftBumper().whileTrue(new InstantCommand(() -> indexer.feed()).repeatedly());
       intake.setDefaultCommand(new InstantCommand(()-> intake.stopWheels(), intake));
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getLeftY()), redirector));
 
-    driveController.povUp().whileTrue(new InstantCommand(() -> indexer.index()));
-    driveController.povUp().whileFalse(new InstantCommand(() -> indexer.stopIndexer()));
+    driveController.povUp().onTrue(new InstantCommand(() -> indexer.index()));
+    driveController.povDown().onTrue(new InstantCommand(() -> indexer.stopIndexer()));
 
     driveController.x().whileTrue(DriveCommands.joystickDriveFacingPoint(drive,
           () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,

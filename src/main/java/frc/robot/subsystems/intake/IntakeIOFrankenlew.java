@@ -18,7 +18,7 @@ public class IntakeIOFrankenlew implements IntakeIO {
     private SparkFlex wheelMotor;
 
     public IntakeIOFrankenlew() {
-        wheelMotor = new SparkFlex(CAN.INTAKE_WHEEL, MotorType.kBrushless);
+        wheelMotor = new SparkFlex(CAN.INTAKE_WHEEL_ONE, MotorType.kBrushless);
 
 
         SparkFlexConfig wheelConfig = new SparkFlexConfig();

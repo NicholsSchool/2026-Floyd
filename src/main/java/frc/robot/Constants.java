@@ -82,7 +82,8 @@ public final class Constants {
     public static final int INDEXER = 40;
     public static final int FEEDER = 39;
 
-    public static final int INTAKE_WHEEL = 62;
+    public static final int INTAKE_WHEEL_ONE = 62;
+    public static final int INTAKE_WHEEL_TWO = 61;
     public static final int INTAKE_PIVOT = 41; 
     public static final int INTAKE_PIVOT_ENCODER = 42;
 

@@ -46,8 +46,13 @@ public class  Indexer extends SubsystemBase {
 
   public void index() {
         setIndexVoltage(IndexerConstants.INDEXER_VOLTAGE);
-        io.setVoltageFeeder(IndexerConstants.FEEDER_VOLTAGE);
+        feed();
     }
+  
+  public void feed(){
+    io.setVoltageFeeder(IndexerConstants.FEEDER_VOLTAGE);
+  }
+
   public void outdex() {
         setIndexVoltage(IndexerConstants.REVERSE_VOLTAGE);
     }

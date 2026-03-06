@@ -15,12 +15,14 @@ import frc.robot.Constants.CAN;
 
 public class IntakeIOReal implements IntakeIO {
 
-    private SparkFlex wheelMotor;
+    private SparkFlex wheelMotor1;
+    private SparkFlex wheelMotor2;
     private TalonFX pivotMotor;
     private CANcoder pivotEncoder;
 
     public IntakeIOReal() {
-        wheelMotor = new SparkFlex(CAN.INTAKE_WHEEL, MotorType.kBrushless);
+        wheelMotor1 = new SparkFlex(CAN.INTAKE_WHEEL_ONE, MotorType.kBrushless);
+        wheelMotor2 = new SparkFlex(CAN.INTAKE_WHEEL_ONE, MotorType.kBrushless);
         pivotMotor = new TalonFX(CAN.INTAKE_PIVOT);
         pivotEncoder = new CANcoder(CAN.INTAKE_PIVOT_ENCODER);
 
@@ -34,14 +36,15 @@ public class IntakeIOReal implements IntakeIO {
         SparkFlexConfig wheelConfig = new SparkFlexConfig();
         wheelConfig.smartCurrentLimit((int) IntakeConstants.WHEEL_CURRENT_LIMIT);
         wheelConfig.idleMode(IdleMode.kBrake);
-        wheelMotor.configure(wheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        wheelMotor1.configure(wheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        wheelMotor2.configure(wheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     }
 
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
-        inputs.wheelMotorVoltage = wheelMotor.getAppliedOutput() * wheelMotor.getBusVoltage();
-        inputs.wheelMotorCurrent = wheelMotor.getOutputCurrent();
+        inputs.wheelMotorVoltage = wheelMotor1.getAppliedOutput() * wheelMotor1.getBusVoltage();
+        inputs.wheelMotorCurrent = wheelMotor1.getOutputCurrent();
 
         inputs.pivotMotorVoltage = pivotMotor.getMotorVoltage().getValueAsDouble();
         inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
@@ -53,7 +56,8 @@ public class IntakeIOReal implements IntakeIO {
 
     @Override
     public void setWheelMotorVoltage(double volts) {
-        wheelMotor.setVoltage(volts);
+        wheelMotor1.setVoltage(volts);
+        wheelMotor2.setVoltage(volts);
     }
 
     @Override
