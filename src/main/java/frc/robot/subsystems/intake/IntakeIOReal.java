@@ -22,7 +22,7 @@ public class IntakeIOReal implements IntakeIO {
 
     public IntakeIOReal() {
         wheelMotor1 = new SparkFlex(CAN.INTAKE_WHEEL_ONE, MotorType.kBrushless);
-        wheelMotor2 = new SparkFlex(CAN.INTAKE_WHEEL_ONE, MotorType.kBrushless);
+        wheelMotor2 = new SparkFlex(CAN.INTAKE_WHEEL_TWO, MotorType.kBrushless);
         pivotMotor = new TalonFX(CAN.INTAKE_PIVOT);
         pivotEncoder = new CANcoder(CAN.INTAKE_PIVOT_ENCODER);
 
@@ -57,7 +57,7 @@ public class IntakeIOReal implements IntakeIO {
     @Override
     public void setWheelMotorVoltage(double volts) {
         wheelMotor1.setVoltage(volts);
-        wheelMotor2.setVoltage(volts);
+        wheelMotor2.setVoltage(-volts);
     }
 
     @Override
