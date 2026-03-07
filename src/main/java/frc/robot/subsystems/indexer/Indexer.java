@@ -1,5 +1,10 @@
 package frc.robot.subsystems.indexer;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -9,8 +14,6 @@ public class  Indexer extends SubsystemBase {
   private IndexerIO io;
   private final IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
 
-  public static final LoggedTunableNumber spinDurationSec =
-      new LoggedTunableNumber("Indexer/SpinDurationSec");
   private static final LoggedTunableNumber indexVoltage = new LoggedTunableNumber("Indexer/indexVoltage");
   private static final LoggedTunableNumber reverseVoltage = new LoggedTunableNumber("Indexer/reverseVoltage");
 
@@ -23,7 +26,6 @@ public class  Indexer extends SubsystemBase {
     // Sets the default using IndexerConstants // MAKE Indexer CONSTANTS!!! Simply fill-in
     indexVoltage.initDefault(IndexerConstants.INDEXER_VOLTAGE);
     reverseVoltage.initDefault(IndexerConstants.REVERSE_VOLTAGE);
-    spinDurationSec.initDefault(1.5);
       
   }
 
@@ -34,19 +36,13 @@ public class  Indexer extends SubsystemBase {
     }
   
 
-
-  public void setIndexVoltage(double voltage) {
-    io.setVoltageIndexer(voltage);
-  }
-
-  public void stopIndexer(){
-    setIndexVoltage(0.0);
+  public void stop(){
+    io.setVoltageIndexer(0.0);
     io.setVoltageFeeder(0.0);
   }
 
   public void index() {
-        setIndexVoltage(IndexerConstants.INDEXER_VOLTAGE);
-        feed();
+      io.setVoltageIndexer(IndexerConstants.INDEXER_VOLTAGE);
     }
   
   public void feed(){
@@ -54,16 +50,12 @@ public class  Indexer extends SubsystemBase {
   }
 
   public void outdex() {
-        setIndexVoltage(IndexerConstants.REVERSE_VOLTAGE);
+        io.setVoltageIndexer(IndexerConstants.REVERSE_VOLTAGE);
     }
-
-  public boolean hasBall(){
-    return inputs.hasBall;
-  }
-
-  @AutoLogOutput
-  public double getVoltage() {
-    return inputs.indexerVoltage;
+  
+  public void feedex(){
+    index();
+    feed();
   }
 
 }

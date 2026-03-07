@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -17,7 +18,9 @@ import com.reduxrobotics.canand.CanandEventLoop;
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.RedirectorAutoAim;
 import frc.robot.commands.ShooterAutoAim;
+import frc.robot.commands.TurretAutoAim;
 import frc.robot.subsystems.Candle.Candle;
 import frc.robot.subsystems.Candle.CandleIOReal;
 import frc.robot.subsystems.Candle.CandleIOSim;
@@ -353,10 +356,21 @@ public class RobotContainer {
                     () -> true));
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getLeftY()), redirector));
+      turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getRightX()), turret));
+      indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
 
-    driveController.povUp().whileTrue(new InstantCommand(() -> indexer.index()).repeatedly());
-    indexer.setDefaultCommand(new InstantCommand(() -> indexer.stopIndexer(), indexer));
-    driveController.x().onTrue(new ShooterAutoAim(drive, shooter));
+      operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.feedex(), indexer).repeatedly());
+      operatorController.rightTrigger().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
+      
+      operatorController.a().toggleOnTrue(new ShooterAutoAim(drive, shooter).repeatedly());
+      operatorController.x().toggleOnTrue(new RedirectorAutoAim(drive, redirector).repeatedly());
+      operatorController.b().toggleOnTrue(new TurretAutoAim(drive, turret).repeatedly());
+      operatorController.y().onTrue(new InstantCommand(() -> shooter.stop()));
+
+      operatorController.rightBumper().whileTrue(new ShooterAutoAim(drive, shooter).repeatedly());
+      operatorController.rightBumper().whileTrue(new RedirectorAutoAim(drive, redirector).repeatedly());
+      operatorController.rightBumper().whileTrue(new TurretAutoAim(drive, turret).repeatedly().repeatedly());
+
   }
 
   /**
