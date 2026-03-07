@@ -307,25 +307,55 @@ public class RobotContainer {
           () -> -driveController.getRightX(),
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
-    //   candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
+      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
 
-      driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
-      driveController.b().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
-      driveController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2000.0)));
+      driveController.y().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
+      driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
+      driveController.b().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.MID)));
     
-      driveController.rightTrigger().whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
+      driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
+      driveController.rightBumper().whileTrue(new InstantCommand(()-> intake.outtake(), intake).repeatedly());
       intake.setDefaultCommand(new InstantCommand(()-> intake.stopWheels(), intake));
+
+          driveController.x().whileTrue(DriveCommands.joystickDriveFacingPoint(drive,
+          () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
+          () -> -driveController.getLeftX() * DriveConstants.LOW_GEAR_SCALER,
+          () -> FieldConstants.Hub.innerCenterPoint.toTranslation2d(), () -> drive.getPose().getRotation().getRadians(), () -> Math.PI / 2 - 0.2,
+          () -> Constants.DRIVE_ROBOT_RELATIVE));
+
+
+        driveController.povDown().whileTrue( DriveCommands.joystickDrive(
+            drive,
+                () -> -0.3,
+                () -> 0,
+                () -> 0.0,
+                () -> true));
+                  
+        driveController.povUp().whileTrue( DriveCommands.joystickDrive(
+            drive,
+                () -> 0.3,
+                () -> 0,
+                () -> 0.0,
+                () -> true));
+                  
+        driveController.povLeft().whileTrue( DriveCommands.joystickDrive(
+            drive,
+                () -> 0.0,
+                () -> 0.3,
+                () -> 0.0,
+                () -> true));
+            
+        driveController.povRight().whileTrue( DriveCommands.joystickDrive(
+                drive,
+                    () -> 0.0,
+                    () -> -0.3,
+                    () -> 0.0,
+                    () -> true));
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getLeftY()), redirector));
 
     driveController.povUp().whileTrue(new InstantCommand(() -> indexer.index()).repeatedly());
     indexer.setDefaultCommand(new InstantCommand(() -> indexer.stopIndexer(), indexer));
-
-    driveController.x().whileTrue(DriveCommands.joystickDriveFacingPoint(drive,
-          () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
-          () -> -driveController.getLeftX() * DriveConstants.LOW_GEAR_SCALER,
-          () -> FieldConstants.Hub.innerCenterPoint.toTranslation2d(), () -> drive.getPose().getRotation().getRadians(), () -> Math.PI / 2 - 0.2,
-          () -> Constants.DRIVE_ROBOT_RELATIVE));
     driveController.x().onTrue(new ShooterAutoAim(drive, shooter));
   }
 
