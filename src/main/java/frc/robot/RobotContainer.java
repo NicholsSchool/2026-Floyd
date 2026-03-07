@@ -362,9 +362,9 @@ public class RobotContainer {
       operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.feedex(), indexer).repeatedly());
       operatorController.rightTrigger().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
       
-      operatorController.a().toggleOnTrue(new ShooterAutoAim(drive, shooter).repeatedly());
-      operatorController.x().toggleOnTrue(new RedirectorAutoAim(drive, redirector).repeatedly());
-      operatorController.b().toggleOnTrue(new TurretAutoAim(drive, turret).repeatedly());
+      operatorController.a().whileTrue(new ShooterAutoAim(drive, shooter).repeatedly());
+      operatorController.x().whileTrue(new RedirectorAutoAim(drive, redirector).repeatedly());
+      operatorController.b().whileTrue(new TurretAutoAim(drive, turret).repeatedly());
       operatorController.y().onTrue(new InstantCommand(() -> shooter.stop()));
 
       operatorController.rightBumper().whileTrue(new ShooterAutoAim(drive, shooter).repeatedly());
