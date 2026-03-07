@@ -75,7 +75,9 @@ public class Redirector extends SubsystemBase
 
         switch(redirectorMode){
           case GO_TO_POSITION:
-          voltageCmdPid = redirectorPidController.calculate( this.getAngle());
+          voltageCmdPid = redirectorPidController.calculate( this.getAngle()) + 
+          Math.signum(redirectorPidController.calculate( this.getAngle())) * RedirectorConstants.MIN_VOLTAGE;
+
           voltageCmdManual = 0.0;
           break;
           case MANUAL:
