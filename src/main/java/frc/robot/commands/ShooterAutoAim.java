@@ -37,7 +37,7 @@ public class ShooterAutoAim extends InstantCommand {
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
     double distance = hubOffset.getNorm();
     //https://www.desmos.com/calculator/fwhxwn9toz
-    double shooterMetersPerSec = -9.09 * Math.sin(1.727 * Math.pow(distance - 0.753025, 0.2)) + 15.46976;
+    double shooterMetersPerSec = -10.0027 * Math.sin(1.59949 * Math.pow(distance - 0.573617, 0.2)) + 17.34289;
 
     shooter.setVelMPS(shooterMetersPerSec, redirector.getAngle());
 
