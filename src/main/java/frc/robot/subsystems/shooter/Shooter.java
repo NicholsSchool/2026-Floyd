@@ -75,9 +75,9 @@ public class Shooter extends SubsystemBase {
         bangBangController.setSetpoint(setpoint);
     }
 
-    public void setVelMPS(double velocity){
+    public void setVelMPS(double velocity, double redirectorAngleRad){
         //we need to find this regression
-        double rpm = 380.5 * velocity - 691;
+        double rpm = (281.25 * redirectorAngleRad + 59.225) * velocity + (-4152.75 * redirectorAngleRad + 4044.725);
         setRPM(rpm);
     }
 

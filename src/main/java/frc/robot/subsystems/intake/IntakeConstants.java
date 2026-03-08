@@ -13,7 +13,7 @@ public final class IntakeConstants {
     public static final double PIVOT_MAX_ACCEL = 3.0;
 
     public static final double PIVOT_IN_ANGLE = 0.2;
-    public static final double PIVOT_OUT_ANGLE = 2.3;
+    public static final double PIVOT_OUT_ANGLE = 2.2;
     public static final double PIVOT_MID_ANGLE = 1.9;
 
     public static final double PIVOT_RATIO = 9.0;

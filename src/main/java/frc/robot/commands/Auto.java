@@ -48,7 +48,7 @@ public class Auto {
     }
 
     public Command AutoAim(){
-        return new ParallelCommandGroup(new ShooterAutoAim(drive, shooter),
+        return new ParallelCommandGroup(new ShooterAutoAim(drive, shooter, redirector),
          new TurretAutoAim(drive, turret),
           new RedirectorAutoAim(drive, redirector));
     }
