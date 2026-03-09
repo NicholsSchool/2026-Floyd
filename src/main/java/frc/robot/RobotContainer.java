@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -363,10 +364,16 @@ public class RobotContainer {
 
       operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.feedex(), indexer).repeatedly());
       operatorController.rightTrigger().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
-      
-      operatorController.a().whileTrue(new ShooterAutoAim(drive, shooter, redirector).repeatedly());
-      operatorController.x().whileTrue(new RedirectorAutoAim(drive, redirector).repeatedly());
-      operatorController.b().whileTrue(new TurretAutoAim(drive, turret).repeatedly());
+      // 2m away
+      operatorController.a().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(7.0765, 1.273)),
+       new InstantCommand(() -> redirector.setTargetPosition(1.273))));
+      // 3m away
+      operatorController.b().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(7.5212, 1.18154)),
+       new InstantCommand(() -> redirector.setTargetPosition(1.18154))));
+        // 4m away
+      operatorController.x().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(8.03452, 1.12122)),
+       new InstantCommand(() -> redirector.setTargetPosition(1.12122))));
+
       operatorController.y().onTrue(new InstantCommand(() -> shooter.stop()));
 
       operatorController.rightBumper().whileTrue(new ShooterAutoAim(drive, shooter, redirector).repeatedly());

@@ -282,6 +282,13 @@ public class Drive extends SubsystemBase {
   }
 
   @AutoLogOutput
+  public double getHubDistance(){
+     var currentPose = getTurretPose();
+    Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
+    return hubOffset.getNorm();
+  }
+
+  @AutoLogOutput
   public Pose2d getTurretPose(){
     return new Pose2d(new Translation2d(getPose().getX() + getTurretOffset().getX(), 
       getPose().getY() + getTurretOffset().getY()), getPose().getRotation());
