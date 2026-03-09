@@ -39,7 +39,7 @@ public class ShooterAutoAim extends InstantCommand {
     //https://www.desmos.com/calculator/fwhxwn9toz
     double shooterMetersPerSec = -10.0027 * Math.sin(1.59949 * Math.pow(distance - 0.573617, 0.2)) + 17.34289;
 
-    shooter.setVelMPS(shooterMetersPerSec, redirector.getAngle());
+    shooter.setVelMPS(shooterMetersPerSec, redirector.targetAngle());
 
   }
 }

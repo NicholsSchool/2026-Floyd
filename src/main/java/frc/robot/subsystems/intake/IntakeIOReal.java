@@ -62,7 +62,8 @@ public class IntakeIOReal implements IntakeIO {
 
     @Override
     public void setPivotMotorVoltage(double volts) {
-        pivotMotor.setVoltage(volts);
+        //TODO: change this back
+        pivotMotor.setVoltage(0.0);
     }
     
 }

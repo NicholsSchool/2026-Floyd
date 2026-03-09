@@ -363,22 +363,28 @@ public class RobotContainer {
       indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
 
       operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.feedex(), indexer).repeatedly());
-      operatorController.rightTrigger().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
+      operatorController.leftBumper().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
       // 2m away
-      operatorController.a().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(7.0765, 1.273)),
+      operatorController.a().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(7.0765, 1.273)),
        new InstantCommand(() -> redirector.setTargetPosition(1.273))));
       // 3m away
-      operatorController.b().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(7.5212, 1.18154)),
+      operatorController.b().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(7.5212, 1.18154)),
        new InstantCommand(() -> redirector.setTargetPosition(1.18154))));
         // 4m away
-      operatorController.x().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(8.03452, 1.12122)),
+      operatorController.y().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(8.03452, 1.12122)),
        new InstantCommand(() -> redirector.setTargetPosition(1.12122))));
 
-      operatorController.y().onTrue(new InstantCommand(() -> shooter.stop()));
+      operatorController.x().onTrue(new InstantCommand(() -> shooter.stop()));
 
-      operatorController.rightBumper().whileTrue(new ShooterAutoAim(drive, shooter, redirector).repeatedly());
-      operatorController.rightBumper().whileTrue(new RedirectorAutoAim(drive, redirector).repeatedly());
-      operatorController.rightBumper().whileTrue(new TurretAutoAim(drive, turret).repeatedly().repeatedly());
+      operatorController.povDown().onTrue(new InstantCommand(() -> turret.setTargetPosition(0.0)));
+
+
+      /** right trigger autoalign 
+       * aby for 123 m away 
+       * dpad up turret to zero 
+       * feed LB feedex LT
+       * stop shooter x
+      */ 
 
   }
 
