@@ -22,7 +22,7 @@ public class Turret extends SubsystemBase
     private double accelRad = 0.0;
 
     private double targetAngle = 0.0;
-    private double voltageCmdPid = 0.0;
+    private double voltageCmdPid;
     private boolean reachedTargetPosition = true;
     private double voltageCmdManual = 0.0;
 
@@ -65,6 +65,8 @@ public class Turret extends SubsystemBase
 
         this.turretMode = TurretMode.GO_TO_POSITION;
         setTargetPosition(getAngle());
+
+        voltageCmdPid = 0.0;
     }
 
     @Override
@@ -77,7 +79,8 @@ public class Turret extends SubsystemBase
 
         switch(turretMode){
           case GO_TO_POSITION:
-          voltageCmdPid =  turretPidController.calculate( this.getAngle());
+          voltageCmdPid =  turretPidController.calculate( this.getAngle()) +
+           Math.signum(turretPidController.calculate( this.getAngle())) * TurretConstants.TURRET_FEED;
           voltageCmdManual = 0.0;
           break;
           case MANUAL:

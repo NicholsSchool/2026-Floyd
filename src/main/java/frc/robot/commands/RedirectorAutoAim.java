@@ -29,7 +29,7 @@ public class RedirectorAutoAim extends InstantCommand {
     double distance = hubOffset.getNorm() + AutoConstants.AUTOAIM_GASLIGHT;
 
     //https://www.desmos.com/calculator/fwhxwn9toz
-    double hoodTheta = 4.24803 / Math.pow(distance + 3.24144 , 2) + 1.23079;
+    double hoodTheta = 19.98786 / Math.pow(distance + 4.91128 , 2) + 0.832197;
 
     redirector.setTargetPosition(hoodTheta);
   }

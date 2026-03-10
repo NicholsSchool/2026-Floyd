@@ -136,7 +136,7 @@ public class RobotContainer {
         indexer = new Indexer( new IndexerIOReal());
         candle = new Candle(new CandleIOReal());
         shooter = new Shooter(new ShooterIOReal());
-        intake = new Intake(new IntakeIOReal());
+        intake = new Intake(new IntakeIOSim());
        // CanandEventLoop.getInstance();
         break;
 
@@ -379,7 +379,8 @@ public class RobotContainer {
 
       operatorController.povDown().onTrue(new InstantCommand(() -> turret.setTargetPosition(0.0)));
 
-      operatorController.povLeft().onTrue(new SequentialCommandGroup(new RedirectorAutoAim(drive, redirector), new ShooterAutoAim(drive, shooter, redirector)));
+      operatorController.povLeft().onTrue(new SequentialCommandGroup(new RedirectorAutoAim(drive, redirector), new ShooterAutoAim(drive, shooter, redirector),
+       new TurretAutoAim(drive, turret)));
 
 
       /** right trigger autoalign 
