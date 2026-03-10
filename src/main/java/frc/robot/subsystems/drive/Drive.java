@@ -294,6 +294,11 @@ public class Drive extends SubsystemBase {
       getPose().getY() + getTurretOffset().getY()), getPose().getRotation());
   }
 
+  @AutoLogOutput
+  public Pose2d getShooterLocation(){
+    return new Pose2d(FieldConstants.Hub.topCenterPoint.toTranslation2d(), new Rotation2d());
+  }
+
   /** Returns the current estimated rotation. */
   @AutoLogOutput
   public Rotation2d getRotation() {

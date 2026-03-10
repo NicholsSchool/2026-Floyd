@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -37,6 +38,7 @@ import frc.robot.subsystems.redirector.Redirector;
 import frc.robot.subsystems.redirector.RedirectorIOReal;
 import frc.robot.subsystems.redirector.RedirectorIOSim;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.TurretIOReal;
 import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.IndexerIOReal;
@@ -130,11 +132,11 @@ public class RobotContainer {
                 new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1));
 
         redirector = new Redirector(new RedirectorIOReal());
-        turret = new Turret(new TurretIOSim());
+        turret = new Turret(new TurretIOReal());
         indexer = new Indexer( new IndexerIOReal());
         candle = new Candle(new CandleIOReal());
         shooter = new Shooter(new ShooterIOReal());
-        intake = new Intake(new IntakeIOSim());
+        intake = new Intake(new IntakeIOReal());
        // CanandEventLoop.getInstance();
         break;
 
@@ -361,22 +363,23 @@ public class RobotContainer {
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getLeftY()), redirector));
       turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getRightX()), turret));
       indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
-
       operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.feedex(), indexer).repeatedly());
       operatorController.leftBumper().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
       // 2m away
-      operatorController.a().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(7.0765, 1.273)),
-       new InstantCommand(() -> redirector.setTargetPosition(1.273))));
+      operatorController.a().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(8.55141, 1.35955)),
+       new InstantCommand(() -> redirector.setTargetPosition(1.35955))));
       // 3m away
-      operatorController.b().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(7.5212, 1.18154)),
-       new InstantCommand(() -> redirector.setTargetPosition(1.18154))));
+      operatorController.b().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(9.23195, 1.32444)),
+       new InstantCommand(() -> redirector.setTargetPosition(1.32444))));
         // 4m away
-      operatorController.y().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(8.03452, 1.12122)),
-       new InstantCommand(() -> redirector.setTargetPosition(1.12122))));
+      operatorController.y().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(9.9188, 1.30137)),
+       new InstantCommand(() -> redirector.setTargetPosition(1.30137))));
 
       operatorController.x().onTrue(new InstantCommand(() -> shooter.stop()));
 
       operatorController.povDown().onTrue(new InstantCommand(() -> turret.setTargetPosition(0.0)));
+
+      operatorController.povLeft().onTrue(new SequentialCommandGroup(new RedirectorAutoAim(drive, redirector), new ShooterAutoAim(drive, shooter, redirector)));
 
 
       /** right trigger autoalign 

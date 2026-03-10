@@ -35,9 +35,9 @@ public class ShooterAutoAim extends InstantCommand {
   public void execute() {
     var currentPose = drive.getTurretPose();
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
-    double distance = hubOffset.getNorm();
+    double distance = hubOffset.getNorm() + AutoConstants.AUTOAIM_GASLIGHT;
     //https://www.desmos.com/calculator/fwhxwn9toz
-    double shooterMetersPerSec = -10.0027 * Math.sin(1.59949 * Math.pow(distance - 0.573617, 0.2)) + 17.34289;
+    double shooterMetersPerSec = -10.38954 * Math.sin(1.66397 * Math.pow(distance - 0.621899, 0.2)) + 18.42387;
 
     shooter.setVelMPS(shooterMetersPerSec, redirector.targetAngle());
 

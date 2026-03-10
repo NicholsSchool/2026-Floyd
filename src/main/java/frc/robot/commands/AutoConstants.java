@@ -30,4 +30,6 @@ public class AutoConstants {
 
     public static final double INTAKE_TIME = 2.0;
 
+    public static final double AUTOAIM_GASLIGHT = 0.6;
+
 }
