@@ -1,5 +1,7 @@
 package frc.robot.subsystems.intake;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -29,7 +31,7 @@ public class IntakeIOReal implements IntakeIO {
         TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
         pivotConfig.CurrentLimits.StatorCurrentLimit = IntakeConstants.PIVOT_CURRENT_LIMIT;
         pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         pivotMotor.getConfigurator().apply(pivotConfig);
         pivotMotor.setPosition(IntakeConstants.PIVOT_IN_ANGLE * IntakeConstants.PIVOT_RATIO); // Always start with pivot IN
 
@@ -43,8 +45,11 @@ public class IntakeIOReal implements IntakeIO {
 
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
-        inputs.wheelMotorVoltage = wheelMotor1.getAppliedOutput() * wheelMotor1.getBusVoltage();
-        inputs.wheelMotorCurrent = wheelMotor1.getOutputCurrent();
+        inputs.wheelMotorVoltage1 = wheelMotor1.getAppliedOutput() * wheelMotor1.getBusVoltage();
+        inputs.wheelMotorCurrent1 = wheelMotor1.getOutputCurrent();
+
+        inputs.wheelMotorVoltage2 = wheelMotor2.getAppliedOutput() * wheelMotor2.getBusVoltage();
+        inputs.wheelMotorCurrent2 = wheelMotor2.getOutputCurrent();
 
         inputs.pivotMotorVoltage = pivotMotor.getMotorVoltage().getValueAsDouble();
         inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
@@ -54,6 +59,7 @@ public class IntakeIOReal implements IntakeIO {
         
     }
 
+
     @Override
     public void setWheelMotorVoltage(double volts) {
         wheelMotor1.setVoltage(volts);
@@ -62,8 +68,7 @@ public class IntakeIOReal implements IntakeIO {
 
     @Override
     public void setPivotMotorVoltage(double volts) {
-        //TODO: change this back
-        pivotMotor.setVoltage(0.0);
+        pivotMotor.setVoltage(volts);
     }
     
 }

@@ -15,7 +15,7 @@ public class TurretConstants {
     public static final double TURRET_GEAR_RATIO = 1.0;
     public static final double TURRET_MANUAL_SCALAR = 1.0;
     public static final double TURRET_SOFT_LIMIT = Math.toRadians(5.0);
-    public static final double TURRET_CURRENT_LIMIT = 0.0; //TODO: change this
+    public static final double TURRET_CURRENT_LIMIT = 30.0; //TODO: change this
 
 
     public static final double TURRET_OFFSET_X = Units.inchesToMeters(-5.0);

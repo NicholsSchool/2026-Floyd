@@ -30,8 +30,8 @@ public class IntakeIOFrankenlew implements IntakeIO {
 
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
-        inputs.wheelMotorVoltage = wheelMotor.getAppliedOutput() * wheelMotor.getBusVoltage();
-        inputs.wheelMotorCurrent = wheelMotor.getOutputCurrent();
+        inputs.wheelMotorVoltage1 = wheelMotor.getAppliedOutput() * wheelMotor.getBusVoltage();
+        inputs.wheelMotorCurrent1 = wheelMotor.getOutputCurrent();
 
         inputs.pivotMotorVoltage = 0.0;
         inputs.pivotMotorCurrent = 0.0;

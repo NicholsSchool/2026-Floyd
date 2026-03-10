@@ -30,8 +30,8 @@ public class IntakeIOSim implements IntakeIO {
         inputs.pivotMotorVoltage = pivotMotor.getInputVoltage();
         inputs.pivotMotorCurrent = pivotMotor.getCurrentDrawAmps();
 
-        inputs.wheelMotorVoltage = wheelMotor.getInputVoltage();
-        inputs.wheelMotorCurrent = wheelMotor.getCurrentDrawAmps();
+        inputs.wheelMotorVoltage1 = wheelMotor.getInputVoltage();
+        inputs.wheelMotorCurrent1 = wheelMotor.getCurrentDrawAmps();
 
     }
 

@@ -5,7 +5,7 @@ public final class IntakeConstants {
     public static final double INTAKE_VOLTAGE = 3.5;
     public static final double OUTTAKE_VOLTAGE = -2.0;
 
-    public static final double PIVOT_P = 1.0;
+    public static final double PIVOT_P = 2.0;
     public static final double PIVOT_I = 0.0;
     public static final double PIVOT_D = 0.0;
 
