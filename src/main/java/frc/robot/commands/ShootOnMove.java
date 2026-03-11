@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.photonvision.PhotonUtils;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -38,8 +39,11 @@ public class ShootOnMove extends InstantCommand {
 
   @Override
   public void execute() {
-    var currentPose = drive.getTurretPose();
     var fieldVelocity = drive.getFieldVelocity();
+    var currentPose = new Pose2d(new Translation2d(drive.getTurretPose().getX() + fieldVelocity.dx * AutoConstants.SHOOT_ON_MOVE_FUTURE_MULTIPLIER,
+     drive.getTurretPose().getY() + fieldVelocity.dy * AutoConstants.SHOOT_ON_MOVE_FUTURE_MULTIPLIER),
+     drive.getTurretPose().getRotation());
+     
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
     double distance = hubOffset.getNorm() + AutoConstants.AUTOAIM_GASLIGHT;
 

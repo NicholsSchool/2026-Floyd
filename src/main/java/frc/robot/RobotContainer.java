@@ -383,6 +383,8 @@ public class RobotContainer {
       operatorController.povLeft().onTrue(new SequentialCommandGroup(new RedirectorAutoAim(drive, redirector), new ShooterAutoAim(drive, shooter, redirector),
        new TurretAutoAim(drive, turret)));
 
+       operatorController.povRight().whileTrue(new ShootOnMove(drive, shooter, redirector, turret).repeatedly());
+
     //    operatorController.povRight().whileTrue(new ShootOnMove(drive, shooter, redirector, turret).repeatedly());
 
 

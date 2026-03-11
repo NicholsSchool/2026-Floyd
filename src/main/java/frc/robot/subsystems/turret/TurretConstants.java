@@ -10,7 +10,7 @@ public class TurretConstants {
     public static final double TURRET_P = 2.0; // TODO: tune all 3 of these PID constants
     public static final double TURRET_I = 0.0;
     public static final double TURRET_D = 0.0;
-    public static final double TURRET_MAX_ANGLE = Math.toRadians(110.0);
+    public static final double TURRET_MAX_ANGLE = Math.toRadians(0.0);
     public static final double TURRET_MIN_ANGLE = Math.toRadians(-90.0);
     public static final double TURRET_GEAR_RATIO = 1.0;
     public static final double TURRET_MANUAL_SCALAR = 1.0;
