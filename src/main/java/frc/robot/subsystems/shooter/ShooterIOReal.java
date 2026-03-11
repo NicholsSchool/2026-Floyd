@@ -14,8 +14,8 @@ public class ShooterIOReal implements ShooterIO {
     private TalonFX shooterMotorTop;
 
     public ShooterIOReal(){
-        shooterMotorBottom = new TalonFX(CAN.SHOOTER_BOTTOM,"shooter");
-        shooterMotorTop = new TalonFX(CAN.SHOOTER_TOP, "shooter");
+        shooterMotorBottom = new TalonFX(CAN.SHOOTER_BOTTOM, "Shooter");
+        shooterMotorTop = new TalonFX(CAN.SHOOTER_TOP,"Shooter");
 
          var config = new TalonFXConfiguration();
         config.CurrentLimits.StatorCurrentLimit = ShooterConstants.SHOOTER_MOTOR_CURRENT_LIMIT;

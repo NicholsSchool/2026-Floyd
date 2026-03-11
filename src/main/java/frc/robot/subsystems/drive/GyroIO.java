@@ -20,7 +20,6 @@ public interface GyroIO {
     public double rollVelocityRadPerSec = 0.0;
     public double pitchVelocityRadPerSec = 0.0;
     public double yawVelocityRadPerSec = 0.0; // current yaw velocity, positive turn to left.
-    public boolean isTipped = false;
   }
 
   default void resetIMU() {}

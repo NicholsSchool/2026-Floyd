@@ -158,7 +158,7 @@ public class DriveCommands {
               new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
 
           // get desired angle
-          Pose2d robotPose = drive.getPose();
+          Pose2d robotPose = drive.getTurretPose();
           double desiredAngle =
               Math.atan2(
                   flippedFacingPose.getY() - robotPose.getY(),

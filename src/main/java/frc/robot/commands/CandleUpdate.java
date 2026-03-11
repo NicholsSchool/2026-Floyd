@@ -35,36 +35,38 @@ public class CandleUpdate extends InstantCommand{
     @Override
     public void execute(){
 
-        if(!((turret.getAngle() > TurretConstants.TURRET_MIN_ANGLE + TurretConstants.TURRET_SOFT_LIMIT) &&
-         turret.getAngle() < TurretConstants.TURRET_MAX_ANGLE - TurretConstants.TURRET_SOFT_LIMIT)){
-            candle.setColor(CandleConstants.WRONG_RED, Subsystem.TURRET);
-        }else if(turret.isAtGoal()){
-            candle.setColor(CandleConstants.BEST_GREEN, Subsystem.TURRET);
-        }else if(turret.getTurretMode() == Turret.TurretMode.MANUAL){
-            candle.setColor(CandleConstants.IVORY, Subsystem.TURRET);
-        }else{
-            candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.TURRET);
-        }
+        // if(!((turret.getAngle() > TurretConstants.TURRET_MIN_ANGLE + TurretConstants.TURRET_SOFT_LIMIT) &&
+        //  turret.getAngle() < TurretConstants.TURRET_MAX_ANGLE - TurretConstants.TURRET_SOFT_LIMIT)){
+        //     candle.setColor(CandleConstants.WRONG_RED, Subsystem.TURRET);
+        // }else if(turret.isAtGoal()){
+        //     candle.setColor(CandleConstants.BEST_GREEN, Subsystem.TURRET);
+        // }else if(turret.getTurretMode() == Turret.TurretMode.MANUAL){
+        //     candle.setColor(CandleConstants.IVORY, Subsystem.TURRET);
+        // }else{
+        //     candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.TURRET);
+        // }
 
-        if(redirector.isAtGoal()){
-            candle.setColor(CandleConstants.BEST_GREEN, Subsystem.REDIRECTOR);
-        }else{
-            candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.REDIRECTOR);
-        }
+        // if(redirector.isAtGoal()){
+        //     candle.setColor(CandleConstants.BEST_GREEN, Subsystem.REDIRECTOR);
+        // }else{
+        //     candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.REDIRECTOR);
+        // }
 
-        if(shooter.isAtGoal()){
-            candle.setColor(CandleConstants.BEST_GREEN, Subsystem.SHOOTER);
-        }else{
-            candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.SHOOTER);
-        }
+        // if(shooter.isAtGoal()){
+        //     candle.setColor(CandleConstants.BEST_GREEN, Subsystem.SHOOTER);
+        // }else{
+        //     candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.SHOOTER);
+        // }
 
-        if(indexer.hasBall()){
-            candle.setColor(CandleConstants.BEST_GREEN, Subsystem.INDEXER);
-        }else if(indexer.getVoltage() > 1.0){
-            candle.setColor(CandleConstants.IVORY, Subsystem.INDEXER);
-        }else{
-            candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.INDEXER);
-        }
+        // if(indexer.hasBall()){
+        //     candle.setColor(CandleConstants.BEST_GREEN, Subsystem.INDEXER);
+        // }else if(indexer.getVoltage() > 1.0){
+        //     candle.setColor(CandleConstants.IVORY, Subsystem.INDEXER);
+        // }else{
+        //     candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.INDEXER);
+        // }
+
+        candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.DRIVE);
     
             
     }

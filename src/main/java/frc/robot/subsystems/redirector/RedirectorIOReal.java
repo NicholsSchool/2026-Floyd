@@ -13,8 +13,8 @@ public class RedirectorIOReal implements RedirectorIO{
     private CANcoder redirectorEncoder;
 
     public RedirectorIOReal(){
-        redirectorMotor = new TalonFX(CAN.REDIRECTOR);
-        redirectorEncoder = new CANcoder(CAN.REDIRECTOR_ENCODER);
+        redirectorMotor = new TalonFX(CAN.REDIRECTOR, "Shooter");
+        redirectorEncoder = new CANcoder(CAN.REDIRECTOR_ENCODER, "Shooter");
 
          TalonFXConfiguration redirectorConfig = new TalonFXConfiguration();
         redirectorConfig.CurrentLimits.StatorCurrentLimit = RedirectorConstants.REDIRECTOR_CURRENT_LIMIT;
@@ -27,7 +27,7 @@ public class RedirectorIOReal implements RedirectorIO{
     public void updateInputs(RedirectorIOInputs inputs){
         inputs.appliedVolts = redirectorMotor.getMotorVoltage().getValueAsDouble();
         inputs.velocityRadPerSec = redirectorMotor.getVelocity().getValueAsDouble();
-        inputs.currentAngle = redirectorEncoder.getAbsolutePosition().getValueAsDouble();
+        inputs.currentAngle = redirectorEncoder.getAbsolutePosition().getValueAsDouble() * 6.064 + 0.275446;
         inputs.currentAmps = redirectorMotor.getStatorCurrent().getValueAsDouble();
     }
 

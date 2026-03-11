@@ -24,12 +24,12 @@ public class RedirectorAutoAim extends InstantCommand {
 
   @Override
   public void execute() {
-    var currentPose = drive.getPose();
+    var currentPose = drive.getTurretPose();
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
-    double distance = hubOffset.getNorm();
+    double distance = hubOffset.getNorm() + AutoConstants.AUTOAIM_GASLIGHT;
 
     //https://www.desmos.com/calculator/fwhxwn9toz
-    double hoodTheta = 40.0048 / Math.pow(distance + 5.88781 , 2) + 0.55959;
+    double hoodTheta = 19.98786 / Math.pow(distance + 4.91128 , 2) + 0.832197;
 
     redirector.setTargetPosition(hoodTheta);
   }

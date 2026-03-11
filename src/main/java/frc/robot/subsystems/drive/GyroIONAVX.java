@@ -30,10 +30,8 @@ public class GyroIONAVX implements GyroIO {
    */
   public void updateInputs(GyroIOInputs inputs) {
     inputs.connected = navx.isConnected();
-    // navx uses positive yaw turn to right, so flip sign
     inputs.yawPositionRad = -Math.toRadians(navx.getAngle());
     inputs.yawVelocityRadPerSec = -Math.toRadians(navx.getRate());
-    inputs.isTipped = Math.abs(navx.getPitch()) > 10.0 || Math.abs(navx.getRoll()) > 10.0;
   }
 
   @Override

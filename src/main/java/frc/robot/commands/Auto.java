@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.FieldConstants;
 import frc.robot.commands.AutoConfig.PickupRegion;
 import frc.robot.commands.AutoConfig.ShootingRegion;
@@ -48,7 +49,7 @@ public class Auto {
     }
 
     public Command AutoAim(){
-        return new ParallelCommandGroup(new ShooterAutoAim(drive, shooter),
+        return new ParallelCommandGroup(new ShooterAutoAim(drive, shooter, redirector),
          new TurretAutoAim(drive, turret),
           new RedirectorAutoAim(drive, redirector));
     }
@@ -113,7 +114,8 @@ public class Auto {
         return new SequentialCommandGroup(goToCenter(AutoConfig.pickupLocationOne), new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)),
          new ParallelCommandGroup(intakeCenter(AutoConfig.followThroughOne, AutoConfig.pickupLocationOne),
           new InstantCommand(() -> intake.intake()).repeatedly().withTimeout(AutoConstants.INTAKE_TIME)), new InstantCommand(() -> intake.stopWheels()),
-           new ParallelCommandGroup(driveToShootPos(AutoConfig.shootingPositionOne, AutoConfig.pickupLocationOne, AutoConfig.followThroughOne), AutoAim()));
+          driveToShootPos(AutoConfig.shootingPositionOne, AutoConfig.pickupLocationOne, AutoConfig.followThroughOne), AutoAim(),
+            new WaitCommand(AutoConstants.AUTO_REV_TIME), new InstantCommand(() -> indexer.feedex()).repeatedly().withTimeout(10.0));
     }
 
 

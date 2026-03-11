@@ -25,10 +25,10 @@ public final class ModuleConstants {
     public static final IdleMode DRIVE_MOTOR_IDLE_MODE = IdleMode.kBrake;
     public static final IdleMode TURNING_MOTOR_IDLE_MODE = IdleMode.kBrake;
 
-    public static final double MODULE_ZERO_ENCODER_OFFSET = 0.0;
-    public static final double MODULE_ONE_ENCODER_OFFSET = 0.0;
-    public static final double MODULE_TWO_ENCODER_OFFSET = 0.0;
-    public static final double MODULE_THREE_ENCODER_OFFSET = 0.0;
+    public static final double MODULE_ZERO_ENCODER_OFFSET = Math.toRadians(-101.25);
+    public static final double MODULE_ONE_ENCODER_OFFSET = Math.toRadians(-66.71);
+    public static final double MODULE_TWO_ENCODER_OFFSET = Math.toRadians(155.84 );
+    public static final double MODULE_THREE_ENCODER_OFFSET = Math.toRadians(61.52);
 
     public static double DRIVING_MOTOR_CURRENT_LIMIT = 30.0;
     public static final double MOTOR_SUPPLY_CURRENT_LIMIT = 30.0;

@@ -24,6 +24,7 @@ public class Intake extends SubsystemBase {
     public enum PivotPreset {
         IN("In"),
         OUT("Out"),
+        MID("Mid"),
         CUSTOM("Custom");
 
         private final String name;
@@ -59,7 +60,7 @@ public class Intake extends SubsystemBase {
 
     public Intake(IntakeIO io) {
         this.io = io;
-        setPivotGoal(IntakeConstants.PIVOT_IN_ANGLE);
+        setPivotGoal(IntakeConstants.PIVOT_OUT_ANGLE);
     }
 
     @Override
@@ -112,6 +113,8 @@ public class Intake extends SubsystemBase {
                 setPivotGoal(IntakeConstants.PIVOT_OUT_ANGLE);
                 pivotPreset = PivotPreset.OUT;
                 break;
+            case MID:
+                setPivotGoal(IntakeConstants.PIVOT_MID_ANGLE);
             default:
                 break;
         }
@@ -144,7 +147,7 @@ public class Intake extends SubsystemBase {
     public double getPivotVoltage() { return inputs.pivotMotorVoltage; }
 
     @AutoLogOutput
-    public double getWheelVoltage() { return inputs.wheelMotorVoltage; }
+    public double getWheelVoltage() { return inputs.wheelMotorVoltage1; }
 
 
 }

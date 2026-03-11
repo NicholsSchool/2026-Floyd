@@ -60,9 +60,10 @@ public class Redirector extends SubsystemBase
         redirectorPidController.setP(redirectorKp.get());
         redirectorPidController.setI(redirectorKi.get());
         redirectorPidController.setD(redirectorKd.get());
+        redirectorPidController.setTolerance(0.01);
 
         this.redirectorMode = RedirectorMode.GO_TO_POSITION;
-        setTargetPosition(getAngle());
+        setTargetPosition(1.1);
     }
 
     @Override
@@ -75,7 +76,9 @@ public class Redirector extends SubsystemBase
 
         switch(redirectorMode){
           case GO_TO_POSITION:
-          voltageCmdPid = redirectorPidController.calculate( this.getAngle());
+          voltageCmdPid = isAtGoal() ? 0.0 : redirectorPidController.calculate( this.getAngle()) + 
+          Math.signum(redirectorPidController.calculate( this.getAngle())) * RedirectorConstants.MIN_VOLTAGE;
+
           voltageCmdManual = 0.0;
           break;
           case MANUAL:

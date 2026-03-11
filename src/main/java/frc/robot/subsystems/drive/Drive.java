@@ -17,6 +17,7 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -32,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 import frc.robot.FieldConstants;
+import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.BradyMathLib;
@@ -39,7 +41,6 @@ import frc.robot.util.BradyMathLib.PoseVisionStats;
 
 import java.util.ArrayDeque;
 
-// import frc.robot.commands.VisionCommands.PhotonInfo;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -276,6 +277,28 @@ public class Drive extends SubsystemBase {
     return AllianceFlipUtil.applyRotate(kalman.getEstimatedPosition());
   }
 
+  public Translation2d getTurretOffset(){
+    return new Translation2d(TurretConstants.TURRET_OFFSET_X, TurretConstants.TURRET_OFFSET_Y).rotateBy(getPose().getRotation());
+  }
+
+  @AutoLogOutput
+  public double getHubDistance(){
+     var currentPose = getTurretPose();
+    Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
+    return hubOffset.getNorm();
+  }
+
+  @AutoLogOutput
+  public Pose2d getTurretPose(){
+    return new Pose2d(new Translation2d(getPose().getX() + getTurretOffset().getX(), 
+      getPose().getY() + getTurretOffset().getY()), getPose().getRotation());
+  }
+
+  @AutoLogOutput
+  public Pose2d getShooterLocation(){
+    return new Pose2d(FieldConstants.Hub.topCenterPoint.toTranslation2d(), new Rotation2d());
+  }
+
   /** Returns the current estimated rotation. */
   @AutoLogOutput
   public Rotation2d getRotation() {
@@ -328,6 +351,7 @@ public class Drive extends SubsystemBase {
    * TJG Returns the measured X, Y, and theta field velocities in meters per sec. The components of
    * the twist are velocities and NOT changes in position.
    */
+  @AutoLogOutput
   public Twist2d getFieldVelocity() {
     return fieldVelocity;
   }
@@ -347,6 +371,7 @@ public class Drive extends SubsystemBase {
         fieldVelocity.dx * Math.sin(getYaw()) + fieldVelocity.dy * Math.cos(getYaw()),
         fieldVelocity.dtheta));
   }
+
 
   @AutoLogOutput
   public double getYaw() {

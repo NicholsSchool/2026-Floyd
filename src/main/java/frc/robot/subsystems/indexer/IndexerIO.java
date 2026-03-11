@@ -9,12 +9,16 @@ public interface IndexerIO {
         public double indexerVoltage = 0.0;
         public double indexerSupplyVoltage = 0.0;
         public double indexerCurrentAmps = 0.0;
+        public double feederVoltage = 0.0;
+        public double feederSupplyVoltage = 0.0;
+        public double feederCurrentAmps = 0.0;
         public boolean hasBall = false;
 
     }
 
     public default void updateInputs(IndexerIOInputs inputs) {}
-    public default void setVoltage(double voltage) {}
+    public default void setVoltageIndexer(double voltage) {}
+    public default void setVoltageFeeder(double voltage) {}
 
 
 

@@ -6,20 +6,27 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.Auto;
+
+import com.reduxrobotics.canand.CanandEventLoop;
+
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.RedirectorAutoAim;
+import frc.robot.commands.ShootOnMove;
+import frc.robot.commands.ShooterAutoAim;
+import frc.robot.commands.TurretAutoAim;
 import frc.robot.subsystems.Candle.Candle;
 import frc.robot.subsystems.Candle.CandleIOReal;
 import frc.robot.subsystems.Candle.CandleIOSim;
-import frc.robot.commands.RedirectorAutoAim;
-import frc.robot.commands.ShooterAutoAim;
-import frc.robot.commands.TurretAutoAim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
@@ -29,20 +36,28 @@ import frc.robot.subsystems.drive.ModuleIOMaxSwerve;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.redirector.Redirector;
+import frc.robot.subsystems.redirector.RedirectorIOReal;
 import frc.robot.subsystems.redirector.RedirectorIOSim;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.TurretIOReal;
 import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.indexer.IndexerIOReal;
 import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOFrankenlew;
+import frc.robot.subsystems.intake.IntakeIOReal;
 import frc.robot.subsystems.intake.IntakeIOSim;
+import frc.robot.subsystems.intake.Intake.PivotPreset;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.util.AllianceFlipUtil;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -90,6 +105,8 @@ public class RobotContainer {
   // Controllers
     public static CommandXboxController driveController = new CommandXboxController(0);
     public static CommandXboxController operatorController = new CommandXboxController(1);
+    public static CommandXboxController testController = new CommandXboxController(2);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -112,12 +129,16 @@ public class RobotContainer {
         vision =
              new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+                new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0),
+                new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1));
 
-        redirector = new Redirector(new RedirectorIOSim());
-        turret = new Turret(new TurretIOSim());
-        indexer = new Indexer( new IndexerIOSim());
+        redirector = new Redirector(new RedirectorIOReal());
+        turret = new Turret(new TurretIOReal());
+        indexer = new Indexer( new IndexerIOReal());
         candle = new Candle(new CandleIOReal());
+        shooter = new Shooter(new ShooterIOReal());
+        intake = new Intake(new IntakeIOReal());
+       // CanandEventLoop.getInstance();
         break;
 
         
@@ -287,19 +308,93 @@ public class RobotContainer {
           () -> -driveController.getRightX() * DriveConstants.TURNING_SCALAR,
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
-      turret.setDefaultCommand(new TurretAutoAim(drive, turret));
-      redirector.setDefaultCommand(new RedirectorAutoAim(drive, redirector));
-      if (shooter != null) shooter.setDefaultCommand(new ShooterAutoAim(drive, shooter));
+    driveController.leftTrigger(0.8).whileTrue(
+      DriveCommands.joystickDrive(
+          drive,
+          () -> -driveController.getLeftY(),
+          () -> -driveController.getLeftX(),
+          () -> -driveController.getRightX(),
+          () -> Constants.DRIVE_ROBOT_RELATIVE));
 
       candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
 
+      driveController.y().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
+      driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
+      driveController.b().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.MID)));
     
-      driveController.a().whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
-      driveController.b().whileTrue(new InstantCommand(()-> indexer.index(), indexer).repeatedly());
-
-
+      driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
+      driveController.rightBumper().whileTrue(new InstantCommand(()-> intake.outtake(), intake).repeatedly());
       intake.setDefaultCommand(new InstantCommand(()-> intake.stopWheels(), intake));
-      indexer.setDefaultCommand(new InstantCommand(()-> indexer.stopIndexer(), indexer));
+
+          driveController.x().whileTrue(DriveCommands.joystickDriveFacingPoint(drive,
+          () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
+          () -> -driveController.getLeftX() * DriveConstants.LOW_GEAR_SCALER,
+          () -> FieldConstants.Hub.innerCenterPoint.toTranslation2d(), () -> drive.getPose().getRotation().getRadians(), () -> Math.PI / 2,
+          () -> Constants.DRIVE_ROBOT_RELATIVE));
+
+
+        driveController.povDown().whileTrue( DriveCommands.joystickDrive(
+            drive,
+                () -> -0.3,
+                () -> 0,
+                () -> 0.0,
+                () -> true));
+                  
+        driveController.povUp().whileTrue( DriveCommands.joystickDrive(
+            drive,
+                () -> 0.3,
+                () -> 0,
+                () -> 0.0,
+                () -> true));
+                  
+        driveController.povLeft().whileTrue( DriveCommands.joystickDrive(
+            drive,
+                () -> 0.0,
+                () -> 0.3,
+                () -> 0.0,
+                () -> true));
+            
+        driveController.povRight().whileTrue( DriveCommands.joystickDrive(
+                drive,
+                    () -> 0.0,
+                    () -> -0.3,
+                    () -> 0.0,
+                    () -> true));
+
+      redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getLeftY()), redirector));
+      turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getRightX()), turret));
+      indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
+      operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.feedex(), indexer).repeatedly());
+      operatorController.leftBumper().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
+      // 2m away
+      operatorController.a().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(8.55141, 1.35955)),
+       new InstantCommand(() -> redirector.setTargetPosition(1.35955))));
+      // 3m away
+      operatorController.b().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(9.23195, 1.32444)),
+       new InstantCommand(() -> redirector.setTargetPosition(1.32444))));
+        // 4m away
+      operatorController.y().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(9.9188, 1.30137)),
+       new InstantCommand(() -> redirector.setTargetPosition(1.30137))));
+
+      operatorController.x().onTrue(new InstantCommand(() -> shooter.stop()));
+
+      operatorController.povDown().onTrue(new InstantCommand(() -> turret.setTargetPosition(0.0)));
+
+      operatorController.povLeft().onTrue(new SequentialCommandGroup(new RedirectorAutoAim(drive, redirector), new ShooterAutoAim(drive, shooter, redirector),
+       new TurretAutoAim(drive, turret)));
+
+       operatorController.povRight().whileTrue(new ShootOnMove(drive, shooter, redirector, turret).repeatedly());
+
+    //    operatorController.povRight().whileTrue(new ShootOnMove(drive, shooter, redirector, turret).repeatedly());
+
+
+      /** right trigger autoalign 
+       * aby for 123 m away 
+       * dpad up turret to zero 
+       * feed LB feedex LT
+       * stop shooter x
+      */ 
+
   }
 
   /**

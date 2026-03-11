@@ -22,13 +22,9 @@ public class Turret extends SubsystemBase
     private double accelRad = 0.0;
 
     private double targetAngle = 0.0;
-    private double voltageCmdPid = 0.0;
+    private double voltageCmdPid;
     private boolean reachedTargetPosition = true;
     private double voltageCmdManual = 0.0;
-    private boolean hasHitRightLimitSwitch = false;
-    private boolean hasHitLeftLimitSwitch = false;
-
-    private boolean isAuto = false;
 
     public enum TurretMode{
       MANUAL,
@@ -69,6 +65,8 @@ public class Turret extends SubsystemBase
 
         this.turretMode = TurretMode.GO_TO_POSITION;
         setTargetPosition(getAngle());
+
+        voltageCmdPid = 0.0;
     }
 
     @Override
@@ -81,7 +79,8 @@ public class Turret extends SubsystemBase
 
         switch(turretMode){
           case GO_TO_POSITION:
-          voltageCmdPid = ((hasHitLeftLimitSwitch || hasHitRightLimitSwitch ) || isAuto) ? turretPidController.calculate( this.getAngle()) : 0.0;
+          voltageCmdPid =  turretPidController.calculate( this.getAngle()) +
+           Math.signum(turretPidController.calculate( this.getAngle())) * TurretConstants.TURRET_FEED;
           voltageCmdManual = 0.0;
           break;
           case MANUAL:
@@ -128,7 +127,6 @@ public class Turret extends SubsystemBase
       return new InstantCommand();
     }
     System.out.println("Setting go to pos:" + targetAngle );
-    isAuto = DriverStation.isAutonomous();
     return new InstantCommand(() -> setTargetPosition(targetAngle), this);
   }
 
@@ -140,15 +138,12 @@ public class Turret extends SubsystemBase
      * the Turret is set to manual else it is go to position
     */
       public void runManualPosition(double stickPosition){
-        if((stickPosition > Constants.JOYSTICK_DEADBAND) || (stickPosition < Constants.JOYSTICK_DEADBAND)){
+        if((Math.abs(stickPosition) < Constants.JOYSTICK_DEADBAND)){
           turretMode = TurretMode.GO_TO_POSITION;
-        }else if(Math.abs(stickPosition) > Constants.JOYSTICK_DEADBAND){
+        }else{
           turretMode = TurretMode.MANUAL;
           voltageCmdManual = -stickPosition * TurretConstants.TURRET_MANUAL_SCALAR;
         }
-        else{
-          turretMode = TurretMode.GO_TO_POSITION;
-          }
       } 
         
        /** 

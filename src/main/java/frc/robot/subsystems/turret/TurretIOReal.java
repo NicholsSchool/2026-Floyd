@@ -13,8 +13,8 @@ public class TurretIOReal implements TurretIO{
     private CANcoder turretEncoder;
 
     public TurretIOReal(){
-        turretMotor = new TalonFX(CAN.TURRET);
-        turretEncoder = new CANcoder(CAN.TURRET_ENCODER);
+        turretMotor = new TalonFX(CAN.TURRET, "Shooter");
+        turretEncoder = new CANcoder(CAN.TURRET_ENCODER, "Shooter");
 
         TalonFXConfiguration turretConfig = new TalonFXConfiguration();
         turretConfig.CurrentLimits.StatorCurrentLimit = TurretConstants.TURRET_CURRENT_LIMIT;
@@ -27,8 +27,8 @@ public class TurretIOReal implements TurretIO{
     @Override
     public void updateInputs(TurretIOInputs inputs){
         inputs.appliedVolts = turretMotor.getMotorVoltage().getValueAsDouble();
-        inputs.velocityRadPerSec = turretMotor.getVelocity().getValueAsDouble();
-        inputs.currentAngle = turretEncoder.getPosition().getValueAsDouble();
+        inputs.velocityRadPerSec = turretMotor.getVelocity().getValueAsDouble(); 
+        inputs.currentAngle = -turretEncoder.getPosition().getValueAsDouble();
         inputs.currentAmps = turretMotor.getStatorCurrent().getValueAsDouble();
     }
 
