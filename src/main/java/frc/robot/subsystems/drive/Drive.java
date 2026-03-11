@@ -351,6 +351,7 @@ public class Drive extends SubsystemBase {
    * TJG Returns the measured X, Y, and theta field velocities in meters per sec. The components of
    * the twist are velocities and NOT changes in position.
    */
+  @AutoLogOutput
   public Twist2d getFieldVelocity() {
     return fieldVelocity;
   }
@@ -370,6 +371,7 @@ public class Drive extends SubsystemBase {
         fieldVelocity.dx * Math.sin(getYaw()) + fieldVelocity.dy * Math.cos(getYaw()),
         fieldVelocity.dtheta));
   }
+
 
   @AutoLogOutput
   public double getYaw() {

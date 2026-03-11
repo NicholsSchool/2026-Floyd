@@ -21,6 +21,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.RedirectorAutoAim;
+import frc.robot.commands.ShootOnMove;
 import frc.robot.commands.ShooterAutoAim;
 import frc.robot.commands.TurretAutoAim;
 import frc.robot.subsystems.Candle.Candle;
@@ -136,7 +137,7 @@ public class RobotContainer {
         indexer = new Indexer( new IndexerIOReal());
         candle = new Candle(new CandleIOReal());
         shooter = new Shooter(new ShooterIOReal());
-        intake = new Intake(new IntakeIOSim());
+        intake = new Intake(new IntakeIOReal());
        // CanandEventLoop.getInstance();
         break;
 
@@ -381,6 +382,8 @@ public class RobotContainer {
 
       operatorController.povLeft().onTrue(new SequentialCommandGroup(new RedirectorAutoAim(drive, redirector), new ShooterAutoAim(drive, shooter, redirector),
        new TurretAutoAim(drive, turret)));
+
+    //    operatorController.povRight().whileTrue(new ShootOnMove(drive, shooter, redirector, turret).repeatedly());
 
 
       /** right trigger autoalign 
