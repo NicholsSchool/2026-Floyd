@@ -19,7 +19,7 @@ public class AutoConfig {
     // through all the balls or halfway
     public static boolean followThroughOne = false;
     //then come back to:
-    public static ShootingRegion shootingPositionOne = ShootingRegion.RIGHT;
+    public static ShootingRegion shootingPositionOne = ShootingRegion.LEFT;
     // do we climb
     public static boolean climb = false;
 
