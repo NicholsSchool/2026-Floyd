@@ -361,8 +361,8 @@ public class RobotContainer {
                     () -> 0.0,
                     () -> true));
 
-      redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getLeftY()), redirector));
-      turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getRightX()), turret));
+      redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getRightY()), redirector));
+      turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getLeftX()), turret));
       indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
       operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.feedex(), indexer).repeatedly());
       operatorController.leftBumper().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());

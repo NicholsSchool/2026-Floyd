@@ -47,8 +47,8 @@ public class ShootOnMove extends InstantCommand {
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
     double distance = hubOffset.getNorm() + AutoConstants.AUTOAIM_GASLIGHT;
 
-    double shooterMetersPerSec = -10.41777 * Math.sin(1.58274 * Math.pow(distance - 0.385252, 0.2)) + 17.08316;
-    double hoodTheta = ( 19.98786 / Math.pow(distance + 4.91128 , 2) + 0.832197);
+    double shooterMetersPerSec = -10.38954 * Math.sin(1.66397 * Math.pow(distance - 0.621899, 0.2)) + 18.42387;
+    double hoodTheta = (4.24803 / Math.pow(distance + 3.24144 , 2) + 1.23079);
     double turretAngle = Math.atan2(hubOffset.getY(), hubOffset.getX()) - currentPose.getRotation().getRadians();
 
     Translation3d autoaimVector = new Translation3d(shooterMetersPerSec * Math.cos(hoodTheta) * Math.cos(turretAngle),
