@@ -335,31 +335,31 @@ public class RobotContainer {
 
         driveController.povDown().whileTrue( DriveCommands.joystickDrive(
             drive,
-                () -> -0.3,
+                () -> -1.0,
                 () -> 0,
                 () -> 0.0,
-                () -> true));
+                () -> true).withTimeout(0.3));
                   
         driveController.povUp().whileTrue( DriveCommands.joystickDrive(
             drive,
-                () -> 0.3,
+                () -> 1.0,
                 () -> 0,
                 () -> 0.0,
-                () -> true));
+                () -> true).withTimeout(0.3));
                   
         driveController.povLeft().whileTrue( DriveCommands.joystickDrive(
             drive,
                 () -> 0.0,
-                () -> 0.3,
+                () -> 1.0,
                 () -> 0.0,
-                () -> true));
+                () -> true).withTimeout(0.3));
             
         driveController.povRight().whileTrue( DriveCommands.joystickDrive(
                 drive,
                     () -> 0.0,
-                    () -> -0.3,
+                    () -> -1.0,
                     () -> 0.0,
-                    () -> true));
+                    () -> true).withTimeout(0.3));
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getRightY()), redirector));
       turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getLeftX()), turret));
@@ -378,14 +378,11 @@ public class RobotContainer {
 
       operatorController.x().onTrue(new InstantCommand(() -> shooter.stop()));
 
-      operatorController.povDown().onTrue(new InstantCommand(() -> turret.setTargetPosition(0.0)));
-
+      operatorController.povUp().onTrue(new InstantCommand(() -> turret.setTargetPosition(0.0)));
+      operatorController.povDown().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.35)));
+      
       operatorController.povLeft().onTrue(new SequentialCommandGroup(new RedirectorAutoAim(drive, redirector), new ShooterAutoAim(drive, shooter, redirector),
        new TurretAutoAim(drive, turret)));
-
-       operatorController.povRight().whileTrue(new ShootOnMove(drive, shooter, redirector, turret).repeatedly());
-
-    //    operatorController.povRight().whileTrue(new ShootOnMove(drive, shooter, redirector, turret).repeatedly());
 
 
       /** right trigger autoalign 

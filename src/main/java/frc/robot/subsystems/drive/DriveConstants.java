@@ -4,7 +4,7 @@ import edu.wpi.first.math.util.Units;
 
 public final class DriveConstants {
 
-    public static final double MAX_LINEAR_SPEED = 3.2;
+    public static final double MAX_LINEAR_SPEED = 5.0;
     public static final double TRACK_WIDTH_X = Units.inchesToMeters(25);
     public static final double TRACK_WIDTH_Y = Units.inchesToMeters(24.5);
     public static final double DRIVE_BASE_RADIUS =
