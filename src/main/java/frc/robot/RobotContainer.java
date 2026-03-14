@@ -136,7 +136,7 @@ public class RobotContainer {
         turret = new Turret(new TurretIOReal());
         indexer = new Indexer( new IndexerIOReal());
         candle = new Candle(new CandleIOReal());
-        shooter = new Shooter(new ShooterIOReal());
+        shooter = new Shooter(new ShooterIOReal()); 
         intake = new Intake(new IntakeIOReal());
        // CanandEventLoop.getInstance();
         break;
@@ -373,7 +373,9 @@ public class RobotContainer {
       turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getLeftX()), turret));
       indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
       operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.feedex(), indexer).repeatedly());
-      operatorController.leftBumper().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
+      //operatorController.leftBumper().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
+      operatorController.leftBumper().whileTrue(new InstantCommand(() -> turret.setTargetPosition(Math.toRadians(80))));
+      operatorController.rightBumper().whileTrue(new InstantCommand(() -> turret.setTargetPosition(Math.toRadians(-80))));
       // 2m away
       operatorController.a().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(8.55141, 1.35955)),
        new InstantCommand(() -> redirector.setTargetPosition(1.35955))));
