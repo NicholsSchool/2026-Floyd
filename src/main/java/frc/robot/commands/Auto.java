@@ -101,16 +101,19 @@ public class Auto {
             shootingPos = new Pose2d();
         }
         if((pickupRegion.equals(PickupRegion.LEFT) && followThrough) || (pickupRegion.equals(PickupRegion.RIGHT) && !followThrough)){
-        return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(3.2, 0.6), new Rotation2d(0.0)))),
+        return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.2, 0.6), new Rotation2d(0.0)))),
              (new DriveToPose(drive, AllianceFlipUtil.apply(shootingPos))));
         }else{
-            return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(3.2, 7.5), new Rotation2d(0.0)))),
+            return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.2, 7.5), new Rotation2d(0.0)))),
              (new DriveToPose(drive, AllianceFlipUtil.apply(shootingPos))));
         }
     }
 
     public Command goToPreloadShootPosition(){
-        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.2,4), new Rotation2d(-Math.PI / 2))));
+        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(1.6,5.8), new Rotation2d(Math.toRadians(35)))));
+        //straight back: 2.2,4
+        //human player: 0.8, 0.6
+        //Match 7 Auto: 1.6, 5.8
     }
 
 

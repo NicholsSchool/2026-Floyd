@@ -126,6 +126,15 @@ public class Intake extends SubsystemBase {
         pivotPIDController.setGoal(goal);
     }
 
+    public void feed(){
+        setPivotVoltage(IntakeConstants.PIVOT_FEED_VOLTAGE);
+    }
+
+    public void stopPivot(){
+        setPivotVoltage(0.0);
+        pivotState = PivotState.GOTOANGLE;
+    }
+
 
     public void resetPivotPID() {
         pivotPreset = PivotPreset.CUSTOM;
