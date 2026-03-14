@@ -137,10 +137,10 @@ public class RobotContainer {
         indexer = new Indexer( new IndexerIOReal());
         candle = new Candle(new CandleIOReal());
         shooter = new Shooter(new ShooterIOReal()); 
-        intake = new Intake(new IntakeIOReal());
+        intake = new Intake(new IntakeIOSim());
        // CanandEventLoop.getInstance();
         break;
-
+ 
         
       case ROBOT_REAL_FRANKENLEW:
         // Real robot, instantiate hardware IO implementations
@@ -346,28 +346,28 @@ public class RobotContainer {
                 () -> -1.0,
                 () -> 0,
                 () -> 0.0,
-                () -> true).withTimeout(0.3));
+                () -> true));
                   
         driveController.povUp().whileTrue( DriveCommands.joystickDrive(
             drive,
                 () -> 1.0,
                 () -> 0,
                 () -> 0.0,
-                () -> true).withTimeout(0.3));
+                () -> true));
                   
         driveController.povLeft().whileTrue( DriveCommands.joystickDrive(
             drive,
                 () -> 0.0,
                 () -> 1.0,
                 () -> 0.0,
-                () -> true).withTimeout(0.3));
+                () -> true));
             
         driveController.povRight().whileTrue( DriveCommands.joystickDrive(
                 drive,
                     () -> 0.0,
                     () -> -1.0,
                     () -> 0.0,
-                    () -> true).withTimeout(0.3));
+                    () -> true));
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getRightY()), redirector));
       turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getLeftX()), turret));
