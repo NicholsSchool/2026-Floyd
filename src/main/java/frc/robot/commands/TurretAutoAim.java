@@ -40,13 +40,6 @@ public class TurretAutoAim extends InstantCommand {
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
     double turretAngle = Math.atan2(hubOffset.getY(), hubOffset.getX()) - currentPose.getRotation().getRadians();
 
-
-    if(turretAngle < TurretConstants.TURRET_MIN_ANGLE + TurretConstants.TURRET_SOFT_LIMIT){
-        turretAngle = TurretConstants.TURRET_MAX_ANGLE - TurretConstants.TURRET_SOFT_LIMIT;
-    }else if(turretAngle > TurretConstants.TURRET_MAX_ANGLE - TurretConstants.TURRET_SOFT_LIMIT){
-        turretAngle = TurretConstants.TURRET_MIN_ANGLE + TurretConstants.TURRET_SOFT_LIMIT;
-    }
-
     turret.setTargetPosition(turretAngle);
   
   }

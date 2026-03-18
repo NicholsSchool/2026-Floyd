@@ -60,7 +60,7 @@ public class Intake extends SubsystemBase {
 
     public Intake(IntakeIO io) {
         this.io = io;
-        setPivotGoal(IntakeConstants.PIVOT_OUT_ANGLE);
+        setPivotGoal(IntakeConstants.PIVOT_IN_ANGLE);
     }
 
     @Override
@@ -126,6 +126,15 @@ public class Intake extends SubsystemBase {
         pivotPIDController.setGoal(goal);
     }
 
+    public void feed(){
+        setPivotVoltage(IntakeConstants.PIVOT_FEED_VOLTAGE);
+    }
+
+    public void stopPivot(){
+        setPivotVoltage(0.0);
+        pivotState = PivotState.GOTOANGLE;
+    }
+
 
     public void resetPivotPID() {
         pivotPreset = PivotPreset.CUSTOM;
@@ -142,6 +151,11 @@ public class Intake extends SubsystemBase {
     @AutoLogOutput
     public double getPivotGoal() { return pivotPIDController.getGoal().position; }
     public double getPivotAngle() { return inputs.pivotAngleRadians; }
+
+    @AutoLogOutput
+    public double pivotCurrent(){
+        return inputs.pivotMotorCurrent;
+    }
 
     @AutoLogOutput
     public double getPivotVoltage() { return inputs.pivotMotorVoltage; }

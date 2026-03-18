@@ -92,6 +92,10 @@ public class Turret extends SubsystemBase
             reachedTargetPosition = turretPidController.atGoal();
           }
 
+          if(DriverStation.isDisabled()){
+           setTargetPosition(0.0);
+        }
+
         
           io.setVoltage(voltageCmdManual + voltageCmdPid);
     }
@@ -113,10 +117,12 @@ public class Turret extends SubsystemBase
       }
 
       public void setTargetPosition(double targetAngle) {
-        this.targetAngle = targetAngle;
-        turretPidController.setGoal((targetAngle));
-        turretPidController.reset(inputs.currentAngle);
-        reachedTargetPosition = false;
+        if (!(targetAngle > TurretConstants.TURRET_MAX_ANGLE || targetAngle < TurretConstants.TURRET_MIN_ANGLE)) {
+          this.targetAngle = targetAngle;
+          turretPidController.setGoal((targetAngle));
+          turretPidController.reset(inputs.currentAngle);
+          reachedTargetPosition = false;
+        }
       }
 
       // Checks if TargetAngle is valid

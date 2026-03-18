@@ -1,6 +1,7 @@
 package frc.robot.subsystems.indexer;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
@@ -56,6 +57,25 @@ public class  Indexer extends SubsystemBase {
   public void feedex(){
     index();
     feed();
+  }
+
+     public Command commandFeedex() {   
+        return new FunctionalCommand(
+            () -> System.out.println("feedexing"),
+            () -> feedex(),
+            interrupted -> stop(),
+            () -> false,
+            this).withTimeout(10.0);
+    } 
+
+  @AutoLogOutput 
+  public double getIndexVoltage(){
+    return inputs.indexerVoltage;
+  }
+
+  @AutoLogOutput 
+  public double getFeedVoltage(){
+    return inputs.feederVoltage;
   }
 
 }

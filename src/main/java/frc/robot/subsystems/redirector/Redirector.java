@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -63,7 +64,7 @@ public class Redirector extends SubsystemBase
         redirectorPidController.setTolerance(0.01);
 
         this.redirectorMode = RedirectorMode.GO_TO_POSITION;
-        setTargetPosition(1.1);
+        setTargetPosition(1.35);
     }
 
     @Override
@@ -87,6 +88,10 @@ public class Redirector extends SubsystemBase
           }
         
           io.setVoltage(voltageCmdManual + voltageCmdPid);
+
+        if(DriverStation.isDisabled()){
+           setTargetPosition(1.35);
+        }
     }
 
 
@@ -106,10 +111,12 @@ public class Redirector extends SubsystemBase
       }
 
       public void setTargetPosition(double targetAngle) {
+      if (!(targetAngle > RedirectorConstants.REDIRECTOR_MAX_ANGLE || targetAngle < RedirectorConstants.REDIRECTOR_MIN_ANGLE)) {
         this.targetAngle = targetAngle;
         redirectorPidController.setGoal((targetAngle));
         redirectorPidController.reset(inputs.currentAngle);
         reachedTargetPosition = false;
+        }
       }
 
       // Checks if TargetAngle is valid

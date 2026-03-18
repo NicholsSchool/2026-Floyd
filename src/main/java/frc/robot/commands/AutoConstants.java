@@ -22,15 +22,15 @@ public class AutoConstants {
 
     public static final double INITIAL_AUTO_SHOOT_TIME = 2.0;
 
-    public static final Pose2d RIGHT_SHOOT_POS = new Pose2d(new Translation2d(3.0, 1.0), new Rotation2d());
+    public static final Pose2d RIGHT_SHOOT_POS = new Pose2d(new Translation2d(3.0, 1.0), new Rotation2d(Math.toRadians(90.0)));
 
-    public static final Pose2d CENTER_SHOOT_POS = new Pose2d(new Translation2d(3.0, 4.0), new Rotation2d());
+    public static final Pose2d CENTER_SHOOT_POS = new Pose2d(new Translation2d(3.0, 4.0), new Rotation2d(Math.toRadians(0.0)));
 
-    public static final Pose2d LEFT_SHOOT_POS = new Pose2d(new Translation2d(3.0, 7.0), new Rotation2d());
+    public static final Pose2d LEFT_SHOOT_POS = new Pose2d(new Translation2d(3.0, 7.0), new Rotation2d(Math.toRadians(Math.toRadians(-90.0))));
 
     public static final double INTAKE_TIME = 2.0;
 
-    public static final double AUTOAIM_GASLIGHT = 0.6;
+    public static final double AUTOAIM_GASLIGHT = 0.3;
 
     public static final double SHOOT_ON_MOVE_FUTURE_MULTIPLIER = 0.3;
 

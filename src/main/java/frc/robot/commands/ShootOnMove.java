@@ -58,12 +58,6 @@ public class ShootOnMove extends InstantCommand {
 
     double turretMovingAngle = Math.atan2(shootOnMoveVector.getY(), shootOnMoveVector.getX());
 
-    if(turretMovingAngle < TurretConstants.TURRET_MIN_ANGLE + TurretConstants.TURRET_SOFT_LIMIT){
-        turretMovingAngle = TurretConstants.TURRET_MAX_ANGLE - TurretConstants.TURRET_SOFT_LIMIT;
-    }else if(turretMovingAngle > TurretConstants.TURRET_MAX_ANGLE - TurretConstants.TURRET_SOFT_LIMIT){
-        turretMovingAngle = TurretConstants.TURRET_MIN_ANGLE + TurretConstants.TURRET_SOFT_LIMIT;
-    }
-
     double redirectorMovingAngle = (Math.PI / 2) - Math.atan(Math.hypot(shootOnMoveVector.getY(), shootOnMoveVector.getX()) / shootOnMoveVector.getZ());
     double movingVelocity = Math.sqrt(Math.pow(shootOnMoveVector.getX(), 2) + Math.pow(shootOnMoveVector.getY(), 2) + Math.pow(shootOnMoveVector.getZ(), 2));
 
@@ -71,9 +65,6 @@ public class ShootOnMove extends InstantCommand {
     redirector.setTargetPosition(redirectorMovingAngle);
     shooter.setVelMPS(movingVelocity, redirectorMovingAngle);
 
-    turret.setTargetPosition(turretAngle);
-    redirector.setTargetPosition(hoodTheta);
-    shooter.setVelMPS(shooterMetersPerSec, hoodTheta);
 
 
   }

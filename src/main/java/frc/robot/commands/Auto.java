@@ -101,22 +101,38 @@ public class Auto {
             shootingPos = new Pose2d();
         }
         if((pickupRegion.equals(PickupRegion.LEFT) && followThrough) || (pickupRegion.equals(PickupRegion.RIGHT) && !followThrough)){
-        return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(3.2, 0.6), new Rotation2d(0.0)))),
+        return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.2, 0.6), new Rotation2d(0.0)))),
              (new DriveToPose(drive, AllianceFlipUtil.apply(shootingPos))));
         }else{
-            return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(3.2, 7.5), new Rotation2d(0.0)))),
+            return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.2, 7.5), new Rotation2d(0.0)))),
              (new DriveToPose(drive, AllianceFlipUtil.apply(shootingPos))));
         }
     }
 
+    public Command goToPreloadShootPosition(){
+        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(1.2,0.7), new Rotation2d(Math.toRadians(0.0)))));
+        //straight back: 2.2,4
+        //human player: 0.8, 0.6
+        //Match 7 Auto: 1.6, 5.8, 35 degrees?
+        //Match 8 Auto: 1.5, 4, 75 deg
+        //Match 9 Auto: 1.2, 0.7
+    }
+
 
     public Command auto(){
-        return new SequentialCommandGroup(goToCenter(AutoConfig.pickupLocationOne), new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)),
+        if(AutoConfig.centerAuto){
+            return new SequentialCommandGroup(goToPreloadShootPosition().withTimeout(3), AutoAim(),
+            new WaitCommand(AutoConstants.AUTO_REV_TIME), indexer.commandFeedex());
+        }else{
+        return new SequentialCommandGroup(goToCenter(AutoConfig.pickupLocationOne), new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)), new WaitCommand(0.5), 
+        intakeCenter(AutoConfig.followThroughOne, AutoConfig.pickupLocationOne).withTimeout(0.4), new WaitCommand(0.4), 
          new ParallelCommandGroup(intakeCenter(AutoConfig.followThroughOne, AutoConfig.pickupLocationOne),
           new InstantCommand(() -> intake.intake()).repeatedly().withTimeout(AutoConstants.INTAKE_TIME)), new InstantCommand(() -> intake.stopWheels()),
-          driveToShootPos(AutoConfig.shootingPositionOne, AutoConfig.pickupLocationOne, AutoConfig.followThroughOne), AutoAim(),
-            new WaitCommand(AutoConstants.AUTO_REV_TIME), new InstantCommand(() -> indexer.feedex()).repeatedly().withTimeout(10.0));
+          driveToShootPos(AutoConfig.shootingPositionOne, AutoConfig.pickupLocationOne, AutoConfig.followThroughOne),
+           AutoAim(), new WaitCommand(AutoConstants.AUTO_REV_TIME), indexer.commandFeedex());
+        }
     }
+
 
 
 }

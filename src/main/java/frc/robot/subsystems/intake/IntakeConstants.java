@@ -2,10 +2,10 @@ package frc.robot.subsystems.intake;
  
 public final class IntakeConstants {
 
-    public static final double INTAKE_VOLTAGE = 3.5;
+    public static final double INTAKE_VOLTAGE = 5;
     public static final double OUTTAKE_VOLTAGE = -2.0;
 
-    public static final double PIVOT_P = 2.0;
+    public static final double PIVOT_P = 4.0;
     public static final double PIVOT_I = 0.0;
     public static final double PIVOT_D = 0.0;
 
@@ -13,13 +13,15 @@ public final class IntakeConstants {
     public static final double PIVOT_MAX_ACCEL = 3.0;
 
     public static final double PIVOT_IN_ANGLE = 0.2;
-    public static final double PIVOT_OUT_ANGLE = 2.2;
+    public static final double PIVOT_OUT_ANGLE = 2.05;
     public static final double PIVOT_MID_ANGLE = 1.9;
 
-    public static final double PIVOT_RATIO = 9.0;
+    public static final double PIVOT_RATIO = 25.0;
     public static final double INTAKE_RATIO = 1;
 
     public static final double WHEEL_CURRENT_LIMIT = 39.0;
     public static final double PIVOT_CURRENT_LIMIT = 35.0;
+
+    public static final double PIVOT_FEED_VOLTAGE = -10;
 
   }
