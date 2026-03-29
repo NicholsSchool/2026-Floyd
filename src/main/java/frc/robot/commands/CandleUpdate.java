@@ -9,24 +9,20 @@ import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.redirector.Redirector;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.turret.Turret;
-import frc.robot.subsystems.turret.TurretConstants;
 
 
 public class CandleUpdate extends InstantCommand{
     Candle candle;
     Drive drive;
     Intake intake;
-    Turret turret;
     Redirector redirector;
     Shooter shooter;
     Indexer indexer;
 
-    public CandleUpdate(Candle candle, Drive drive, Intake intake, Turret turret, Redirector redirector, Shooter shooter, Indexer indexer){
+    public CandleUpdate(Candle candle, Drive drive, Intake intake, Redirector redirector, Shooter shooter, Indexer indexer){
         this.candle = candle;
         this.drive = drive;
         this.intake = intake;
-        this.turret = turret;
         this.redirector = redirector;
         this.shooter = shooter;
         this.indexer = indexer; 

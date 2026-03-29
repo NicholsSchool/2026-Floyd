@@ -21,7 +21,6 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.Intake.PivotPreset;
 import frc.robot.subsystems.redirector.Redirector;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.turret.Turret;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.Circle;
 
@@ -30,15 +29,13 @@ public class Auto {
     public Intake intake;
     public Indexer indexer;
     public Shooter shooter;
-    public Turret turret;
     public Redirector redirector;
 
-    public Auto(Drive drive, Intake intake, Indexer indexer, Shooter shooter, Turret turret, Redirector redirector){
+    public Auto(Drive drive, Intake intake, Indexer indexer, Shooter shooter, Redirector redirector){
         this.drive = drive;
         this.intake = intake;
         this.indexer = indexer;
         this.shooter = shooter;
-        this.turret = turret;
         this.redirector = redirector;
     }
 
@@ -50,7 +47,6 @@ public class Auto {
 
     public Command AutoAim(){
         return new ParallelCommandGroup(new ShooterAutoAim(drive, shooter, redirector),
-         new TurretAutoAim(drive, turret),
           new RedirectorAutoAim(drive, redirector));
     }
 

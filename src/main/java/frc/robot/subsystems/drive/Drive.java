@@ -33,7 +33,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 import frc.robot.FieldConstants;
-import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.BradyMathLib;
@@ -277,21 +276,10 @@ public class Drive extends SubsystemBase {
     return AllianceFlipUtil.applyRotate(kalman.getEstimatedPosition());
   }
 
-  public Translation2d getTurretOffset(){
-    return new Translation2d(TurretConstants.TURRET_OFFSET_X, TurretConstants.TURRET_OFFSET_Y).rotateBy(getPose().getRotation());
-  }
-
   @AutoLogOutput
   public double getHubDistance(){
-     var currentPose = getTurretPose();
-    Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
+    Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d()));
     return hubOffset.getNorm();
-  }
-
-  @AutoLogOutput
-  public Pose2d getTurretPose(){
-    return new Pose2d(new Translation2d(getPose().getX() + getTurretOffset().getX(), 
-      getPose().getY() + getTurretOffset().getY()), getPose().getRotation());
   }
 
   @AutoLogOutput

@@ -33,7 +33,7 @@ public class ShooterAutoAim extends InstantCommand {
 
   @Override
   public void execute() {
-    var currentPose = drive.getTurretPose();
+    var currentPose = drive.getPose();
     Translation2d hubOffset = (AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d())).minus(currentPose.getTranslation());
     double distance = hubOffset.getNorm() + AutoConstants.AUTOAIM_GASLIGHT;
     //https://www.desmos.com/calculator/fwhxwn9toz

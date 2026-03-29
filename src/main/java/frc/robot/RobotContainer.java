@@ -21,9 +21,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.commands.CandleUpdate;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.RedirectorAutoAim;
-import frc.robot.commands.ShootOnMove;
 import frc.robot.commands.ShooterAutoAim;
-import frc.robot.commands.TurretAutoAim;
 import frc.robot.subsystems.Candle.Candle;
 import frc.robot.subsystems.Candle.CandleIOReal;
 import frc.robot.subsystems.Candle.CandleIOSim;
@@ -38,9 +36,6 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.redirector.Redirector;
 import frc.robot.subsystems.redirector.RedirectorIOReal;
 import frc.robot.subsystems.redirector.RedirectorIOSim;
-import frc.robot.subsystems.turret.Turret;
-import frc.robot.subsystems.turret.TurretIOReal;
-import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.IndexerIOReal;
 import frc.robot.subsystems.indexer.IndexerIOSim;
@@ -69,7 +64,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
     Drive drive;
     Vision vision;
-    Turret turret;
     Redirector redirector;
     Intake intake;
     Shooter shooter;
@@ -133,7 +127,6 @@ public class RobotContainer {
                 new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1));
 
         redirector = new Redirector(new RedirectorIOReal());
-        turret = new Turret(new TurretIOReal());
         indexer = new Indexer( new IndexerIOReal());
         candle = new Candle(new CandleIOReal());
         shooter = new Shooter(new ShooterIOReal()); 
@@ -159,7 +152,6 @@ public class RobotContainer {
                 new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
         redirector = new Redirector(new RedirectorIOSim());
-        turret = new Turret(new TurretIOSim());
         indexer = new Indexer(new IndexerIOSim());
         intake = new Intake(new IntakeIOFrankenlew());
         shooter = new Shooter(new ShooterIOSim());
@@ -181,8 +173,7 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVisionSim(VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
 
-        redirector = new Redirector(new RedirectorIOSim());
-        turret = new Turret(new TurretIOSim());                
+        redirector = new Redirector(new RedirectorIOSim());              
         indexer = new Indexer( new IndexerIOSim());
         intake = new Intake(new IntakeIOSim());
 
@@ -197,7 +188,7 @@ public class RobotContainer {
 
     initShuffleboard();
 
-    auto = new Auto(drive, intake, indexer, shooter, turret, redirector);
+    auto = new Auto(drive, intake, indexer, shooter, redirector);
   }
 
   private void initShuffleboard() {
@@ -220,23 +211,6 @@ public class RobotContainer {
     entryRedirectorMaxAccel = tuningTab.add("Redirector MaxAccel",
         frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MAX_ACCEL_RAD)
         .withPosition(0, 4).withSize(2, 1).getEntry();
-
-    // ── Turret column (col 2) ────────────────────────────────────────────────
-    entryTurretKp = tuningTab.add("Turret Kp",
-        frc.robot.subsystems.turret.TurretConstants.TURRET_P)
-        .withPosition(2, 0).withSize(2, 1).getEntry();
-    entryTurretKi = tuningTab.add("Turret Ki",
-        frc.robot.subsystems.turret.TurretConstants.TURRET_I)
-        .withPosition(2, 1).withSize(2, 1).getEntry();
-    entryTurretKd = tuningTab.add("Turret Kd",
-        frc.robot.subsystems.turret.TurretConstants.TURRET_D)
-        .withPosition(2, 2).withSize(2, 1).getEntry();
-    entryTurretMaxVel = tuningTab.add("Turret MaxVel",
-        frc.robot.subsystems.turret.TurretConstants.TURRET_MAX_VEL_RAD)
-        .withPosition(2, 3).withSize(2, 1).getEntry();
-    entryTurretMaxAccel = tuningTab.add("Turret MaxAccel",
-        frc.robot.subsystems.turret.TurretConstants.TURRET_MAX_ACCEL_RAD)
-        .withPosition(2, 4).withSize(2, 1).getEntry();
 
     // ── Shooter column (col 4) ───────────────────────────────────────────────
     entryShooterKp = tuningTab.add("Shooter Kp",
@@ -267,17 +241,6 @@ public class RobotContainer {
         frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MAX_VEL_RAD));
     nt.getEntry("/Tuning/redirector/MaxAccelerationRad").setDouble(entryRedirectorMaxAccel.getDouble(
         frc.robot.subsystems.redirector.RedirectorConstants.REDIRECTOR_MAX_ACCEL_RAD));
-
-    nt.getEntry("/Tuning/turret/Kp").setDouble(entryTurretKp.getDouble(
-        frc.robot.subsystems.turret.TurretConstants.TURRET_P));
-    nt.getEntry("/Tuning/turret/Ki").setDouble(entryTurretKi.getDouble(
-        frc.robot.subsystems.turret.TurretConstants.TURRET_I));
-    nt.getEntry("/Tuning/turret/Kd").setDouble(entryTurretKd.getDouble(
-        frc.robot.subsystems.turret.TurretConstants.TURRET_D));
-    nt.getEntry("/Tuning/turret/MaxVelocityRad").setDouble(entryTurretMaxVel.getDouble(
-        frc.robot.subsystems.turret.TurretConstants.TURRET_MAX_VEL_RAD));
-    nt.getEntry("/Tuning/turret/MaxAccelerationRad").setDouble(entryTurretMaxAccel.getDouble(
-        frc.robot.subsystems.turret.TurretConstants.TURRET_MAX_ACCEL_RAD));
 
     nt.getEntry("/Tuning/shooter/Kp").setDouble(entryShooterKp.getDouble(
         frc.robot.subsystems.shooter.ShooterConstants.VELOCITY_P));
@@ -316,7 +279,7 @@ public class RobotContainer {
           () -> -driveController.getRightX(),
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
-      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, turret, redirector, shooter, indexer).repeatedly());
+      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, redirector, shooter, indexer).repeatedly());
 
       driveController.y().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
       driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
@@ -370,12 +333,9 @@ public class RobotContainer {
                     () -> true));
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getRightY()), redirector));
-      turret.setDefaultCommand(new InstantCommand(() -> turret.runManualPosition(operatorController.getLeftX()), turret));
       indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
       operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.feedex(), indexer).repeatedly());
       //operatorController.leftBumper().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
-      operatorController.leftBumper().whileTrue(new InstantCommand(() -> turret.setTargetPosition(Math.toRadians(80))));
-      operatorController.rightBumper().whileTrue(new InstantCommand(() -> turret.setTargetPosition(Math.toRadians(-80))));
       // 2m away
       operatorController.a().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(8.55141, 1.35955)),
        new InstantCommand(() -> redirector.setTargetPosition(1.35955))));
@@ -388,11 +348,9 @@ public class RobotContainer {
 
       operatorController.x().onTrue(new InstantCommand(() -> shooter.stop()));
 
-      operatorController.povUp().onTrue(new InstantCommand(() -> turret.setTargetPosition(0.0)));
       operatorController.povDown().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.35)));
       
-      operatorController.povLeft().onTrue(new SequentialCommandGroup(new RedirectorAutoAim(drive, redirector), new ShooterAutoAim(drive, shooter, redirector),
-       new TurretAutoAim(drive, turret)));
+      operatorController.povLeft().onTrue(new SequentialCommandGroup(new RedirectorAutoAim(drive, redirector), new ShooterAutoAim(drive, shooter, redirector)));
 
 
       /** right trigger autoalign 
