@@ -72,25 +72,23 @@ public final class Constants {
       public static final int FRONT_RIGHT_ENCODER = 58;
       public static final int BACK_RIGHT_ENCODER = 60;
 
-    public static final int SHOOTER_BOTTOM = 30;
-    public static final int SHOOTER_TOP = 31;
+    public static final int LEFT_SHOOTER_BOTTOM = 30;
+    public static final int LEFT_SHOOTER_TOP = 31;
+    public static final int RIGHT_SHOOTER_BOTTOM = 32;
+    public static final int RIGHT_SHOOTER_TOP = 33;
 
-    public static final int REDIRECTOR = 32;
+    public static final int REDIRECTOR = 34;
 
-    public static final int REDIRECTOR_ENCODER = 33;
+    public static final int REDIRECTOR_ENCODER = 35;
 
     public static final int INDEXER = 40;
     public static final int FEEDER = 39;
 
-    public static final int INTAKE_WHEEL_ONE = 62;
-    public static final int INTAKE_WHEEL_TWO = 36;
     public static final int INTAKE_PIVOT = 41; 
     public static final int INTAKE_PIVOT_ENCODER = 42;
+    public static final int INTAKE_WHEEL = 43;
 
     public static final int CANDLE = 21;
-
-    public static final int TURRET = 34; 
-    public static final int TURRET_ENCODER = 35;
 
   }
 

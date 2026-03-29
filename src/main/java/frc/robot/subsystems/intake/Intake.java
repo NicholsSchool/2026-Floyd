@@ -161,7 +161,7 @@ public class Intake extends SubsystemBase {
     public double getPivotVoltage() { return inputs.pivotMotorVoltage; }
 
     @AutoLogOutput
-    public double getWheelVoltage() { return inputs.wheelMotorVoltage1; }
+    public double getWheelVoltage() { return inputs.wheelMotorVoltage; }
 
 
 }

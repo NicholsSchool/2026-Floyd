@@ -18,7 +18,7 @@ public class IntakeIOFrankenlew implements IntakeIO {
     private SparkFlex wheelMotor;
 
     public IntakeIOFrankenlew() {
-        wheelMotor = new SparkFlex(CAN.INTAKE_WHEEL_ONE, MotorType.kBrushless);
+        wheelMotor = new SparkFlex(CAN.INTAKE_WHEEL, MotorType.kBrushless);
 
 
         SparkFlexConfig wheelConfig = new SparkFlexConfig();
@@ -30,8 +30,8 @@ public class IntakeIOFrankenlew implements IntakeIO {
 
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
-        inputs.wheelMotorVoltage1 = wheelMotor.getAppliedOutput() * wheelMotor.getBusVoltage();
-        inputs.wheelMotorCurrent1 = wheelMotor.getOutputCurrent();
+        inputs.wheelMotorVoltage = wheelMotor.getAppliedOutput() * wheelMotor.getBusVoltage();
+        inputs.wheelMotorCurrent = wheelMotor.getOutputCurrent();
 
         inputs.pivotMotorVoltage = 0.0;
         inputs.pivotMotorCurrent = 0.0;

@@ -10,32 +10,41 @@ import frc.robot.Constants.CAN;
 
 public class ShooterIOReal implements ShooterIO {
 
-    private TalonFX shooterMotorBottom;
-    private TalonFX shooterMotorTop;
+    private TalonFX shooterMotorBottomLeft;
+    private TalonFX shooterMotorTopLeft;
+    private TalonFX shooterMotorBottomRight;
+    private TalonFX shooterMotorTopRight;
 
     public ShooterIOReal(){
-        shooterMotorBottom = new TalonFX(CAN.SHOOTER_BOTTOM, "Shooter");
-        shooterMotorTop = new TalonFX(CAN.SHOOTER_TOP,"Shooter");
+        shooterMotorBottomLeft = new TalonFX(CAN.LEFT_SHOOTER_BOTTOM, "Shooter");
+        shooterMotorTopLeft = new TalonFX(CAN.LEFT_SHOOTER_TOP,"Shooter");
+        shooterMotorBottomRight = new TalonFX(CAN.RIGHT_SHOOTER_BOTTOM, "Shooter");
+        shooterMotorTopRight = new TalonFX(CAN.RIGHT_SHOOTER_TOP,"Shooter");
 
          var config = new TalonFXConfiguration();
         config.CurrentLimits.StatorCurrentLimit = ShooterConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
         config.CurrentLimits.StatorCurrentLimitEnable = true;
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-        shooterMotorBottom.getConfigurator().apply(config);
-        shooterMotorTop.getConfigurator().apply(config);
+
+        shooterMotorBottomLeft.getConfigurator().apply(config);
+        shooterMotorTopLeft.getConfigurator().apply(config);
+        shooterMotorBottomRight.getConfigurator().apply(config);
+        shooterMotorTopRight.getConfigurator().apply(config);
 
     }
 
     public void updateInputs(ShooterIOInputs inputs){
-        inputs.currentAmps = shooterMotorBottom.getStatorCurrent().getValueAsDouble();
-        inputs.supplyVoltage = shooterMotorBottom.getSupplyVoltage().getValueAsDouble();
-        inputs.velocityRPM = -shooterMotorBottom.getVelocity().getValueAsDouble() * 60.0;
+        inputs.currentAmps = shooterMotorBottomLeft.getStatorCurrent().getValueAsDouble();
+        inputs.supplyVoltage = shooterMotorBottomLeft.getSupplyVoltage().getValueAsDouble();
+        inputs.velocityRPM = -shooterMotorBottomLeft.getVelocity().getValueAsDouble() * 60.0;
     }
 
     @Override
     public void setVoltage(double voltage){
         // motors reverse of each other
-        shooterMotorBottom.setVoltage(-voltage);
-        shooterMotorTop.setVoltage(voltage);
+        shooterMotorBottomLeft.setVoltage(-voltage);
+        shooterMotorTopLeft.setVoltage(voltage);
+        shooterMotorBottomRight.setVoltage(-voltage);
+        shooterMotorTopRight.setVoltage(voltage);
     }
 }
