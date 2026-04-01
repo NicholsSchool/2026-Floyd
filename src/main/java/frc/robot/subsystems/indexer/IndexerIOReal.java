@@ -8,38 +8,35 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import frc.robot.Constants;
 
 public class IndexerIOReal implements IndexerIO {
-    private TalonFX indexerMotor;
-    private TalonFX feederMotor;
+
+    private TalonFX indexerRightMotor;
+    private TalonFX indexerLeftMotor;
 
     public IndexerIOReal(){
-        indexerMotor = new TalonFX(Constants.CAN.INDEXER, "Shooter");
-        feederMotor = new TalonFX(Constants.CAN.FEEDER, "Shooter");
+        indexerLeftMotor = new TalonFX(Constants.CAN.INDEXER_LEFT, "Shooter");
+        indexerRightMotor = new TalonFX(Constants.CAN.INDEXER_RIGHT, "Shooter");
         TalonFXConfiguration indexerConfig = new TalonFXConfiguration();
         indexerConfig.CurrentLimits.StatorCurrentLimit = IndexerConstants.INDEXER_CURRENT_LIMIT;
         indexerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        indexerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        indexerConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-        indexerMotor.getConfigurator().apply(indexerConfig);
-        feederMotor.getConfigurator().apply(indexerConfig);
+        indexerRightMotor.getConfigurator().apply(indexerConfig);
+        indexerLeftMotor.getConfigurator().apply(indexerConfig);
     }
     
     @Override
     public void updateInputs(IndexerIOInputs inputs) {        
-        inputs.indexerVoltage = indexerMotor.getMotorVoltage().getValueAsDouble();
-        inputs.indexerSupplyVoltage = indexerMotor.getSupplyVoltage().getValueAsDouble();
-        inputs.indexerCurrentAmps = indexerMotor.getStatorCurrent().getValueAsDouble();
-        inputs.feederVoltage = feederMotor.getMotorVoltage().getValueAsDouble();
-        inputs.feederSupplyVoltage = feederMotor.getSupplyVoltage().getValueAsDouble();
-        inputs.feederCurrentAmps = feederMotor.getStatorCurrent().getValueAsDouble();
+        inputs.indexerRightVoltage = indexerRightMotor.getMotorVoltage().getValueAsDouble();
+        inputs.indexerLeftVoltage = indexerLeftMotor.getMotorVoltage().getValueAsDouble();
+        inputs.indexerRightSupplyVoltage = indexerRightMotor.getSupplyVoltage().getValueAsDouble();
+        inputs.indexerLeftSupplyVoltage = indexerLeftMotor.getSupplyVoltage().getValueAsDouble();
+        inputs.indexerRightCurrentAmps = indexerRightMotor.getStatorCurrent().getValueAsDouble();
+        inputs.indexerLeftCurrentAmps = indexerLeftMotor.getStatorCurrent().getValueAsDouble();
     }
     
     @Override
     public void setVoltageIndexer(double voltage) {
-        indexerMotor.setVoltage(-voltage);
-    }
-
-    @Override
-    public void setVoltageFeeder(double voltage){
-        feederMotor.setVoltage(-voltage);
+        indexerRightMotor.setVoltage(voltage);
+        indexerLeftMotor.setVoltage(-voltage);
     }
 }

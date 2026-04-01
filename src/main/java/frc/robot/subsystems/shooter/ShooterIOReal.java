@@ -37,14 +37,19 @@ public class ShooterIOReal implements ShooterIO {
         inputs.currentAmps = shooterMotorBottomLeft.getStatorCurrent().getValueAsDouble();
         inputs.supplyVoltage = shooterMotorBottomLeft.getSupplyVoltage().getValueAsDouble();
         inputs.velocityRPM = -shooterMotorBottomLeft.getVelocity().getValueAsDouble() * 60.0;
+        
+        inputs.bottomLeftShooterVoltage = shooterMotorBottomLeft.getMotorVoltage().getValueAsDouble();
+        inputs.bottomRightShooterVoltage = shooterMotorBottomRight.getMotorVoltage().getValueAsDouble();
+        inputs.topLeftShooterVoltage = shooterMotorTopLeft.getMotorVoltage().getValueAsDouble();
+        inputs.topRightShooterVoltage = shooterMotorTopRight.getMotorVoltage().getValueAsDouble();
     }
 
     @Override
     public void setVoltage(double voltage){
-        // motors reverse of each other
+        // motors reverse of each other]
         shooterMotorBottomLeft.setVoltage(-voltage);
         shooterMotorTopLeft.setVoltage(voltage);
-        shooterMotorBottomRight.setVoltage(-voltage);
-        shooterMotorTopRight.setVoltage(voltage);
+        shooterMotorBottomRight.setVoltage(voltage);
+        shooterMotorTopRight.setVoltage(-voltage);
     }
 }

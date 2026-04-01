@@ -81,12 +81,20 @@ public final class Constants {
 
     public static final int REDIRECTOR_ENCODER = 35;
 
-    public static final int INDEXER = 40;
-    public static final int FEEDER = 39;
+    //public static final int INDEXER = 40;
+    //public static final int FEEDER = 39;
+
+    public static final int INTAKE_TOP = 36;
+    //INDEX_TAKE for the mechanics
+    public static final int INTAKE_BOTTOM = 37;
+
+    public static final int INDEXER_LEFT = 38;
+    //actually updexer to certain mechanics
+    public static final int INDEXER_RIGHT = 39;
 
     public static final int INTAKE_PIVOT = 41; 
     public static final int INTAKE_PIVOT_ENCODER = 42;
-    public static final int INTAKE_WHEEL = 43;
+    //public static final int INTAKE_WHEEL = 43;
 
     public static final int CANDLE = 21;
 

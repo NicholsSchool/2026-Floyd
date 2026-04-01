@@ -17,10 +17,10 @@ public class IndexerIOSim implements IndexerIO {
     @Override
     public void updateInputs(IndexerIOInputs inputs) {
         simMotor.update(Constants.LOOP_PERIOD_SECS);
-        
-        inputs.indexerVoltage = simMotor.getInputVoltage();
-        inputs.indexerSupplyVoltage = simMotor.getInputVoltage();
-        inputs.indexerCurrentAmps = simMotor.getCurrentDrawAmps();
+        //TODO: fix this sim
+        // inputs.indexerVoltage = simMotor.getInputVoltage();
+        // inputs.indexerSupplyVoltage = simMotor.getInputVoltage();
+        // inputs.indexerCurrentAmps = simMotor.getCurrentDrawAmps();
     }
     
     @Override

@@ -8,10 +8,12 @@ public interface IntakeIO {
     public static class IntakeIOInputs {
         public double pivotAngleRadians = 0.0;
 
-        public double wheelMotorVoltage = 0.0;
+        public double intakeMotorTopVoltage = 0.0;
+        public double intakeMotorBottomVoltage = 0.0;
         public double pivotMotorVoltage = 0.0;
 
-        public double wheelMotorCurrent = 0.0;
+        public double intakeMotorTopCurrent = 0.0;
+        public double intakeMotorBottomCurrent = 0.0;
         public double pivotMotorCurrent = 0.0;
     }
     

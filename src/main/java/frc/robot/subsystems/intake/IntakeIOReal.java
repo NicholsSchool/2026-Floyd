@@ -4,16 +4,20 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import frc.robot.Constants;
 import frc.robot.Constants.CAN;
 
 public class IntakeIOReal implements IntakeIO {
 
-    private TalonFX intakeMotor;
+    private TalonFX intakeMotorTop;
+    private TalonFX intakeMotorBottom;
     private TalonFX pivotMotor;
     private CANcoder pivotEncoder;
 
     public IntakeIOReal() {
-        intakeMotor = new TalonFX(CAN.INTAKE_WHEEL);
+        intakeMotorTop = new TalonFX(Constants.CAN.INTAKE_TOP, "Shooter");
+        intakeMotorBottom = new TalonFX(Constants.CAN.INTAKE_BOTTOM, "Shooter");
         pivotMotor = new TalonFX(CAN.INTAKE_PIVOT);
         pivotEncoder = new CANcoder(CAN.INTAKE_PIVOT_ENCODER);
 
@@ -28,14 +32,18 @@ public class IntakeIOReal implements IntakeIO {
         intakeConfig.CurrentLimits.StatorCurrentLimit = IntakeConstants.WHEEL_CURRENT_LIMIT;
         intakeConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         intakeConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        intakeMotor.getConfigurator().apply(intakeConfig);
+        intakeMotorTop.getConfigurator().apply(intakeConfig);
+        intakeMotorBottom.getConfigurator().apply(intakeConfig);
 
     }
 
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
-        inputs.wheelMotorVoltage = intakeMotor.getMotorVoltage().getValueAsDouble();
-        inputs.wheelMotorCurrent = intakeMotor.getStatorCurrent().getValueAsDouble();
+        inputs.intakeMotorTopVoltage = intakeMotorTop.getMotorVoltage().getValueAsDouble();
+        inputs.intakeMotorTopCurrent = intakeMotorTop.getStatorCurrent().getValueAsDouble();
+
+        inputs.intakeMotorBottomVoltage = intakeMotorBottom.getMotorVoltage().getValueAsDouble();
+        inputs.intakeMotorBottomCurrent = intakeMotorBottom.getStatorCurrent().getValueAsDouble();
 
         inputs.pivotMotorVoltage = pivotMotor.getMotorVoltage().getValueAsDouble();
         inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
@@ -48,7 +56,8 @@ public class IntakeIOReal implements IntakeIO {
 
     @Override
     public void setWheelMotorVoltage(double volts) {
-        intakeMotor.setVoltage(volts);
+        intakeMotorTop.setVoltage(volts);
+        intakeMotorBottom.setVoltage(-volts);
     }
 
     @Override

@@ -16,7 +16,7 @@ public final class IntakeConstants {
     public static final double PIVOT_OUT_ANGLE = 2.05;
     public static final double PIVOT_MID_ANGLE = 1.9;
 
-    public static final double PIVOT_RATIO = 25.0;
+    public static final double PIVOT_RATIO = 90.0;
     public static final double INTAKE_RATIO = 1;
 
     public static final double WHEEL_CURRENT_LIMIT = 39.0;

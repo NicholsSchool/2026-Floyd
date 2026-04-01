@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.util.LoggedTunableNumber;
 
 
@@ -184,7 +185,7 @@ public class Redirector extends SubsystemBase
 
   @AutoLogOutput
   public boolean isAtGoal() {
-    return redirectorPidController.atGoal();
+    return (Math.abs(targetAngle - inputs.currentAngle) < RedirectorConstants.REDIRECTOR_POSITION_TOLERANCE);
   }
   
 }

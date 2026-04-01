@@ -37,7 +37,6 @@ import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.IndexerIOReal;
 import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.intake.IntakeIOFrankenlew;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.Intake.PivotPreset;
 import frc.robot.subsystems.shooter.Shooter;
@@ -147,7 +146,7 @@ public class RobotContainer {
 
         redirector = new Redirector(new RedirectorIOSim());
         indexer = new Indexer(new IndexerIOSim());
-        intake = new Intake(new IntakeIOFrankenlew());
+        intake = new Intake(new IntakeIOSim());
         shooter = new Shooter(new ShooterIOSim());
         candle = new Candle(new CandleIOReal());
 
@@ -328,29 +327,29 @@ public class RobotContainer {
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getRightY()), redirector));
       indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
-      operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.feedex(), indexer).repeatedly());
-      //operatorController.leftBumper().whileTrue(new InstantCommand(() -> indexer.feed(), indexer).repeatedly());
-      // 2m away
-      operatorController.a().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(8.55141, 1.35955)),
-       new InstantCommand(() -> redirector.setTargetPosition(1.35955))));
-      // 3m away
-      operatorController.b().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(9.23195, 1.32444)),
-       new InstantCommand(() -> redirector.setTargetPosition(1.32444))));
-        // 4m away
-      operatorController.y().onTrue(new ParallelCommandGroup(new InstantCommand(() -> shooter.setVelMPS(9.9188, 1.30137)),
-       new InstantCommand(() -> redirector.setTargetPosition(1.30137))));
+      operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.index(), indexer).repeatedly());
+      
 
-      operatorController.x().onTrue(new InstantCommand(() -> shooter.stop()));
+
+      operatorController.x().onTrue(new InstantCommand(()
+       -> shooter.stop()));
 
       operatorController.povDown().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.35)));
-      
-      operatorController.povLeft().onTrue(new SequentialCommandGroup(new RedirectorAutoAim(drive, redirector), new ShooterAutoAim(drive, shooter, redirector)));
+      operatorController.povLeft().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.55)));
+      operatorController.povRight().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1)));
+      operatorController.povUp().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.2)));
+
+      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(2000)));
+
+      operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2500)));
+
+      operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(3000)));
 
 
       /** right trigger autoalign 
        * aby for 123 m away 
        * dpad up turret to zero 
-       * feed LB feedex LT
+       * feed LB indexer LT
        * stop shooter x
       */ 
 

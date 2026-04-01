@@ -22,6 +22,7 @@ public class IntakeIOSim implements IntakeIO {
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
 
+        //TODO: fix this sim later too
         wheelMotor.update(Constants.LOOP_PERIOD_SECS);
         pivotMotor.update(Constants.LOOP_PERIOD_SECS);
 
@@ -30,8 +31,8 @@ public class IntakeIOSim implements IntakeIO {
         inputs.pivotMotorVoltage = pivotMotor.getInputVoltage();
         inputs.pivotMotorCurrent = pivotMotor.getCurrentDrawAmps();
 
-        inputs.wheelMotorVoltage = wheelMotor.getInputVoltage();
-        inputs.wheelMotorCurrent = wheelMotor.getCurrentDrawAmps();
+        // inputs.wheelMotorVoltage = wheelMotor.getInputVoltage();
+        // inputs.wheelMotorCurrent = wheelMotor.getCurrentDrawAmps();
 
     }
 

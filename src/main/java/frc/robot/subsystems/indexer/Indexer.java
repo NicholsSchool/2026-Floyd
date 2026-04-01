@@ -45,37 +45,31 @@ public class  Indexer extends SubsystemBase {
   public void index() {
       io.setVoltageIndexer(IndexerConstants.INDEXER_VOLTAGE);
     }
-  
-  public void feed(){
-    io.setVoltageFeeder(IndexerConstants.FEEDER_VOLTAGE);
-  }
+
 
   public void outdex() {
         io.setVoltageIndexer(IndexerConstants.REVERSE_VOLTAGE);
     }
-  
-  public void feedex(){
-    index();
-    feed();
-  }
 
-     public Command commandFeedex() {   
+
+     public Command commandIndex() {   
         return new FunctionalCommand(
-            () -> System.out.println("feedexing"),
-            () -> feedex(),
+            () -> System.out.println("indexing"),
+            () -> index(),
             interrupted -> stop(),
             () -> false,
             this).withTimeout(10.0);
     } 
 
   @AutoLogOutput 
-  public double getIndexVoltage(){
-    return inputs.indexerVoltage;
+  public double getIndexRightVoltage(){
+    return inputs.indexerRightVoltage;
   }
 
   @AutoLogOutput 
-  public double getFeedVoltage(){
-    return inputs.feederVoltage;
+  public double getIndexLeftVoltage(){
+    return inputs.indexerLeftVoltage;
   }
+
 
 }
