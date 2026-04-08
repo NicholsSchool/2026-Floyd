@@ -2,8 +2,9 @@ package frc.robot.subsystems.intake;
  
 public final class IntakeConstants {
 
-    public static final double INTAKE_VOLTAGE = 5;
-    public static final double OUTTAKE_VOLTAGE = -2.0;
+    public static final double INTAKE_VOLTAGE = 10;
+    public static final double INDEX_VOLTAGE = 5;
+    public static final double OUTTAKE_VOLTAGE = -5.0;
 
     public static final double PIVOT_P = 4.0;
     public static final double PIVOT_I = 0.0;

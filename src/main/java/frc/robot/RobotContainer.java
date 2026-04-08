@@ -39,6 +39,7 @@ import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.Intake.PivotPreset;
+import frc.robot.subsystems.intake.IntakeIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
@@ -117,13 +118,14 @@ public class RobotContainer {
              new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0),
-                new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1));
+                new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1)
+                );
 
         redirector = new Redirector(new RedirectorIOReal());
         indexer = new Indexer( new IndexerIOReal());
         candle = new Candle(new CandleIOReal());
         shooter = new Shooter(new ShooterIOReal()); 
-        intake = new Intake(new IntakeIOSim());
+        intake = new Intake(new IntakeIOReal());
        // CanandEventLoop.getInstance();
         break;
  
@@ -273,6 +275,7 @@ public class RobotContainer {
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
       candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, redirector, shooter, indexer).repeatedly());
+      intake.setDefaultCommand(new InstantCommand(() -> intake.stopWheels(), intake));
 
       driveController.y().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
       driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
@@ -288,7 +291,7 @@ public class RobotContainer {
     
       driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
       driveController.rightBumper().whileTrue(new InstantCommand(()-> intake.outtake(), intake).repeatedly());
-      intake.setDefaultCommand(new InstantCommand(()-> intake.stopWheels(), intake));
+    
 
           driveController.x().whileTrue(DriveCommands.joystickDriveFacingPoint(drive,
           () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
@@ -299,14 +302,14 @@ public class RobotContainer {
 
         driveController.povDown().whileTrue( DriveCommands.joystickDrive(
             drive,
-                () -> -1.0,
+                () -> -0.3,
                 () -> 0,
                 () -> 0.0,
                 () -> true));
                   
         driveController.povUp().whileTrue( DriveCommands.joystickDrive(
             drive,
-                () -> 1.0,
+                () -> 0.3,
                 () -> 0,
                 () -> 0.0,
                 () -> true));
@@ -314,20 +317,21 @@ public class RobotContainer {
         driveController.povLeft().whileTrue( DriveCommands.joystickDrive(
             drive,
                 () -> 0.0,
-                () -> 1.0,
+                () -> 0.3,
                 () -> 0.0,
                 () -> true));
             
         driveController.povRight().whileTrue( DriveCommands.joystickDrive(
                 drive,
                     () -> 0.0,
-                    () -> -1.0,
+                    () -> -0.3,
                     () -> 0.0,
                     () -> true));
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getRightY()), redirector));
       indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
-      operatorController.leftTrigger().whileTrue(new InstantCommand(() -> indexer.index(), indexer).repeatedly());
+      operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.index(), indexer), new InstantCommand(() -> intake.indexIntake(), intake)).repeatedly());
+      
       
 
 
@@ -338,12 +342,12 @@ public class RobotContainer {
       operatorController.povLeft().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.55)));
       operatorController.povRight().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1)));
       operatorController.povUp().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.2)));
+ 
+      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(2600)));
 
-      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(2000)));
+      operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2700)));
 
-      operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2500)));
-
-      operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(3000)));
+      operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
 
 
       /** right trigger autoalign 

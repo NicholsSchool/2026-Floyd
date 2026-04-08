@@ -13,7 +13,7 @@ public class IndexerIOSim implements IndexerIO {
     new DCMotorSim(
     LinearSystemId.createDCMotorSystem(simModel, 0.025, IndexerConstants.GEAR_RATIO),
     simModel);
-    
+
     @Override
     public void updateInputs(IndexerIOInputs inputs) {
         simMotor.update(Constants.LOOP_PERIOD_SECS);

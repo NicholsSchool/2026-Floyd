@@ -94,6 +94,11 @@ public class Intake extends SubsystemBase {
     public void intake() {
         setWheelVoltage(IntakeConstants.INTAKE_VOLTAGE);
     }
+
+    public void indexIntake(){
+        setWheelVoltage(IntakeConstants.INDEX_VOLTAGE);
+    }
+
     public void outtake() {
         setWheelVoltage(IntakeConstants.OUTTAKE_VOLTAGE);
     }

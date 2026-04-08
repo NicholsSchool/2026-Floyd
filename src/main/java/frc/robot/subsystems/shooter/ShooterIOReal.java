@@ -46,7 +46,7 @@ public class ShooterIOReal implements ShooterIO {
 
     @Override
     public void setVoltage(double voltage){
-        // motors reverse of each other]
+        // motors reverse of each other
         shooterMotorBottomLeft.setVoltage(-voltage);
         shooterMotorTopLeft.setVoltage(voltage);
         shooterMotorBottomRight.setVoltage(voltage);
