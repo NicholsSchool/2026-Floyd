@@ -291,7 +291,7 @@ public class RobotContainer {
     
       driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
       driveController.rightBumper().whileTrue(new InstantCommand(()-> intake.outtake(), intake).repeatedly());
-    
+
 
           driveController.x().whileTrue(DriveCommands.joystickDriveFacingPoint(drive,
           () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
@@ -331,6 +331,8 @@ public class RobotContainer {
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getRightY()), redirector));
       indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
       operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.index(), indexer), new InstantCommand(() -> intake.indexIntake(), intake)).repeatedly());
+
+
       
       
 
@@ -348,6 +350,8 @@ public class RobotContainer {
       operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2700)));
 
       operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
+
+
 
 
       /** right trigger autoalign 

@@ -92,8 +92,8 @@ public final class Constants {
     //actually updexer to certain mechanics
     public static final int INDEXER_RIGHT = 39;
 
-    public static final int INTAKE_PIVOT = 41; 
-    public static final int INTAKE_PIVOT_ENCODER = 42;
+    public static final int INTAKE_PIVOT = 22; 
+    public static final int INTAKE_PIVOT_ENCODER = 23;
     //public static final int INTAKE_WHEEL = 43;
 
     public static final int CANDLE = 21;
