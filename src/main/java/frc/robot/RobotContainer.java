@@ -296,7 +296,7 @@ public class RobotContainer {
           driveController.x().whileTrue(DriveCommands.joystickDriveFacingPoint(drive,
           () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
           () -> -driveController.getLeftX() * DriveConstants.LOW_GEAR_SCALER,
-          () -> FieldConstants.Hub.innerCenterPoint.toTranslation2d(), () -> drive.getPose().getRotation().getRadians(), () -> Math.PI / 2,
+          () -> FieldConstants.Hub.innerCenterPoint.toTranslation2d(), () -> drive.getPose().getRotation().getRadians(), () -> 0.0,
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
 
