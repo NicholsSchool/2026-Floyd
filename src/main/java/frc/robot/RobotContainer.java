@@ -118,7 +118,8 @@ public class RobotContainer {
              new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0),
-                new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1)
+                new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1),
+                new VisionIOPhotonVision(VisionConstants.camera2Name, VisionConstants.robotToCamera2)
                 );
 
         redirector = new Redirector(new RedirectorIOReal());

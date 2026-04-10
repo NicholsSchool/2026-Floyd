@@ -26,7 +26,7 @@ public class VisionConstants {
   // Camera names, must match names configured on coprocessor
    public static String camera0Name = "camUp";
   public static Transform3d robotToCamera0 =
-  new Transform3d(0.10, -0.01, 0.407, new Rotation3d(Math.toRadians(-1.0), Math.toRadians(-28.0), Math.toRadians(0.0)));
+  new Transform3d(0.10, -0.01, 0.407, new Rotation3d(Math.toRadians(-1.0), Math.toRadians(-39.5), Math.toRadians(0.0)));
   //13 y 9 3/4 x
   //pitch is normally 35.0 degrees, changed for now cause it's not working
   //-3 degree yaw offset
@@ -34,7 +34,11 @@ public class VisionConstants {
   public static String camera1Name = "camL";
   public static Transform3d robotToCamera1 =
   new Transform3d(-0.28, 0.304, 0.185, new Rotation3d(0.0, 0.0, Math.PI / 2));
-//   public static String camera1Name = "Arducam_OV2311_USB_Camera-B";
+//   public static String camera1Name = "Arducam_OV231x1_USB_Camera-B";
+
+  public static String camera2Name = "camR";
+  public static Transform3d robotToCamera2 = 
+  new Transform3d(-26.5,-0.33,0.21, new Rotation3d(0.0, Math.toRadians(-41.0), Math.toRadians(-41.0)));
 
   // Robot to camera transforms
   // (Not used by Limelight, configure in web UI instead
