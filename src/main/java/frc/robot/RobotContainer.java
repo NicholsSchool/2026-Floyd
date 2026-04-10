@@ -347,12 +347,13 @@ public class RobotContainer {
       operatorController.povUp().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.2)));
 
       operatorController.leftBumper().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.backdex(), indexer), new InstantCommand(() -> intake.backdexIntake(), intake)).repeatedly());
- 
-      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(3000)));
 
-      operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2900)));
+    //   operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(5000)));
 
-      operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
+    //   operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(4500)));
+
+    //   operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(5500)));
+      operatorController.y().onTrue(new ShooterAutoAim(drive, shooter, redirector));
 
 
 
