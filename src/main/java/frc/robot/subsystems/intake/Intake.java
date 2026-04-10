@@ -99,6 +99,10 @@ public class Intake extends SubsystemBase {
         setWheelVoltage(IntakeConstants.INDEX_VOLTAGE);
     }
 
+    public void backdexIntake(){
+        setWheelVoltage(IntakeConstants.BACKDEX_VOLTAGE);
+    }
+
     public void outtake() {
         setWheelVoltage(IntakeConstants.OUTTAKE_VOLTAGE);
     }

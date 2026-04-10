@@ -47,7 +47,7 @@ public class  Indexer extends SubsystemBase {
     }
 
 
-  public void outdex() {
+  public void backdex() {
         io.setVoltageIndexer(IndexerConstants.REVERSE_VOLTAGE);
     }
 

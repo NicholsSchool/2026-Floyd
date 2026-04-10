@@ -65,7 +65,7 @@ public class Redirector extends SubsystemBase
         redirectorPidController.setTolerance(0.01);
 
         this.redirectorMode = RedirectorMode.GO_TO_POSITION;
-        setTargetPosition(1.35);
+        setTargetPosition(1.47);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class Redirector extends SubsystemBase
           io.setVoltage(voltageCmdManual + voltageCmdPid);
 
         if(DriverStation.isDisabled()){
-           setTargetPosition(1.35);
+           setTargetPosition(1.47);
         }
     }
 

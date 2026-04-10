@@ -38,7 +38,7 @@ public class VisionConstants {
 
   public static String camera2Name = "camR";
   public static Transform3d robotToCamera2 = 
-  new Transform3d(-26.5,-0.33,0.21, new Rotation3d(0.0, Math.toRadians(-41.0), Math.toRadians(-41.0)));
+  new Transform3d(-26.5,-0.33,0.21, new Rotation3d(0.0, Math.toRadians(-14.0), Math.toRadians(-41.0)));
 
   // Robot to camera transforms
   // (Not used by Limelight, configure in web UI instead

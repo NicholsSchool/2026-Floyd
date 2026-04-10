@@ -278,12 +278,12 @@ public class Drive extends SubsystemBase {
 
   @AutoLogOutput
   public Translation2d getHub(){
-    return AllianceFlipUtil.apply(FieldConstants.Hub.nearLeftCorner);
+    return AllianceFlipUtil.apply(FieldConstants.Hub.topCenterPoint.toTranslation2d());
   }
 
   @AutoLogOutput
-  public Translation2d getHubDistance(){
-    return (getPose().getTranslation().minus(getHub()));
+  public double getHubDistance(){
+    return (getPose().getTranslation().minus(getHub()).getNorm());
   }
 
   @AutoLogOutput

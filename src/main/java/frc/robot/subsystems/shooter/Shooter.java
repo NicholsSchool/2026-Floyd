@@ -55,6 +55,7 @@ public class Shooter extends SubsystemBase {
         pidCmd += 0.1 * pidController.calculate(inputs.velocityRPM, setpointRPM);
 
         io.setVoltage(pidCmd
+        + getBangBang()
          );
     }
 
