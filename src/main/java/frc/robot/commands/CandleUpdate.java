@@ -34,7 +34,13 @@ public class CandleUpdate extends InstantCommand{
         if(intake.getIntakeCurrent() > 39.5){
             candle.setColor(CandleConstants.WRONG_RED, Subsystem.DRIVE);
         }else if(intake.pivotCurrent() > 39.5){
-
+            candle.setColor(CandleConstants.IVORY, Subsystem.DRIVE);
+        }else if(indexer.getIndexerCurrent() > 39.5){
+            candle.setColor(CandleConstants.MAIZE, Subsystem.DRIVE);
+        }else if(!shooter.isAtGoal() && shooter.getPidCmd() < -0.5){
+            candle.setColor(CandleConstants.PERFECT_PURPLE, Subsystem.DRIVE);
+        }else if(shooter.isAtGoal()){
+            candle.setColor(CandleConstants.BEST_GREEN, Subsystem.DRIVE);
         }else{
             candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.DRIVE);
         }

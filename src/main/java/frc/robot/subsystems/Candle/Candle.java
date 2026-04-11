@@ -58,6 +58,7 @@ public class Candle extends SubsystemBase {
     public void periodic(){
         if(DriverStation.isDisabled()){
             setColor(CandleConstants.FLOYD_PINK, Subsystem.DRIVE);
+            
         }
     }
 

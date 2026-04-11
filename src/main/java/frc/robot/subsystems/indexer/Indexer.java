@@ -71,5 +71,10 @@ public class  Indexer extends SubsystemBase {
     return inputs.indexerLeftVoltage;
   }
 
+  @AutoLogOutput
+  public double getIndexerCurrent(){
+    return inputs.indexerLeftCurrentAmps;
+  }
+
 
 }
