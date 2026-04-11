@@ -175,5 +175,10 @@ public class Intake extends SubsystemBase {
     @AutoLogOutput
     public double getIntakeBottomVoltage() { return inputs.intakeMotorBottomVoltage; }
 
+    @AutoLogOutput
+    public double getIntakeCurrent(){
+        return inputs.intakeMotorBottomCurrent;
+    }
+
 
 }

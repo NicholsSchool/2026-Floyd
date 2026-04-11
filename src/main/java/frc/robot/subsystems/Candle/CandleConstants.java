@@ -6,8 +6,8 @@ public class CandleConstants {
     public static int DRIVE_START_INDEX = 0;
     public static int DRIVE_STOP_INDEX = 8;
 
-    public static int INTAKE_START_INDEX = 31;
-    public static int INTAKE_STOP_INDEX = 60;
+    public static int INTAKE_START_INDEX = 0;
+    public static int INTAKE_STOP_INDEX = 0;
 
     public static int INDEXER_START_INDEX = 0;
     public static int INDEXER_STOP_INDEX = 0;

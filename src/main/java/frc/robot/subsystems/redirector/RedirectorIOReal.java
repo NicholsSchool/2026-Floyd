@@ -13,27 +13,17 @@ public class RedirectorIOReal implements RedirectorIO{
     private CANcoder redirectorEncoder;
 
     public RedirectorIOReal(){
-        redirectorMotor = new TalonFX(CAN.REDIRECTOR, "Shooter");
-        redirectorEncoder = new CANcoder(CAN.REDIRECTOR_ENCODER, "Shooter");
-
-         TalonFXConfiguration redirectorConfig = new TalonFXConfiguration();
-        redirectorConfig.CurrentLimits.StatorCurrentLimit = RedirectorConstants.REDIRECTOR_CURRENT_LIMIT;
-        redirectorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        redirectorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        redirectorMotor.getConfigurator().apply(redirectorConfig);
+       
     }
 
     @Override
     public void updateInputs(RedirectorIOInputs inputs){
-        inputs.appliedVolts = redirectorMotor.getMotorVoltage().getValueAsDouble();
-        inputs.velocityRadPerSec = redirectorMotor.getVelocity().getValueAsDouble();
-        inputs.currentAngle = redirectorEncoder.getAbsolutePosition().getValueAsDouble() * 7.36482 + 1.56772;
-        inputs.currentAmps = redirectorMotor.getStatorCurrent().getValueAsDouble();
+        
     }
 
     @Override
     public void setVoltage(double voltage){
-        redirectorMotor.setVoltage(voltage);
+       
     } 
     
 }

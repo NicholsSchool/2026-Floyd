@@ -15,6 +15,7 @@ import com.ctre.phoenix6.signals.RGBWColor;
 import com.ctre.phoenix6.signals.StatusLedWhenActiveValue;
 import com.ctre.phoenix6.signals.StripTypeValue;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -51,6 +52,13 @@ public class Candle extends SubsystemBase {
     public Candle(CandleIO io) {
         this.io = io;
         io.setColor(CandleConstants.FLOYD_PINK, 0, CandleConstants.LED_MAX);
+    }
+
+    @Override
+    public void periodic(){
+        if(DriverStation.isDisabled()){
+            setColor(CandleConstants.FLOYD_PINK, Subsystem.DRIVE);
+        }
     }
 
     public void setColor(RGBWColor color, Subsystem subsystem){

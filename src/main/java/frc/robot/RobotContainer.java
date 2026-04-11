@@ -275,7 +275,7 @@ public class RobotContainer {
           () -> -driveController.getRightX(),
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
-      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, redirector, shooter, indexer).repeatedly());
+      //candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, redirector, shooter, indexer).repeatedly());
       intake.setDefaultCommand(new InstantCommand(() -> intake.stopWheels(), intake));
 
       driveController.y().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
@@ -348,12 +348,12 @@ public class RobotContainer {
 
       operatorController.leftBumper().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.backdex(), indexer), new InstantCommand(() -> intake.backdexIntake(), intake)).repeatedly());
 
-    //   operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(5000)));
+      operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(3200)));
 
-    //   operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(4500)));
+      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(3000)));
 
-    //   operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(5500)));
-      operatorController.y().onTrue(new ShooterAutoAim(drive, shooter, redirector));
+      operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
+      //operatorController.y().onTrue(new ShooterAutoAim(drive, shooter, redirector));
 
 
 
