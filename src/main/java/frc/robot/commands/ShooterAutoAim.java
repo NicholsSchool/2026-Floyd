@@ -38,7 +38,7 @@ public class ShooterAutoAim extends InstantCommand {
     double distance = hubOffset.getNorm();
     //https://www.desmos.com/calculator/fwhxwn9toz
 
-    shooter.setRPM((500 * distance) + 1800);
+    shooter.setRPM((500 * (distance + AutoConstants.AUTOAIM_GASLIGHT)) + 1800);
 
   }
 }

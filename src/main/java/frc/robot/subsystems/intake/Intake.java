@@ -5,7 +5,10 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.AutoConstants;
 
 public class Intake extends SubsystemBase {
     
@@ -149,6 +152,15 @@ public class Intake extends SubsystemBase {
         pivotPreset = PivotPreset.CUSTOM;
         pivotPIDController.reset(inputs.pivotAngleRadians);
     }
+
+     public Command commandIntake() {   
+        return new FunctionalCommand(
+            () -> System.out.println("Intaking"),
+            () -> intake(),
+            interrupted -> stopWheels(),
+            () -> false,
+            this).withTimeout(AutoConstants.INTAKE_TIME);
+    } 
 
 
     @AutoLogOutput

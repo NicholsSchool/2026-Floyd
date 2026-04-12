@@ -6,28 +6,28 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.Constants;
 
 public class RedirectorIOSim implements RedirectorIO{
-      private static final DCMotor simModel = DCMotor.getKrakenX60(1);
+      // private static final DCMotor simModel = DCMotor.getKrakenX60(1);
 
-      private final DCMotorSim sim =
-      new DCMotorSim(
-          LinearSystemId.createDCMotorSystem(simModel, 0.025, RedirectorConstants.REDIRECTOR_GEAR_RATIO),
-          simModel);
+      // private final DCMotorSim sim =
+      // new DCMotorSim(
+      //     LinearSystemId.createDCMotorSystem(simModel, 0.025, RedirectorConstants.REDIRECTOR_GEAR_RATIO),
+      //     simModel);
     
     double redirectorAppliedVolts = 0.0;
 
     @Override
     public void updateInputs(RedirectorIOInputs inputs){
-        sim.update(Constants.LOOP_PERIOD_SECS);
+        // sim.update(Constants.LOOP_PERIOD_SECS);
         
-        inputs.appliedVolts = sim.getInputVoltage();
-        inputs.velocityRadPerSec = sim.getAngularVelocityRadPerSec();
-        inputs.currentAngle = sim.getAngularPositionRad();
-        inputs.currentAmps = sim.getCurrentDrawAmps();
+        // inputs.appliedVolts = sim.getInputVoltage();
+        // inputs.velocityRadPerSec = sim.getAngularVelocityRadPerSec();
+        // inputs.currentAngle = sim.getAngularPositionRad();
+        // inputs.currentAmps = sim.getCurrentDrawAmps();
     }
 
     @Override
     public void setVoltage(double voltage) {
-      sim.setInputVoltage(voltage);
+      //sim.setInputVoltage(voltage);
     }
 
 }

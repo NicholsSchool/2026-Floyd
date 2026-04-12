@@ -39,7 +39,7 @@ public class CandleUpdate extends InstantCommand{
             candle.setColor(CandleConstants.MAIZE, Subsystem.DRIVE);
         }else if(!shooter.isAtGoal() && shooter.getPidCmd() < -0.5){
             candle.setColor(CandleConstants.PERFECT_PURPLE, Subsystem.DRIVE);
-        }else if(shooter.isAtGoal()){
+        }else if(shooter.isAtGoal() && shooter.getSetpointRPM() != 0){
             candle.setColor(CandleConstants.BEST_GREEN, Subsystem.DRIVE);
         }else{
             candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.DRIVE);

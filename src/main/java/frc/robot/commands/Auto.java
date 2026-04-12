@@ -66,17 +66,17 @@ public class Auto {
     public Command intakeCenter(boolean followThrough, PickupRegion pickupRegion){
         if(followThrough){
             if(pickupRegion.equals(PickupRegion.LEFT)){
-                return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 0.6), new Rotation2d(-Math.PI / 2))));
+                return new DriveToPose(drive, true, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 0.6), new Rotation2d(-Math.PI / 2))));
             }else{
-                return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 7.5), new Rotation2d(Math.PI / 2))));
+                return new DriveToPose(drive, true, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 7.5), new Rotation2d(Math.PI / 2))));
             }
         }else{
               if(pickupRegion.equals(PickupRegion.LEFT)){
-                return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 5.0), new Rotation2d(-Math.PI / 2)))), 
-                new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 7.5), new Rotation2d(-Math.PI / 2)))));
+                return new SequentialCommandGroup(new DriveToPose(drive, true, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 5.0), new Rotation2d(-Math.PI / 2)))), 
+                new DriveToPose(drive, true, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 7.5), new Rotation2d(-Math.PI / 2)))));
             }else{
-                return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 3.0), new Rotation2d(Math.PI / 2)))), 
-                new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 0.6), new Rotation2d(Math.PI / 2)))));
+                return new SequentialCommandGroup(new DriveToPose(drive, true, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 3.0), new Rotation2d(Math.PI / 2)))), 
+                new DriveToPose(drive, true, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 0.6), new Rotation2d(Math.PI / 2)))));
             }
         }
     }
@@ -97,10 +97,10 @@ public class Auto {
             shootingPos = new Pose2d();
         }
         if((pickupRegion.equals(PickupRegion.LEFT) && followThrough) || (pickupRegion.equals(PickupRegion.RIGHT) && !followThrough)){
-        return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.2, 0.6), new Rotation2d(0.0)))),
+        return new SequentialCommandGroup(new DriveToPose(drive, true, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.2, 0.6), new Rotation2d(0.0)))),
              (new DriveToPose(drive, AllianceFlipUtil.apply(shootingPos))));
         }else{
-            return new SequentialCommandGroup(new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.2, 7.5), new Rotation2d(0.0)))),
+            return new SequentialCommandGroup(new DriveToPose(drive, true, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.2, 7.5), new Rotation2d(0.0)))),
              (new DriveToPose(drive, AllianceFlipUtil.apply(shootingPos))));
         }
     }
@@ -120,10 +120,14 @@ public class Auto {
             return new SequentialCommandGroup(goToPreloadShootPosition().withTimeout(3), AutoAim(),
             new WaitCommand(AutoConstants.AUTO_REV_TIME), indexer.commandIndex());
         }else{
-        return new SequentialCommandGroup(goToCenter(AutoConfig.pickupLocationOne), new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)), new WaitCommand(0.5), 
-        intakeCenter(AutoConfig.followThroughOne, AutoConfig.pickupLocationOne).withTimeout(0.4), new WaitCommand(0.4), 
+        return new SequentialCommandGroup(
+            goToCenter(AutoConfig.pickupLocationOne),
+             new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)),
+              new WaitCommand(0.5), 
          new ParallelCommandGroup(intakeCenter(AutoConfig.followThroughOne, AutoConfig.pickupLocationOne),
-          new InstantCommand(() -> intake.intake()).repeatedly().withTimeout(AutoConstants.INTAKE_TIME)), new InstantCommand(() -> intake.stopWheels()),
+         intake.commandIntake(), indexer.commandBackdex()),
+        //   new InstantCommand(() -> intake.intake()).repeatedly().withTimeout(AutoConstants.INTAKE_TIME)),
+        //   new InstantCommand(() -> intake.stopWheels()),
           driveToShootPos(AutoConfig.shootingPositionOne, AutoConfig.pickupLocationOne, AutoConfig.followThroughOne),
            AutoAim(), new WaitCommand(AutoConstants.AUTO_REV_TIME), indexer.commandIndex());
         }

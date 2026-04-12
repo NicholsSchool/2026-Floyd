@@ -81,7 +81,7 @@ public class DriveToPose extends Command {
         thetaKp.initDefault(1.5);
         thetaKd.initDefault(0.0);
         driveMaxVelocity.initDefault(Units.inchesToMeters(150.0));
-        driveMaxVelocitySlow.initDefault(Units.inchesToMeters(50.0));
+        driveMaxVelocitySlow.initDefault(Units.inchesToMeters(30.0));
         driveMaxAcceleration.initDefault(Units.inchesToMeters(95.0));
         thetaMaxVelocity.initDefault(Units.degreesToRadians(360.0));
         thetaMaxVelocitySlow.initDefault(Units.degreesToRadians(90.0));
@@ -222,6 +222,10 @@ public class DriveToPose extends Command {
                 currentPose.getTranslation().minus(targetPose.getTranslation()).getAngle())
             .transformBy(GeomUtil.translationToTransform(driveVelocityScalar, 0.0))
             .getTranslation();
+
+    // if(slowMode){
+    //     driveVelocity.times(0.3);
+    // }
     drive.runVelocity(
         ChassisSpeeds.fromFieldRelativeSpeeds(
             driveVelocity.getX(), driveVelocity.getY(), thetaVelocity, currentPose.getRotation()));

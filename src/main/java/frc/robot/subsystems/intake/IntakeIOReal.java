@@ -24,14 +24,14 @@ public class IntakeIOReal implements IntakeIO {
         TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
         pivotConfig.CurrentLimits.StatorCurrentLimit = IntakeConstants.PIVOT_CURRENT_LIMIT;
         pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         pivotMotor.getConfigurator().apply(pivotConfig);
         pivotMotor.setPosition(IntakeConstants.PIVOT_IN_ANGLE * IntakeConstants.PIVOT_RATIO);
 
         TalonFXConfiguration intakeConfig = new TalonFXConfiguration();
         intakeConfig.CurrentLimits.StatorCurrentLimit = IntakeConstants.WHEEL_CURRENT_LIMIT;
         intakeConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        intakeConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        intakeConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         intakeMotorTop.getConfigurator().apply(intakeConfig);
         intakeMotorBottom.getConfigurator().apply(intakeConfig);
 

@@ -7,7 +7,7 @@ public final class IntakeConstants {
     public static final double OUTTAKE_VOLTAGE = -5.0;
     public static final double BACKDEX_VOLTAGE = -7.0;
 
-    public static final double PIVOT_P = 6.0;
+    public static final double PIVOT_P = 10.0;
     public static final double PIVOT_I = 0.0;
     public static final double PIVOT_D = 0.0;
 
@@ -15,8 +15,8 @@ public final class IntakeConstants {
     public static final double PIVOT_MAX_ACCEL = 3.0;
 
     //0.125 was the original in angle
-    public static final double PIVOT_IN_ANGLE = 0.88;
-    public static final double PIVOT_OUT_ANGLE = 1.57;
+    public static final double PIVOT_IN_ANGLE = 0.15;
+    public static final double PIVOT_OUT_ANGLE = 1.6;
     public static final double PIVOT_MID_ANGLE = 1;
 
     public static final double PIVOT_RATIO = 90.0;

@@ -275,22 +275,17 @@ public class RobotContainer {
           () -> -driveController.getRightX(),
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
-      //candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, redirector, shooter, indexer).repeatedly());
+      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, redirector, shooter, indexer).repeatedly());
       intake.setDefaultCommand(new InstantCommand(() -> intake.stopWheels(), intake));
 
       driveController.y().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
       driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
-      driveController.b().whileTrue(DriveCommands.joystickDriveWithAngle(
-        drive, 
-        () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
-        () -> -driveController.getLeftX() * DriveConstants.LOW_GEAR_SCALER,
-        () -> 0.0,
-        () -> drive.getYaw(),
-        () -> Constants.DRIVE_ROBOT_RELATIVE));
+      driveController.b().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.MID)));
 
        driveController.leftBumper().whileTrue(new InstantCommand(() -> drive.stopWithX(), drive).repeatedly());
     
       driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
+      driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> indexer.backdex(), indexer).repeatedly());
       driveController.rightBumper().whileTrue(new InstantCommand(()-> intake.outtake(), intake).repeatedly());
 
 
@@ -348,12 +343,12 @@ public class RobotContainer {
 
       operatorController.leftBumper().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.backdex(), indexer), new InstantCommand(() -> intake.backdexIntake(), intake)).repeatedly());
 
-    //   operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(3200)));
+      operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(3200)));
 
-    //   operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(3000)));
+      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(3000)));
 
-    //   operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
-      operatorController.y().onTrue(new ShooterAutoAim(drive, shooter, redirector));
+      operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
+    //   operatorController.y().onTrue(new ShooterAutoAim(drive, shooter, redirector));
 
 
 

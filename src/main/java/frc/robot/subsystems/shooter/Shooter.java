@@ -16,6 +16,7 @@ public class Shooter extends SubsystemBase {
 
     private double setpointRPM = 0.0;
     private double pidCmd = 0.0;
+    private double exponentialCmd = 0.0;
     PIDController pidController = new PIDController(ShooterConstants.VELOCITY_P, ShooterConstants.VELOCITY_I, ShooterConstants.VELOCITY_D);
     BangBangController bangBangController = new BangBangController();
 
@@ -52,9 +53,13 @@ public class Shooter extends SubsystemBase {
 
         updateTunables();
 
-        pidCmd += 0.1 * pidController.calculate(inputs.velocityRPM, setpointRPM);
+        // exponentialCmd += getExponentialCommandDelta();
 
-        io.setVoltage(pidCmd
+        pidCmd += pidController.calculate(inputs.velocityRPM, setpointRPM);
+
+        io.setVoltage(
+            pidCmd
+            //exponentialCmd
         + getBangBang()
          );
     }
@@ -73,12 +78,6 @@ public class Shooter extends SubsystemBase {
         setpointRPM = setpoint;
         pidController.reset();
         bangBangController.setSetpoint(setpoint);
-    }
-
-    public void setVelMPS(double velocity, double redirectorAngleRad){
-        //we need to find this regression
-        double rpm = (281.25 * redirectorAngleRad + 59.225) * velocity + (-4152.75 * redirectorAngleRad + 4044.725);
-        setRPM(rpm);
     }
 
     @AutoLogOutput
@@ -112,6 +111,17 @@ public class Shooter extends SubsystemBase {
     public void stop() {
         setRPM(0.0);
     
+    }
+
+    @AutoLogOutput
+    public double getExponentialCommandDelta(){
+        if(exponentialCmd != 0.0 && getSetpointRPM() != 0.0){
+        return ShooterConstants.EXPONENTIAL_TUNING * (1 - exponentialCmd / (setpointRPM * (exponentialCmd / (Math.abs(getRPM()) + 0.00001))));
+        }else{
+        exponentialCmd = 0.0001;
+        return 0.0;
+        }
+        
     }
 
     @AutoLogOutput

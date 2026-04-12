@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.AutoConstants;
 import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -59,6 +60,15 @@ public class  Indexer extends SubsystemBase {
             interrupted -> stop(),
             () -> false,
             this).withTimeout(10.0);
+    } 
+
+      public Command commandBackdex() {   
+        return new FunctionalCommand(
+            () -> System.out.println("backdexing"),
+            () -> backdex(),
+            interrupted -> stop(),
+            () -> false,
+            this).withTimeout(AutoConstants.INTAKE_TIME);
     } 
 
   @AutoLogOutput 
