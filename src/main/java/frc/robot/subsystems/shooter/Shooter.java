@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+
+import frc.robot.Constants;
 import frc.robot.util.LoggedTunableNumber;
 
 public class Shooter extends SubsystemBase {
@@ -16,8 +18,7 @@ public class Shooter extends SubsystemBase {
 
     private double setpointRPM = 0.0;
     private double pidCmd = 0.0;
-    private double exponentialCmd = 0.0;
-    PIDController pidController = new PIDController(ShooterConstants.VELOCITY_P, ShooterConstants.VELOCITY_I, ShooterConstants.VELOCITY_D);
+    PIDController pidController = new PIDController(ShooterConstants.VELOCITY_P, ShooterConstants.VELOCITY_I, ShooterConstants.VELOCITY_D, Constants.LOOP_PERIOD_SECS);
     BangBangController bangBangController = new BangBangController();
 
     private static final LoggedTunableNumber shooterKp =
@@ -45,7 +46,6 @@ public class Shooter extends SubsystemBase {
     public void periodic(){
         if(DriverStation.isDisabled()){
             stop();
-            setRPM(0.0);
         }
 
         io.updateInputs(inputs);
@@ -53,14 +53,10 @@ public class Shooter extends SubsystemBase {
 
         updateTunables();
 
-        // exponentialCmd += getExponentialCommandDelta();
-
         pidCmd += pidController.calculate(inputs.velocityRPM, setpointRPM);
 
         io.setVoltage(
-            pidCmd
-            //exponentialCmd
-        + getBangBang()
+            pidCmd + getBangBang()
          );
     }
 
@@ -79,6 +75,7 @@ public class Shooter extends SubsystemBase {
         pidController.reset();
         bangBangController.setSetpoint(setpoint);
     }
+    
 
     @AutoLogOutput
     public boolean isAtGoal(){
@@ -110,18 +107,7 @@ public class Shooter extends SubsystemBase {
 
     public void stop() {
         setRPM(0.0);
-    
-    }
-
-    @AutoLogOutput
-    public double getExponentialCommandDelta(){
-        if(exponentialCmd != 0.0 && getSetpointRPM() != 0.0){
-        return ShooterConstants.EXPONENTIAL_TUNING * (1 - exponentialCmd / (setpointRPM * (exponentialCmd / (Math.abs(getRPM()) + 0.00001))));
-        }else{
-        exponentialCmd = 0.0001;
-        return 0.0;
-        }
-        
+        io.setVoltage(0.0);
     }
 
     @AutoLogOutput
