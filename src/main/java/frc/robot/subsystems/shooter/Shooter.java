@@ -56,6 +56,8 @@ public class Shooter extends SubsystemBase {
 
         pidCmd += pidController.calculate(inputs.velocityRPM, setpointRPM);
 
+        pidCmd = (getRPM() > ShooterConstants.REQUIRED_PID_VELOCITY) ? pidCmd : 0.0;
+
         io.setVoltage(
             pidCmd + getBangBang()
          );
@@ -109,6 +111,7 @@ public class Shooter extends SubsystemBase {
     public void stop() {
         setRPM(0.0);
         io.setVoltage(0.0);
+        pidCmd = 0.0;
     }
 
     @AutoLogOutput

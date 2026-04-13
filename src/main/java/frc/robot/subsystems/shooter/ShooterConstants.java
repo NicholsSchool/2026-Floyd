@@ -11,4 +11,5 @@ public class ShooterConstants{
     public static double SHOOTER_RADIUS_METERS = 0.063; 
     public static double VELOCITY_TOLERANCE_RPM = 80.0;
     public static double EXPONENTIAL_TUNING = 0.3;
+    public static double REQUIRED_PID_VELOCITY = 1500.0;
   }

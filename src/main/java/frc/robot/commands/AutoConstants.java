@@ -36,7 +36,7 @@ public class AutoConstants {
 
     public static final double AUTO_REV_TIME = 3.0;
 
-    public static final double HUB_DISTANCE_TOLERANCE = 0.2;
+    public static final double HUB_DISTANCE_TOLERANCE = 0.07;
 
-    public static final double SHOOTING_DISTANCE = 2.0;
+    public static final double SHOOTING_DISTANCE = 1.9;
 }

@@ -343,9 +343,10 @@ public class RobotContainer {
 
       operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.backdex(), indexer), new InstantCommand(() -> intake.backdexIntake(), intake)).repeatedly());
 
+      //THIS WORKS USE THIS PLS THANKS
       operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2700)));
 
-      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(500)));
+      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(2600)));
 
       operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
     //   operatorController.y().onTrue(new ShooterAutoAim(drive, shooter, redirector));
