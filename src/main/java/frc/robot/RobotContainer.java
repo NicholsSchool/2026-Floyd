@@ -326,7 +326,7 @@ public class RobotContainer {
 
       redirector.setDefaultCommand(new InstantCommand(() -> redirector.runManualPosition(-operatorController.getRightY()), redirector));
       indexer.setDefaultCommand(new InstantCommand(() -> indexer.stop(), indexer));
-      operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.index(), indexer), new InstantCommand(() -> intake.indexIntake(), intake)).repeatedly());
+      operatorController.rightTrigger().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.index(), indexer), new InstantCommand(() -> intake.indexIntake(), intake)).repeatedly());
 
 
       
@@ -336,18 +336,18 @@ public class RobotContainer {
       operatorController.x().onTrue(new InstantCommand(()
        -> shooter.stop()));
 
-      operatorController.povDown().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.47)));
-      operatorController.povLeft().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.55)));
-      operatorController.povRight().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1)));
-      operatorController.povUp().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.2)));
+    //   operatorController.povDown().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.47)));
+    //   operatorController.povLeft().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.55)));
+    //   operatorController.povRight().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1)));
+    //   operatorController.povUp().onTrue(new InstantCommand(() -> redirector.setTargetPosition(1.2)));
 
-      operatorController.leftBumper().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.backdex(), indexer), new InstantCommand(() -> intake.backdexIntake(), intake)).repeatedly());
+      operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.backdex(), indexer), new InstantCommand(() -> intake.backdexIntake(), intake)).repeatedly());
 
-      operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(3200)));
+      operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(3000)));
 
-      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(3000)));
+      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
 
-      operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
+      operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(3200)));
     //   operatorController.y().onTrue(new ShooterAutoAim(drive, shooter, redirector));
 
 
