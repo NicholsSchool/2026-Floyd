@@ -41,6 +41,8 @@ public class CandleUpdate extends InstantCommand{
             candle.setColor(CandleConstants.PERFECT_PURPLE, Subsystem.DRIVE);
         }else if(shooter.isAtGoal() && shooter.getSetpointRPM() != 0){
             candle.setColor(CandleConstants.BEST_GREEN, Subsystem.DRIVE);
+        }else if(Math.abs(drive.getHubDistance() - AutoConstants.SHOOTING_DISTANCE) < AutoConstants.HUB_DISTANCE_TOLERANCE){
+            candle.setColor(CandleConstants.IVORY, Subsystem.DRIVE);
         }else{
             candle.setColor(CandleConstants.FLOYD_PINK, Subsystem.DRIVE);
         }

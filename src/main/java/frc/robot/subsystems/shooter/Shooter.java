@@ -52,6 +52,7 @@ public class Shooter extends SubsystemBase {
         Logger.processInputs("shooter", inputs);
 
         updateTunables();
+        
 
         pidCmd += pidController.calculate(inputs.velocityRPM, setpointRPM);
 
