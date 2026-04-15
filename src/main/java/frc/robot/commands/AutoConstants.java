@@ -30,13 +30,13 @@ public class AutoConstants {
 
     public static final double INTAKE_TIME = 10.0;
 
-    public static final double AUTOAIM_GASLIGHT = 0.5;
+    public static final double AUTOAIM_GASLIGHT = 0.0;
 
     public static final double SHOOT_ON_MOVE_FUTURE_MULTIPLIER = 0.3;
 
     public static final double AUTO_REV_TIME = 3.0;
 
-    public static final double HUB_DISTANCE_TOLERANCE = 0.07;
+    public static final double HUB_DISTANCE_TOLERANCE = 0.15;
 
-    public static final double SHOOTING_DISTANCE = 1.9;
+    public static final double SHOOTING_DISTANCE = 2.0;
 }

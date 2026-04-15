@@ -126,13 +126,11 @@ public class Auto {
               new WaitCommand(0.5), 
          new ParallelCommandGroup(intakeCenter(AutoConfig.followThroughOne, AutoConfig.pickupLocationOne),
          intake.commandIntake(), indexer.commandBackdex()),
-        //   new InstantCommand(() -> intake.intake()).repeatedly().withTimeout(AutoConstants.INTAKE_TIME)),
-        //   new InstantCommand(() -> intake.stopWheels()),
           driveToShootPos(AutoConfig.shootingPositionOne, AutoConfig.pickupLocationOne, AutoConfig.followThroughOne),
            AutoAim(), new WaitCommand(AutoConstants.AUTO_REV_TIME), indexer.commandIndex());
         }
     }
-
+                                                                                                        
 
 
 }

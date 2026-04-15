@@ -24,5 +24,4 @@ public class AutoConfig {
     public static ShootingRegion shootingPositionOne = ShootingRegion.RIGHT;
     // do we climb
     public static boolean climb = false;
-
 }

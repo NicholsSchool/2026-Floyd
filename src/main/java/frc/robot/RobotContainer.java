@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -118,8 +119,7 @@ public class RobotContainer {
              new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0),
-                new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1),
-                new VisionIOPhotonVision(VisionConstants.camera2Name, VisionConstants.robotToCamera2)
+                new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1)
                 );
 
         redirector = new Redirector(new RedirectorIOReal());
@@ -288,6 +288,8 @@ public class RobotContainer {
       driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> indexer.backdex(), indexer).repeatedly());
       driveController.rightBumper().whileTrue(new InstantCommand(()-> intake.outtake(), intake).repeatedly());
 
+      //driveController.povRight().whileTrue(intake.commandPivotJiggleSequence());
+
 
           driveController.x().whileTrue(DriveCommands.joystickDriveFacingPoint(drive,
           () -> -driveController.getLeftY() * DriveConstants.LOW_GEAR_SCALER,
@@ -344,12 +346,14 @@ public class RobotContainer {
       operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.backdex(), indexer), new InstantCommand(() -> intake.backdexIntake(), intake)).repeatedly());
 
       //THIS WORKS USE THIS PLS THANKS
-      operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2700)));
+    //   operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2700)));
 
-      operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(2600)));
+    //   operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(3200)));
 
-      operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
-    //   operatorController.y().onTrue(new ShooterAutoAim(drive, shooter, redirector));
+    //   operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(3300)));
+
+    
+      operatorController.y().onTrue(new ShooterAutoAim(drive, shooter, redirector));
 
 
 

@@ -2,7 +2,7 @@ package frc.robot.subsystems.shooter;
 
 public class ShooterConstants{
     public static final double BANG_BANG_MULT = 5.0;
-    public static double VELOCITY_P = 0.0007;
+    public static double VELOCITY_P = 0.0006;
     //0.0007
     public static double VELOCITY_I = 0.00;
     public static double VELOCITY_D = 0.0;

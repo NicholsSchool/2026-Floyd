@@ -2,12 +2,17 @@ package frc.robot.subsystems.intake;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+import org.opencv.features2d.FlannBasedMatcher;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import frc.robot.commands.AutoConstants;
 
 public class Intake extends SubsystemBase {
@@ -63,7 +68,7 @@ public class Intake extends SubsystemBase {
 
     public Intake(IntakeIO io) {
         this.io = io;
-        setPivotGoal(IntakeConstants.PIVOT_IN_ANGLE);
+        setPivotGoal(IntakeConstants.PIVOT_OUT_ANGLE);
     }
 
     @Override
@@ -153,7 +158,7 @@ public class Intake extends SubsystemBase {
         pivotPIDController.reset(inputs.pivotAngleRadians);
     }
 
-     public Command commandIntake() {   
+    public Command commandIntake() {   
         return new FunctionalCommand(
             () -> System.out.println("Intaking"),
             () -> intake(),
@@ -161,6 +166,14 @@ public class Intake extends SubsystemBase {
             () -> false,
             this).withTimeout(AutoConstants.INTAKE_TIME);
     } 
+
+    public Command commandPivotJiggleSequence(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()-> setPivotGoal(IntakeConstants.PIVOT_MID_ANGLE)),
+            new WaitCommand(1.5),
+            new InstantCommand(()-> setPivotGoal(IntakeConstants.PIVOT_OUT_ANGLE)),
+            new WaitCommand(1.5)).repeatedly();
+    }
 
 
     @AutoLogOutput
@@ -187,10 +200,7 @@ public class Intake extends SubsystemBase {
     @AutoLogOutput
     public double getIntakeBottomVoltage() { return inputs.intakeMotorBottomVoltage; }
 
-    @AutoLogOutput
     public double getIntakeCurrent(){
         return inputs.intakeMotorBottomCurrent;
     }
-
-
 }
