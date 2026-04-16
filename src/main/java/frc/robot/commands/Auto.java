@@ -106,7 +106,7 @@ public class Auto {
     }
 
     public Command goToPreloadShootPosition(){
-        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(1.2,0.7), new Rotation2d(Math.toRadians(0.0)))));
+        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.5,4), new Rotation2d(Math.toRadians(0.0)))));
         //straight back: 2.2,4
         //human player: 0.8, 0.6
         //Match 7 Auto: 1.6, 5.8, 35 degrees?

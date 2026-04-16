@@ -12,7 +12,7 @@ public final class DriveConstants {
     
         public static final double MAX_ANGULAR_SPEED = MAX_LINEAR_SPEED / DRIVE_BASE_RADIUS;
 
-    public static final double LOW_GEAR_SCALER = 0.4;
+    public static final double LOW_GEAR_SCALER = 0.7;
     public static final double TURNING_SCALAR = 0.55;
 
     public static final int navXPort = 0;

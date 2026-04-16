@@ -345,6 +345,8 @@ public class RobotContainer {
 
       operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.backdex(), indexer), new InstantCommand(() -> intake.backdexIntake(), intake)).repeatedly());
 
+      operatorController.rightBumper().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.backdex(), indexer), new InstantCommand(() -> intake.backdexIntake(), intake)).repeatedly());
+
       //THIS WORKS USE THIS PLS THANKS
     //   operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2700)));
 
