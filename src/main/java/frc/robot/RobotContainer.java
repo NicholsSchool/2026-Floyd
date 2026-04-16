@@ -282,11 +282,20 @@ public class RobotContainer {
       driveController.a().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.OUT)));
       driveController.b().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.MID)));
 
-       driveController.leftBumper().whileTrue(new InstantCommand(() -> drive.stopWithX(), drive).repeatedly());
+      driveController.leftBumper().whileTrue(new InstantCommand(() -> drive.stopWithX(), drive).repeatedly());
     
       driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
+      driveController.rightTrigger(0.8).whileTrue(
+        DriveCommands.joystickDrive(
+          drive,
+          () -> -driveController.getLeftY() * DriveConstants.LOWER_GEAR_SCALER,
+          () -> -driveController.getLeftX() * DriveConstants.LOWER_GEAR_SCALER,
+          () -> -driveController.getRightX() * DriveConstants.TURNING_SCALAR,
+          () -> Constants.DRIVE_ROBOT_RELATIVE));
+
       driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> indexer.backdex(), indexer).repeatedly());
       driveController.rightBumper().whileTrue(new InstantCommand(()-> intake.outtake(), intake).repeatedly());
+    
 
       //driveController.povRight().whileTrue(intake.commandPivotJiggleSequence());
 
@@ -348,9 +357,9 @@ public class RobotContainer {
       operatorController.rightBumper().whileTrue(new ParallelCommandGroup(new InstantCommand(() -> indexer.backdex(), indexer), new InstantCommand(() -> intake.backdexIntake(), intake)).repeatedly());
 
       //THIS WORKS USE THIS PLS THANKS
-    //   operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(2700)));
+       operatorController.b().onTrue(new InstantCommand(() -> shooter.setRPM(3000)));
 
-    //   operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(3200)));
+       operatorController.a().onTrue(new InstantCommand(() -> shooter.setRPM(2800)));
 
     //   operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(3300)));
 

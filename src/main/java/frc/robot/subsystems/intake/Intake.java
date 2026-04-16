@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase {
 
     public Intake(IntakeIO io) {
         this.io = io;
-        setPivotGoal(IntakeConstants.PIVOT_OUT_ANGLE);
+        setPivotGoal(IntakeConstants.PIVOT_IN_ANGLE);
     }
 
     @Override

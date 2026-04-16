@@ -62,5 +62,10 @@ public class IntakeIOReal implements IntakeIO {
     public void setPivotMotorVoltage(double volts) {
         pivotMotor.setVoltage(-volts);
     }
+
+    @Override
+    public void setPivotBrakeMode(){
+       //config.NeutralMode = enable ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+    }
     
 }

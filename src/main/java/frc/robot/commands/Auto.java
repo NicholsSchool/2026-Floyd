@@ -56,15 +56,16 @@ public class Auto {
             return new DriveToPose(drive, AllianceFlipUtil.applyRotate(new Pose2d(FieldConstants.Depot.depotCenter.toTranslation2d(), new Rotation2d(Math.PI / 2))));
         }
         if(pickupLocation.equals(PickupRegion.LEFT)){
-            desiredPose = new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 7.5), new Rotation2d(-Math.PI / 2));
+            desiredPose = new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 7.5), new Rotation2d(0));
         }else{
-            desiredPose = new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 0.8), new Rotation2d(Math.PI / 2));
+            desiredPose = new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 0.8), new Rotation2d(0));
         }
         return new DriveToPose(drive, AllianceFlipUtil.applyRotate(desiredPose));
     }
 
     public Command intakeCenter(boolean followThrough, PickupRegion pickupRegion){
         if(followThrough){
+            
             if(pickupRegion.equals(PickupRegion.LEFT)){
                 return new DriveToPose(drive, true, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 0.6), new Rotation2d(-Math.PI / 2))));
             }else{
@@ -127,7 +128,7 @@ public class Auto {
          new ParallelCommandGroup(intakeCenter(AutoConfig.followThroughOne, AutoConfig.pickupLocationOne),
          intake.commandIntake(), indexer.commandBackdex()),
           driveToShootPos(AutoConfig.shootingPositionOne, AutoConfig.pickupLocationOne, AutoConfig.followThroughOne),
-           AutoAim(), new WaitCommand(AutoConstants.AUTO_REV_TIME), indexer.commandIndex());
+           AutoAim(), new InstantCommand(() -> intake.setPivotGoal(PivotPreset.MID)), new WaitCommand(AutoConstants.AUTO_REV_TIME), indexer.commandIndex());
         }
     }
                                                                                                         

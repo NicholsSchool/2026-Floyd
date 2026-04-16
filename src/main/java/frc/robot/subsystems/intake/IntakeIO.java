@@ -2,6 +2,8 @@ package frc.robot.subsystems.intake;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 public interface IntakeIO {
     
     @AutoLog
@@ -32,4 +34,6 @@ public interface IntakeIO {
      * @param volts The voltage to set the motor to.
      */
     public void setPivotMotorVoltage(double volts);
+
+    public void setPivotBrakeMode();
 }
