@@ -8,6 +8,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import frc.robot.Constants;
 import frc.robot.Constants.CAN;
 
+
 public class IntakeIOReal implements IntakeIO {
 
     private TalonFX intakeMotorTop;
@@ -37,6 +38,8 @@ public class IntakeIOReal implements IntakeIO {
 
     }
 
+
+
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
         inputs.intakeMotorTopVoltage = intakeMotorTop.getMotorVoltage().getValueAsDouble();
@@ -63,9 +66,9 @@ public class IntakeIOReal implements IntakeIO {
         pivotMotor.setVoltage(-volts);
     }
 
-    @Override
-    public void setPivotBrakeMode(){
+    //@Override
+    //public void setPivotBrakeMode(){
        //config.NeutralMode = enable ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-    }
+   // }
     
 }

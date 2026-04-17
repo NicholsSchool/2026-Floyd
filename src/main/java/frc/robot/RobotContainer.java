@@ -295,6 +295,13 @@ public class RobotContainer {
 
       driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> indexer.backdex(), indexer).repeatedly());
       driveController.rightBumper().whileTrue(new InstantCommand(()-> intake.outtake(), intake).repeatedly());
+
+      driveController.back().whileTrue(DriveCommands.joystickDrive(
+            drive,
+                () -> -1,
+                () -> 0,
+                () -> 0.0,
+                () -> true));
     
 
       //driveController.povRight().whileTrue(intake.commandPivotJiggleSequence());

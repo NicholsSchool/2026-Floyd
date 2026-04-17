@@ -35,5 +35,5 @@ public interface IntakeIO {
      */
     public void setPivotMotorVoltage(double volts);
 
-    public void setPivotBrakeMode();
+   // public void setPivotBrakeMode();
 }
