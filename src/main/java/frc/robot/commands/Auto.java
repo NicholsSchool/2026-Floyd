@@ -46,8 +46,7 @@ public class Auto {
     }
 
     public Command AutoAim(){
-        return new ParallelCommandGroup(new ShooterAutoAim(drive, shooter, redirector),
-          new RedirectorAutoAim(drive, redirector));
+        return new ShooterAutoAim(drive, shooter);
     }
 
     public Command goToCenter(PickupRegion pickupLocation){
@@ -65,7 +64,7 @@ public class Auto {
 
     public Command intakeCenter(boolean followThrough, PickupRegion pickupRegion){
         if(followThrough){
-            
+
             if(pickupRegion.equals(PickupRegion.LEFT)){
                 return new DriveToPose(drive, true, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(AutoConstants.CENTER_INTAKE_FILE, 0.6), new Rotation2d(-Math.PI / 2))));
             }else{
@@ -107,7 +106,7 @@ public class Auto {
     }
 
     public Command goToPreloadShootPosition(){
-        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(2.5,4), new Rotation2d(Math.toRadians(0.0)))));
+        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(3.135,2.218), new Rotation2d(Math.toRadians(64.0)))));
         //straight back: 2.2,4
         //human player: 0.8, 0.6
         //Match 7 Auto: 1.6, 5.8, 35 degrees?

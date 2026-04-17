@@ -46,4 +46,9 @@ public class IntakeIOSim implements IntakeIO {
         pivotMotor.setInputVoltage(volts);
     }
     
+
+    @Override
+    public void setPivotBrakeMode(IntakeIOInputs inputs){
+        
+    }
 }

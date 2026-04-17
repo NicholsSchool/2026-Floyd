@@ -17,12 +17,11 @@ import frc.robot.util.AllianceFlipUtil;
 public class ShooterAutoAim extends InstantCommand {
   private Drive drive;
   private Shooter shooter;
-  private Redirector redirector;
+  
 
-  public ShooterAutoAim(Drive drive, Shooter shooter, Redirector redirector) {
+  public ShooterAutoAim(Drive drive, Shooter shooter) {
     this.drive = drive;
     this.shooter = shooter;
-    this.redirector = redirector;
     addRequirements(shooter);
   }
 

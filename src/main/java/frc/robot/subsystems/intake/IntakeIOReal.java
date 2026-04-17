@@ -1,5 +1,8 @@
 package frc.robot.subsystems.intake;
 
+import java.time.Year;
+
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -25,7 +28,7 @@ public class IntakeIOReal implements IntakeIO {
         TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
         pivotConfig.CurrentLimits.StatorCurrentLimit = IntakeConstants.PIVOT_CURRENT_LIMIT;
         pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        //pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         pivotMotor.getConfigurator().apply(pivotConfig);
         pivotMotor.setPosition(IntakeConstants.PIVOT_IN_ANGLE * IntakeConstants.PIVOT_RATIO);
 
@@ -57,18 +60,22 @@ public class IntakeIOReal implements IntakeIO {
 
     @Override
     public void setWheelMotorVoltage(double volts) {
-        intakeMotorTop.setVoltage(0);
+        intakeMotorTop.setVoltage(volts);
         intakeMotorBottom.setVoltage(-volts);
     }
+
 
     @Override
     public void setPivotMotorVoltage(double volts) {
         pivotMotor.setVoltage(-volts);
     }
 
-    //@Override
-    //public void setPivotBrakeMode(){
-       //config.NeutralMode = enable ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-   // }
+    @Override
+    public void setPivotBrakeMode(IntakeIOInputs inputs){
+        MotorOutputConfigs config = new MotorOutputConfigs();
+        config.NeutralMode = NeutralModeValue.Brake;
+        config.NeutralMode = inputs.brakeEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+        pivotMotor.getConfigurator().apply(config); 
+   }
     
 }

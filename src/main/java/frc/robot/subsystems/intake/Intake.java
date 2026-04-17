@@ -6,6 +6,7 @@ import org.opencv.features2d.FlannBasedMatcher;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -73,8 +74,15 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
+    
         io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
+        if(DriverStation.isEnabled() && !inputs.brakeEnabled){
+            inputs.brakeEnabled = true;
+        }
+        if(DriverStation.isDisabled()){
+            inputs.brakeEnabled = false;
+        }
         
         switch (pivotState) {
             case GOTOANGLE:
@@ -202,5 +210,10 @@ public class Intake extends SubsystemBase {
 
     public double getIntakeCurrent(){
         return inputs.intakeMotorBottomCurrent;
+    }
+
+    @AutoLogOutput
+    public boolean getPivotOutputMode(){
+        return inputs.brakeEnabled;
     }
 }

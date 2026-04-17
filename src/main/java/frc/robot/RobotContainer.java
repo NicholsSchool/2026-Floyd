@@ -122,7 +122,7 @@ public class RobotContainer {
                 new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1)
                 );
 
-        redirector = new Redirector(new RedirectorIOReal());
+        redirector = new Redirector(new RedirectorIOSim());
         indexer = new Indexer( new IndexerIOReal());
         candle = new Candle(new CandleIOReal());
         shooter = new Shooter(new ShooterIOReal()); 
@@ -275,7 +275,7 @@ public class RobotContainer {
           () -> -driveController.getRightX(),
           () -> Constants.DRIVE_ROBOT_RELATIVE));
 
-      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, redirector, shooter, indexer).repeatedly());
+      candle.setDefaultCommand(new CandleUpdate(candle, drive, intake, redirector, shooter, indexer).repeatedly()); 
       intake.setDefaultCommand(new InstantCommand(() -> intake.stopWheels(), intake));
 
       driveController.y().onTrue(new InstantCommand(() -> intake.setPivotGoal(PivotPreset.IN)));
@@ -285,13 +285,13 @@ public class RobotContainer {
       driveController.leftBumper().whileTrue(new InstantCommand(() -> drive.stopWithX(), drive).repeatedly());
     
       driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> intake.intake(), intake).repeatedly());
-      driveController.rightTrigger(0.8).whileTrue(
-        DriveCommands.joystickDrive(
-          drive,
-          () -> -driveController.getLeftY() * DriveConstants.LOWER_GEAR_SCALER,
-          () -> -driveController.getLeftX() * DriveConstants.LOWER_GEAR_SCALER,
-          () -> -driveController.getRightX() * DriveConstants.TURNING_SCALAR,
-          () -> Constants.DRIVE_ROBOT_RELATIVE));
+    //   driveController.rightTrigger(0.8).whileTrue(
+    //     DriveCommands.joystickDrive(
+    //       drive,
+    //       () -> -driveController.getLeftY() * DriveConstants.LOWER_GEAR_SCALER,
+    //       () -> -driveController.getLeftX() * DriveConstants.LOWER_GEAR_SCALER,
+    //       () -> -driveController.getRightX() * DriveConstants.TURNING_SCALAR,
+    //       () -> Constants.DRIVE_ROBOT_RELATIVE));
 
       driveController.rightTrigger(0.8).whileTrue(new InstantCommand(()-> indexer.backdex(), indexer).repeatedly());
       driveController.rightBumper().whileTrue(new InstantCommand(()-> intake.outtake(), intake).repeatedly());
@@ -371,7 +371,7 @@ public class RobotContainer {
     //   operatorController.y().onTrue(new InstantCommand(() -> shooter.setRPM(3300)));
 
     
-      operatorController.y().onTrue(new ShooterAutoAim(drive, shooter, redirector));
+      operatorController.y().onTrue(new ShooterAutoAim(drive, shooter));
 
 
 

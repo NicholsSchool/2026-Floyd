@@ -17,6 +17,7 @@ public interface IntakeIO {
         public double intakeMotorTopCurrent = 0.0;
         public double intakeMotorBottomCurrent = 0.0;
         public double pivotMotorCurrent = 0.0;
+        public boolean brakeEnabled = false;
     }
     
     
@@ -35,5 +36,5 @@ public interface IntakeIO {
      */
     public void setPivotMotorVoltage(double volts);
 
-   // public void setPivotBrakeMode();
+    public void setPivotBrakeMode(IntakeIOInputs inputs);
 }

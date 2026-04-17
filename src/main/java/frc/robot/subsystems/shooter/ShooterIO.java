@@ -13,6 +13,11 @@ public interface ShooterIO {
         public double bottomRightShooterVoltage = 0.0;
         public double topLeftShooterVoltage = 0.0;
         public double topRightShooterVoltage = 0.0;
+
+        public double bottomLeftShooterCurrent = 0.0;
+        public double bottomRightShooterCurrent = 0.0;
+        public double topLeftShooterCurrent = 0.0;
+        public double topRightShooterCurrent = 0.0;
     }
 
     /** Updates the set of loggable inputs. */

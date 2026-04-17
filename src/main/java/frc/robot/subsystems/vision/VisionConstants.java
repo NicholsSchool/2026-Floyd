@@ -26,7 +26,7 @@ public class VisionConstants {
   // Camera names, must match names configured on coprocessor
    public static String camera0Name = "camUp";
   public static Transform3d robotToCamera0 =
-  new Transform3d(0.10, -0.01, 0.407, new Rotation3d(Math.toRadians(-1.0), Math.toRadians(-39.5), Math.toRadians(0.0)));
+  new Transform3d(0.10, -0.01, 0.407, new Rotation3d(Math.toRadians(-1.0), Math.toRadians(-33.0), Math.toRadians(0.0)));
   //13 y 9 3/4 x
   //pitch is normally 35.0 degrees, changed for now cause it's not working
   //-3 degree yaw offset
