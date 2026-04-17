@@ -106,18 +106,23 @@ public class Auto {
     }
 
     public Command goToPreloadShootPosition(){
-        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(3.135,2.218), new Rotation2d(Math.toRadians(64.0)))));
+        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(3.135, 5.73), new Rotation2d(Math.toRadians(-51.3)))));
         //straight back: 2.2,4
         //human player: 0.8, 0.6
+            //FLR
         //Match 7 Auto: 1.6, 5.8, 35 degrees?
         //Match 8 Auto: 1.5, 4, 75 deg
         //Match 9 Auto: 1.2, 0.7
+            //TVR
+
+        //Match 2/4 Auto: 3.135, 2.218, 51 deg
+        //match something auto: 
     }
 
 
     public Command auto(){
         if(AutoConfig.centerAuto){
-            return new SequentialCommandGroup(goToPreloadShootPosition().withTimeout(3), AutoAim(),
+            return new SequentialCommandGroup(goToPreloadShootPosition().withTimeout(3), AutoAim(), new InstantCommand(() -> intake.setPivotGoal(PivotPreset.MID)),
             new WaitCommand(AutoConstants.AUTO_REV_TIME), indexer.commandIndex());
         }else{
         return new SequentialCommandGroup(

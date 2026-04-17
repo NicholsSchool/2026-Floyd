@@ -12,9 +12,9 @@ public class AutoConfig {
         LEFT,
         RIGHT
     } 
-    // change all constants as needed
+    // change all constants as needed 
     // used for just shooting preload
-    public static final boolean centerAuto =true;
+    public static final boolean centerAuto = true;
 
     //Shoots starting 8 then goes to pickup from:
     public static PickupRegion pickupLocationOne = PickupRegion.RIGHT;

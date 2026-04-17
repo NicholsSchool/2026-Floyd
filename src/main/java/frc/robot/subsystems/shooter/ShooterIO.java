@@ -8,6 +8,9 @@ public interface ShooterIO {
         public double supplyVoltage = 0.0;
         public double currentAmps = 0.0;
         public double velocityRPM = 0.0;
+        public double velocityRPMTopRight = 0.0;
+        public double velocityRPMTopLeft = 0.0;
+        public double velocityRPMBottomRight = 0.0;
 
         public double bottomLeftShooterVoltage = 0.0;
         public double bottomRightShooterVoltage = 0.0;

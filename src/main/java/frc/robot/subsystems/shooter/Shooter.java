@@ -131,4 +131,17 @@ public class Shooter extends SubsystemBase {
        return inputs.topRightShooterVoltage;
     }
     
+
+    @AutoLogOutput
+    public double topRightVelocityRPM(){
+        return inputs.velocityRPMTopRight;
+    }
+    @AutoLogOutput
+    public double topLeftVelocityRPM(){
+        return inputs.velocityRPMTopLeft;
+    }
+    @AutoLogOutput
+    public double bottomRightVelocityRPM(){
+        return inputs.velocityRPMBottomRight;
+    }
 }
