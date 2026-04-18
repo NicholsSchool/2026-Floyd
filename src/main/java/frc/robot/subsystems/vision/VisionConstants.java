@@ -33,7 +33,7 @@ public class VisionConstants {
 
   public static String camera1Name = "camL";
   public static Transform3d robotToCamera1 =
-  new Transform3d(-0.28, 0.304, 0.185, new Rotation3d(0.0, 0.0, Math.PI / 2));
+  new Transform3d(-0.28, 0.304, 0.185, new Rotation3d(0.0, 1.0, Math.PI / 2));
 //   public static String camera1Name = "Arducam_OV231x1_USB_Camera-B";
 
   public static String camera2Name = "camR";
