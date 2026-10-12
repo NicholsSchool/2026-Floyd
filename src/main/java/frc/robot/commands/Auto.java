@@ -105,8 +105,9 @@ public class Auto {
         }
     }
 
+
     public Command goToPreloadShootPosition(){
-        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(3.135, 5.73), new Rotation2d(Math.toRadians(-51.3)))));
+        return new DriveToPose(drive, () -> AllianceFlipUtil.applyRotate(new Pose2d(new Translation2d(0.9, 7.5), new Rotation2d(Math.toRadians(0)))));
         //straight back: 2.2,4
         //human player: 0.8, 0.6
             //FLR
@@ -122,8 +123,10 @@ public class Auto {
 
     public Command auto(){
         if(AutoConfig.centerAuto){
-            return new SequentialCommandGroup(goToPreloadShootPosition().withTimeout(3), AutoAim(), new InstantCommand(() -> intake.setPivotGoal(PivotPreset.MID)),
-            new WaitCommand(AutoConstants.AUTO_REV_TIME), indexer.commandIndex());
+            return new SequentialCommandGroup(goToPreloadShootPosition().withTimeout(3)
+            );
+            //, AutoAim(), new InstantCommand(() -> intake.setPivotGoal(PivotPreset.MID)),
+           // new WaitCommand(AutoConstants.AUTO_REV_TIME), indexer.commandIndex());
         }else{
         return new SequentialCommandGroup(
             goToCenter(AutoConfig.pickupLocationOne),
