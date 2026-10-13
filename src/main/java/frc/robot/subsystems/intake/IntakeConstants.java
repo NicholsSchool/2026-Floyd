@@ -15,8 +15,8 @@ public final class IntakeConstants {
     public static final double PIVOT_MAX_ACCEL = 3.0;
 
     //0.125 was the original in angle
-    public static final double PIVOT_IN_ANGLE = 0.2;
-    public static final double PIVOT_OUT_ANGLE = 1.7;
+    public static final double PIVOT_IN_ANGLE = 0.1;
+    public static final double PIVOT_OUT_ANGLE = 1.8;
     //1.5 is where it stalls on top of a ball
     public static final double PIVOT_MID_ANGLE = 0.9;
 
